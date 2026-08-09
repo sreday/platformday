@@ -1,0 +1,73 @@
+brand_name: "Platformday"
+base_path: "https://www.platformday.com/"
+base_folder: "static"
+twitter_url: https://twitter.com/platformday_com
+linkedin_url: https://www.linkedin.com/company/platformday/
+youtube_url: https://www.youtube.com/@platformday
+mailto: "mailto:hello@platformday.com"
+
+hero_pictures:
+- ../photos/platformday-hero-1.jpg
+- ../photos/platformday-hero-2.jpg
+- ../photos/platformday-hero-3.jpg
+
+# NOTE: these are recomputed from the event folders at build time (see _build/generate.py)
+counts:
+ events: 0
+ countries: 0
+ speakers: 0
+ attendees: 0
+
+
+events:
+
+events_past:
+
+meetups: []
+
+meetups_past: []
+
+description_template: |
+ ### Platform engineers, assemble in {{ location }} on {{ start_date }}!
+
+ **Platformday** is an in-person conference bringing together the people who build and run internal platforms: platform engineering, developer experience, infrastructure, and the tooling that ties them together.
+
+ Please note: this is an **in-person-only event**, with no option to present remotely. You’ll need to be present in {{ location }} on {{ start_date }} in order to deliver your talk.
+
+ [Take a look at the lineup so far]({{ website }})
+
+ #### Who is this for?
+
+ - Do you build or operate an internal developer platform?
+ - Do you work on developer experience, infrastructure, or the golden paths your teams ship on?
+ - Do you enjoy sharing real experiences, challenges, and opinions about what actually works at scale?
+
+ If you answered yes to any of these, join us for a day of learning, discussion, and shared experience.
+
+ You will connect with experienced practitioners, peers facing similar challenges, and a community that values honest conversations about the messy reality of platform work.
+
+ ---
+
+ #### Topics
+
+ We want to hear about the real world of platform engineering, including:
+
+ - Building internal developer platforms, from first golden path to org-wide adoption.
+ - Developer experience: paved roads, self-service, and measuring whether any of it helped.
+ - Platform as a product: funding it, staffing it, and proving its value.
+ - Infrastructure, Kubernetes, and the abstractions teams actually want on top.
+ - CI/CD, deployment, and the developer inner and outer loop.
+ - Reliability, security, and cost as platform concerns rather than afterthoughts.
+ - Honest retrospectives, including the platforms that did not work out.
+
+ ---
+
+ #### Am I the right speaker for this?
+
+ If you work on platforms or anywhere around them, then the answer is yes.
+
+ We welcome speakers from diverse backgrounds and all walks of life, not just traditional platform roles, but anyone working on developer experience, infrastructure, or operations in a broader sense. We accept a wide range of session types, as long as they align with the core themes of the conference.
+
+ Questions? Want to bring Platformday to your city? Please ping **hello@platformday.com**.
+
+ Thank you for presenting with us!
