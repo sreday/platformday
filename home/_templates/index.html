@@ -1,0 +1,471 @@
+{% extends "_base.html" %}
+
+{% block content %}
+
+{% if events or meetups %}
+<section id="events" class="sponsors-section section theme-bg-light text-white">
+  <div class="container">
+    {% if events %}
+    <h3 class="section-heading text-center mb-3">Upcoming conferences</h3>
+    <div class="row gx-md-5">
+
+      {% for event in events %}
+
+      <div class="col-12 col-lg-6 mb-4">
+        <div class="card rounded">
+          <a href="{{ event.url }}">
+            <img src="{{ event.photo_url }}" class="card-img-top rounded-top" alt="">
+          </a>
+          <div class="card-body">
+            <h5 class="card-title mb-2">{{ event.name }}</h5>
+            <div class="card-text mb-3">
+              <div class="meta">{{ event.date }}</div>
+            </div>
+            {% if event.url %}
+            <a href="{{ event.url }}" class="event-read-more-btn">Read more &rarr;</a>
+            {% else %}
+            Details coming soon...
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      {% endfor %}
+    </div>
+    <div class="text-center mt-4">
+      <a class="btn-secondary btn btn-lg" href="https://luma.com/sre" target="_blank">Subscribe to our LUMA calendar</a>
+    </div>
+    {% endif %}
+    {% if meetups %}
+    <h3 class="section-heading text-center mb-3">Upcoming meetups</h3>
+    <div class="row gx-md-5">
+
+      {% for event in meetups %}
+
+      <div class="col-12 col-lg-6 mb-4">
+        <div class="card rounded">
+          <a href="./{{ event.url }}">
+            <img src="{{ event.photo_url }}" class="card-img-top rounded-top" alt="">
+          </a>
+          <div class="card-body">
+            <h5 class="card-title mb-2">
+              <a href="{{ event.url }}">
+              {{ event.name }}
+              </a>
+            </h5>
+            <div class="card-text mb-3">
+              <div class="meta">{{ event.location }}</div>
+              <div class="meta">{{ event.date }} @ {{ event.time}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% else %}
+<section id="events" class="sponsors-section section theme-bg-light">
+  <div class="container">
+    <h3 class="section-heading text-center mb-3">Upcoming events: nothing planned for now</h3>
+    <div class="text-center mt-4">
+      <a class="btn-secondary btn btn-lg" href="https://luma.com/sre" target="_blank">Stay in the loop on LUMA</a>
+    </div>
+    <div class="text-center mt-5">
+      <h5 class="mb-3">Check out our other brands</h5>
+      <div class="d-flex justify-content-center align-items-center flex-wrap gap-4">
+        <a href="https://sreday.com" target="_blank"><img src="./assets/images/sreday_sticker.png" alt="SREday" style="height:100px;border-radius:8px;"></a>
+        <a href="https://llmday.com" target="_blank"><img src="./assets/images/llmday_sticker.png" alt="LLMday" style="height:100px;border-radius:8px;"></a>
+        <a href="https://devopsnotdead.com" target="_blank"><img src="./assets/images/devopsnotdead_sticker.png" alt="DevOpsNotDead" style="height:100px;border-radius:8px;"></a>
+        <a href="https://conf42.com" target="_blank"><img src="./assets/images/conf42_sticker.png" alt="Conf42" style="height:100px;border-radius:8px;"></a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{# Ambassador section hidden — uncomment to restore #}
+{% if false and ambassadors %}
+<section id="ambassadors" class="section theme-bg-light">
+    <div class="container">
+        <h2 class="section-heading text-center mb-3">{{ brand_name }} Ambassadors</h2>
+        <div class="section-intro text-center single-col-max mx-auto mb-5">
+            Our ambassadors are key community members who help us bring {{ brand_name }} to cities around the world.
+            Know someone who should be an ambassador? <a href="{{ mailto }}?subject=Ambassador%20nomination">Nominate them here!</a>
+        </div>
+
+        <div class="row">
+            {% for ambassador in ambassadors %}
+            <div class="col-12 col-md-6 col-lg-4 mb-4{% if loop.index > 9 %} amb-extra{% endif %}">
+                <div class="card rounded h-100 shadow-sm border-0">
+                    <div class="card-body text-center">
+                        <div class="mb-3">
+                            <img src="./ambassadors/{{ ambassador.Headshot }}"
+                                 class="rounded-circle img-fluid shadow-sm"
+                                 style="width: 150px; height: 150px; object-fit: cover;"
+                                 alt="{{ ambassador.Name }}">
+                        </div>
+                        <h4 class="card-title mb-1">
+                            {{ ambassador.Name }}
+                            {% if ambassador.Linkedin %}
+                            <a target="_blank" href="{{ ambassador.Linkedin }}" class="text-primary ms-1" style="font-size: 0.9rem;"><i class="fab fa-linkedin-in fa-fw"></i></a>
+                            {% endif %}
+                        </h4>
+                        <div class="text-muted mb-3">
+                            <div class="fw-bold">{{ ambassador.Job }}</div>
+                            {% if ambassador.Company %}
+                            <div class="small">{{ ambassador.Company }}</div>
+                            {% endif %}
+                            {% if ambassador.Event %}
+                            <div class="badge bg-primary mt-2">{{ ambassador.Event }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="card-text text-start">
+                            {% if ambassador.Note|length > 100 %}
+                                <span id="short-note-{{ loop.index }}">{{ ambassador.Note[:100] }}...</span>
+                                <span id="long-note-{{ loop.index }}" style="display: none;">{{ ambassador.Note }}</span>
+                                <a href="javascript:void(0);" id="link-{{ loop.index }}" class="ms-1 fw-bold" onclick="toggleNote({{ loop.index }})">Read more</a>
+                            {% else %}
+                                {{ ambassador.Note }}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% if ambassadors|length > 9 %}
+        <div class="text-center mt-2 mb-4">
+          <a href="javascript:void(0);" id="show-more-amb" class="btn btn-outline-secondary" onclick="showMoreAmb()">Show {{ ambassadors|length - 9 }} more</a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<script>
+function toggleNote(id) {
+    var short = document.getElementById('short-note-' + id);
+    var long = document.getElementById('long-note-' + id);
+    var link = document.getElementById('link-' + id);
+
+    if (short.style.display === 'none') {
+        short.style.display = 'inline';
+        long.style.display = 'none';
+        link.innerText = 'Read more';
+    } else {
+        short.style.display = 'none';
+        long.style.display = 'inline';
+        link.innerText = 'Show less';
+    }
+}
+</script>
+{% endif %}
+
+{% if events_past or meetups_past %}
+<section id="past-events" class="sponsors-section section theme-bg-primary text-white">
+  <div class="container">
+    {% if events_past %}
+    <h3 class="section-heading text-center mb-3 text-white">Past conferences</h3>
+    <div class="row gx-md-5">
+
+      {% for event in events_past %}
+
+      <div class="col-12 col-lg-6 mb-4{% if loop.index > 10 %} past-conf-extra{% endif %}">
+        <div class="card rounded">
+          <a href="{{ event.url }}">
+            <img src="{{ event.photo_url }}" class="card-img-top rounded-top" alt="">
+          </a>
+          <div class="card-body">
+            <h5 class="card-title mb-2">{{ event.name }}</h5>
+            <div class="card-text mb-3">
+              <div class="meta">{{ event.date }}</div>
+            </div>
+            {% if event.url %}
+            <a href="{{ event.url }}" class="event-read-more-btn">Read more &rarr;</a>
+            {% else %}
+            Details coming soon...
+            {% endif %}
+            {% if event.youtube_playlist %}
+            <a href="{{ event.youtube_playlist }}" class="yt-playlist-btn" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="white" style="vertical-align:middle;margin-right:5px"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31.5 31.5 0 0 0 0 12a31.5 31.5 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1C4.5 20.5 12 20.5 12 20.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31.5 31.5 0 0 0 24 12a31.5 31.5 0 0 0-.5-5.8zM9.7 15.5V8.5l6.3 3.5-6.3 3.5z"/></svg>Playlist</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      {% endfor %}
+    </div>
+    {% if events_past|length > 10 %}
+    <div class="text-center mt-2 mb-4">
+      <a href="javascript:void(0);" id="show-more-past-conf" class="btn btn-past-more" onclick="showMorePastConf()">Show {{ events_past|length - 10 }} more</a>
+    </div>
+    {% endif %}
+    {% endif %}
+    {% if meetups_past %}
+    <h3 class="section-heading text-center mb-3 text-white">Past meetups</h3>
+    <div class="row gx-md-5">
+
+      {% for event in meetups_past %}
+
+      <div class="col-12 col-lg-6 mb-4{% if loop.index > 10 %} past-meetup-extra{% endif %}">
+        <div class="card rounded">
+          <a href="./{{ event.url }}">
+            <img src="{{ event.photo_url }}" class="card-img-top rounded-top" alt="">
+          </a>
+          <div class="card-body">
+            <h5 class="card-title mb-2">
+              <a href="{{ event.url }}">
+              {{ event.name }}
+              </a>
+            </h5>
+            <div class="card-text mb-3">
+              <div class="meta">{{ event.location }}</div>
+              <div class="meta">{{ event.date }} @ {{ event.time}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {% endfor %}
+    </div>
+    {% if meetups_past|length > 10 %}
+    <div class="text-center mt-2">
+      <a href="javascript:void(0);" id="show-more-past-meetup" class="btn btn-past-more" onclick="showMorePastMeetup()">Show {{ meetups_past|length - 10 }} more</a>
+    </div>
+    {% endif %}
+    {% endif %}
+  </div>
+</section>
+<style>
+.past-conf-extra, .past-meetup-extra, .amb-extra { display: none; }
+.btn-past-more, #show-more-amb { text-decoration: none; }
+.btn-past-more:hover, .btn-past-more:focus, #show-more-amb:hover, #show-more-amb:focus { text-decoration: none; }
+.btn-past-more { color: #000; background: #fff; border: 2px solid #fff; }
+.btn-past-more:hover, .btn-past-more:focus { background: #f0f0f0; color: #000; border-color: #f0f0f0; }
+.yt-playlist-btn { display: inline-block; margin-left: 12px; padding: 8px 18px; background: #F97316; color: #fff; border-radius: 6px; text-decoration: none; font-family: 'Montserrat', sans-serif; font-weight: 700; transition: background 0.2s ease; }
+.yt-playlist-btn:hover, .yt-playlist-btn:focus { background: #f08580; color: #fff; text-decoration: none; }
+.event-read-more-btn { display: inline-block; padding: 8px 18px; background: #592f1a; color: #fff; border-radius: 6px; text-decoration: none; transition: background 0.2s ease; font-family: 'Montserrat', sans-serif; font-weight: 700; }
+.event-read-more-btn:hover, .event-read-more-btn:focus { background: #7a4a2e; color: #fff; text-decoration: none; }
+.card { transition: box-shadow .4s ease, border-color .4s ease; border: 1px solid transparent; }
+#events .card:hover { border-color: rgba(160,110,70,.35); box-shadow: 0 0 20px rgba(160,110,70,.18), 0 0 48px rgba(160,110,70,.07); }
+#past-events .card:hover { border-color: rgba(255,255,255,.25); box-shadow: 0 0 20px rgba(255,255,255,.12), 0 0 48px rgba(255,255,255,.05); }
+</style>
+<script>
+function showMoreAmb() {
+  document.querySelectorAll('.amb-extra').forEach(function(el) { el.classList.remove('amb-extra'); });
+  document.getElementById('show-more-amb').style.display = 'none';
+}
+function showMorePastConf() {
+  document.querySelectorAll('.past-conf-extra').forEach(function(el) { el.classList.remove('past-conf-extra'); });
+  document.getElementById('show-more-past-conf').style.display = 'none';
+}
+function showMorePastMeetup() {
+  document.querySelectorAll('.past-meetup-extra').forEach(function(el) { el.classList.remove('past-meetup-extra'); });
+  document.getElementById('show-more-past-meetup').style.display = 'none';
+}
+</script>
+{% endif %}
+
+
+{% if testimonials %}
+<section id="testimonials" class="sponsors-section section">
+  <div class="container speakers-section">
+    <h3 class="section-heading text-center mb-3">What others say about Platformday</h3>
+    <div class="row">
+
+      {% for testimonial in testimonials %}
+
+      <div class="col-6 col-lg mb-4 testimonial-col{% if loop.index > 10 %} testimonial-extra{% endif %}">
+        <div class="card rounded">
+          <img src="./assets/images/profiles/{{ testimonial.Headshot }}" class="card-img-top rounded-0" alt="">
+          <div class="card-body">
+            <h5 class="card-title mb-2">{{ testimonial.Name }}</h5>
+            <div class="card-text mb-3 text-muted">
+              <div class="meta">{{ testimonial.Job }}</div>
+              {% if testimonial.Company %}
+              <b class="meta">{{ testimonial.Company }}</b>
+              {% endif %}
+            </div>
+            <div class="card-text mb-3 testimonial-body" id="tbody-{{ loop.index0 }}">
+              {{ testimonial.Testimonial }}
+              <a href="javascript:void(0);" class="testimonial-readmore" onclick="toggleTestimonialBody({{ loop.index0 }}, this)">Read more</a>
+            </div>
+          </div>
+          <div class="card-footer text-muted">
+            <ul class="social-list list-inline mb-0">
+              {% if testimonial.Twitter %}<li class="list-inline-item"><a target="_blank" href="https://twitter.com/{{ testimonial.Twitter }}"><i class="fab fa-twitter fa-fw"></i></a></li>{% endif %}
+              {% if testimonial.Linkedin %}<li class="list-inline-item"><a target="_blank" href="{{ testimonial.Linkedin }}"><i class="fab fa-linkedin-in fa-fw"></i></a></li>{% endif %}
+              {% if testimonial.Twitter2 %}<li class="list-inline-item"><a target="_blank" href="https://twitter.com/{{ testimonial.Twitter2 }}"><i class="fab fa-twitter fa-fw"></i></a></li>{% endif %}
+              {% if testimonial.Linkedin2 %}<li class="list-inline-item"><a target="_blank" href="{{ testimonial.Linkedin2 }}"><i class="fab fa-linkedin-in fa-fw"></i></a></li>{% endif %}
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      {% endfor %}
+    </div>
+    {% if testimonials|length > 10 %}
+    <div class="text-center mt-3">
+      <a href="javascript:void(0);" id="show-more-testimonials" class="btn btn-brand-primary" onclick="showMoreTestimonials()">Show {{ testimonials|length - 10 }} more</a>
+    </div>
+    {% endif %}
+  </div>
+</section>
+<style>
+@media (min-width: 992px) { .testimonial-col { flex: 0 0 20%; max-width: 20%; } }
+.testimonial-extra { display: none; }
+.btn-brand-primary { background: #592f1a; color: #fff; border: none; }
+.btn-brand-primary:hover, .btn-brand-primary:focus { background: #6e3a21; color: #fff; }
+.testimonial-body { position: relative; max-height: 4.8em; line-height: 1.6em; overflow: hidden; }
+.testimonial-body.expanded { max-height: none; }
+.testimonial-readmore { position: absolute; bottom: 0; right: 0; background: linear-gradient(to right, transparent, #fff 25%); padding-left: 2em; font-size: 0.85em; text-decoration: none; }
+.testimonial-readmore:hover, .testimonial-readmore:focus { text-decoration: none; }
+</style>
+<script>
+function showMoreTestimonials() {
+  document.querySelectorAll('.testimonial-extra').forEach(function(el) { el.classList.remove('testimonial-extra'); });
+  document.getElementById('show-more-testimonials').style.display = 'none';
+  hideShortReadMore();
+}
+function toggleTestimonialBody(idx, link) {
+  var el = document.getElementById('tbody-' + idx);
+  el.classList.add('expanded');
+  link.style.display = 'none';
+}
+function hideShortReadMore() {
+  document.querySelectorAll('.testimonial-body:not(.expanded)').forEach(function(el) {
+    if (el.offsetHeight > 0 && el.scrollHeight <= el.offsetHeight) {
+      var link = el.querySelector('.testimonial-readmore');
+      if (link) link.style.display = 'none';
+    }
+  });
+}
+document.addEventListener('DOMContentLoaded', hideShortReadMore);
+</script>
+{% endif %}
+
+
+<section id="sponsor" class="sponsors-section section theme-bg-primary text-white">
+  <div class="container">
+    <div class="row gx-md-5">
+      <div class="col-12 mb-3">
+        <h3 class="section-heading text-center text-white">Sponsor</h3>
+
+        {% if sponsor_logos %}
+        <div class="sponsor-carousel-wrap" style="background:#fff;border-radius:8px;padding:2rem 0;margin:1.95rem auto 1.5rem;overflow:hidden;width:60%;">
+          <div class="sponsor-carousel-track">
+            {% for logo in sponsor_logos %}
+            <div class="sponsor-carousel-item"><img src="./sponsors/{{ logo }}" alt="{{ logo.split('.')[0] }}"></div>
+            {% endfor %}
+            {% for logo in sponsor_logos %}
+            <div class="sponsor-carousel-item"><img src="./sponsors/{{ logo }}" alt="{{ logo.split('.')[0] }}"></div>
+            {% endfor %}
+          </div>
+        </div>
+        <style>
+        .sponsor-carousel-wrap { position: relative; }
+        .sponsor-carousel-track {
+          display: flex;
+          align-items: center;
+          gap: 3rem;
+          width: max-content;
+          animation: sponsor-scroll 40s linear infinite;
+        }
+        .sponsor-carousel-wrap:hover .sponsor-carousel-track { animation-play-state: paused; }
+        .sponsor-carousel-item img {
+          height: 120px;
+          width: auto;
+          max-width: 288px;
+          object-fit: contain;
+          filter: grayscale(20%);
+          transition: filter 0.2s ease;
+        }
+        .sponsor-carousel-item img:hover { filter: grayscale(0%); }
+        @keyframes sponsor-scroll {
+          0%   { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        </style>
+        <script>
+        (function() {
+          var track = document.querySelector('.sponsor-carousel-track');
+          if (track) {
+            var SPEED = 25; // pixels per second
+            var totalWidth = track.scrollWidth / 2;
+            track.style.animationDuration = (totalWidth / SPEED) + 's';
+          }
+        })();
+        </script>
+        {% endif %}
+
+        <div class="sponsors-cta text-center">
+<!-- Calendly inline widget begin -->
+<div class="calendly-inline-widget" data-url="https://calendly.com/mark-platformday/30min" style="min-width:320px;height:700px;"></div>
+<script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
+<!-- Calendly inline widget end -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="partner" class="sponsors-section section theme-bg-light">
+  <div class="container">
+    <div class="row gx-md-5">
+      <div class="col-12 mb-3">
+        <h3 class="section-heading text-center mb-3">Partner</h3>
+
+        {% if partner_logos %}
+        <div class="partner-carousel-wrap" style="background:#fff;border-radius:8px;padding:2rem 0;margin:1.95rem auto 1.5rem;overflow:hidden;width:60%;">
+          <div class="partner-carousel-track">
+            {% for logo in partner_logos %}
+            <div class="partner-carousel-item"><img src="./sponsors/{{ logo }}" alt="{{ logo.split('.')[0] }}"></div>
+            {% endfor %}
+            {% for logo in partner_logos %}
+            <div class="partner-carousel-item"><img src="./sponsors/{{ logo }}" alt="{{ logo.split('.')[0] }}"></div>
+            {% endfor %}
+          </div>
+        </div>
+        <style>
+        .partner-carousel-wrap { position: relative; }
+        .partner-carousel-track {
+          display: flex; align-items: center; gap: 3rem;
+          width: max-content; animation: partner-scroll 40s linear infinite;
+        }
+        .partner-carousel-wrap:hover .partner-carousel-track { animation-play-state: paused; }
+        .partner-carousel-item img {
+          height: 120px; width: auto; max-width: 288px;
+          object-fit: contain; filter: grayscale(20%); transition: filter 0.2s ease;
+        }
+        .partner-carousel-item img:hover { filter: grayscale(0%); }
+        @keyframes partner-scroll {
+          0%   { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        </style>
+        <script>
+        (function() {
+          var track = document.querySelector('.partner-carousel-track');
+          if (track) {
+            var SPEED = 25;
+            var totalWidth = track.scrollWidth / 2;
+            track.style.animationDuration = (totalWidth / SPEED) + 's';
+          }
+        })();
+        </script>
+        {% endif %}
+
+        <div class="section-intro text-center single-col-max mx-auto">
+          Interested in bringing Platformday to your city?
+        </div>
+        <div class="sponsors-cta text-center pt-5">
+          <a class="btn-secondary btn btn-lg" href="{{ mailto }}">Become A Partner</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
