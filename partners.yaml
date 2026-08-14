@@ -1,0 +1,20 @@
+# Home-page carousel categorization - read by home/_build/generate.py ONLY.
+# Conference/event pages are not affected by this file.
+#
+# Rules:
+# - A paying sponsor: just drop its logo into sponsors/ (nothing to add here).
+# - Anything that is NOT a paying sponsor (community meetups, media/non-sponsor
+#   orgs, sister conferences, job boards): drop the logo into sponsors/ AND list
+#   its filename below - listed logos render in the home Partner carousel.
+# - Never show the same company twice on the home page: extra logo variants of
+#   an already-shown company go under hidden_duplicates.
+# Matching is case-insensitive.
+
+non_sponsor_orgs:
+  - hockeystick.png
+
+community_partners: []
+
+sister_conferences_job_boards: []
+
+hidden_duplicates: []
