@@ -272,7 +272,7 @@ section[id] {
         <h3 class="section-heading text-center mb-3">Partner</h3>
 
         
-        <div class="partner-carousel-wrap" style="background:#fff;border-radius:8px;padding:2rem 0;margin:1.95rem auto 1.5rem;overflow:hidden;width:60%;">
+        <div class="partner-carousel-wrap" style="background:#fff;border-radius:999px;box-shadow:0 4px 20px rgba(0,0,0,.07);padding:28px 0;margin:1.95rem auto 1.5rem;overflow:hidden;width:100%;">
           <div class="partner-carousel-track">
             
             <div class="partner-carousel-item"><img src="./sponsors/hockeystick.png" alt="hockeystick"></div>
@@ -285,13 +285,13 @@ section[id] {
         <style>
         .partner-carousel-wrap { position: relative; }
         .partner-carousel-track {
-          display: flex; align-items: center; gap: 3rem;
+          display: flex; align-items: center; gap: 4.5rem;
           width: max-content; animation: partner-scroll 40s linear infinite;
         }
         .partner-carousel-wrap:hover .partner-carousel-track { animation-play-state: paused; }
         .partner-carousel-item img {
-          height: 120px; width: auto; max-width: 288px;
-          object-fit: contain; filter: grayscale(20%); transition: filter 0.2s ease;
+          height: 114px; width: auto; max-width: 364px;
+          object-fit: contain; transition: filter 0.2s ease;
         }
         .partner-carousel-item img:hover { filter: grayscale(0%); }
         @keyframes partner-scroll {
@@ -303,7 +303,7 @@ section[id] {
         (function() {
           var track = document.querySelector('.partner-carousel-track');
           if (track) {
-            var SPEED = 25;
+            var SPEED = 30;
             var totalWidth = track.scrollWidth / 2;
             track.style.animationDuration = (totalWidth / SPEED) + 's';
           }
