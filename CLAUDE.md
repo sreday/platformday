@@ -60,13 +60,14 @@ and `metadata.yml` — those are per-event.
 
 ## Theme / palette
 
-Platformday's palette is teal + orange, chosen to be distinct from its sisters
-(which all share blue `#098dcf` / coral `#EC645E`):
+Platformday's palette is orange on black, matching the brand logo and the
+PLATFORMday swatch (`--host-orange: #E99A17`) on the sister sites' `/host` pages:
 
-- `$theme-color-primary: #0D9488`
-- `$theme-color-secondary: #F97316`
-- `$theme-bg-light: #F0FAF8`
-- `$theme-border-color: #DCEFEC`
+- `$theme-color-primary: #E99A17`
+- `$theme-color-secondary: #B45309` (burnt amber — used where white text sits on it)
+- `$theme-bg-light: #FDF3E0`
+- `$theme-border-color: #F8DFAE`
+- Primary-as-text spots use the darker `#BA7B12` for contrast on white.
 
 **The palette is defined in two places that must stay in sync:**
 `_assets/template_v1/assets/scss/theme.scss` (events) and
@@ -83,9 +84,6 @@ A handful of palette hexes are also inlined directly in templates
 `home/_templates/meetup_base.html`) — grep for the hex values when changing colours.
 
 ## Outstanding brand TODOs
-- `home/assets/images/platformday_sticker.png` is a **placeholder** (copied from
-  DevOpsNotDead artwork). It is the site logo — replace it.
-- Favicons in `home/assets/` are placeholders inherited from DevOpsNotDead.
 - `photos/platformday-hero-*.jpg` are the generic template hero photos.
 - `_event_template/_templates/sponsorship.html` uses a CSS gradient where the
   sister sites use a painted hero image (`../photos/<brand>-paint.png`), and its

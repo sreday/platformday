@@ -56,14 +56,15 @@ events:
 
 ## Theme colours
 
-Platformday uses a teal + orange palette, distinct from its sister sites:
+Platformday uses an orange-on-black palette, shared with the PLATFORMday host
+tiles on the sister sites (`--host-orange` in their `home/_templates/host.html`):
 
 | Token | Value |
 | --- | --- |
-| `$theme-color-primary` | `#0D9488` (teal) |
-| `$theme-color-secondary` | `#F97316` (orange) |
-| `$theme-bg-light` | `#F0FAF8` |
-| `$theme-border-color` | `#DCEFEC` |
+| `$theme-color-primary` | `#E99A17` (brand orange) |
+| `$theme-color-secondary` | `#B45309` (burnt amber, buttons on white) |
+| `$theme-bg-light` | `#FDF3E0` |
+| `$theme-border-color` | `#F8DFAE` |
 
 The palette lives in **two** SCSS trees that must be kept in sync:
 
