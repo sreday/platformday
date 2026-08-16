@@ -1,0 +1,69 @@
+# TODO - change these
+
+# start time includes timezone at the end relative to UTC
+start_time: "2125-11-06T09:00:00-08:00"
+# before - no schedule
+# active - schedule
+# after  - hide ticket sales
+event_state: before
+date_string: "November 7, 2025"
+location_string: "Mars, Milky Way"
+# get this from the event url
+luma_evt: evt-xAhCqaXMWAXAEEm
+cfp_url: https://cfp.ninja/e/platformday-amsterdam-2026-q4
+
+# the number of tracks needs to be the same per day
+# the tracks will be taken in the order they appear in the CSV file
+days: 1
+attendees: 100
+speakers: 10+
+
+rooms:
+- main room
+
+breaks:
+- title: Coffee break
+  duration: 30
+  comment: Main lobby
+  # this decides how many talks in-between this and previous section
+  talks_before: 0
+- title: Lunch & networking
+  duration: 60
+  comment: Main lobby
+  talks_before: 4
+- title: Networking & sponsor crawl
+  duration: 30
+  comment: Main lobby
+  talks_before: 4
+
+sponsors:
+  - logo: hockeystick.png
+    url: https://www.hockeystick.show
+
+# these get displayed at the top
+hero_pictures:
+- ../photos/platformday-hero-1.jpg
+- ../photos/platformday-hero-2.jpg
+- ../photos/platformday-hero-3.jpg
+
+# brand identity
+brand_name: "Platformday"
+brand_domain: "platformday.com"
+brand_description: "Conference on Platform Engineering, Developer Experience and Infrastructure"
+brand_tagline: "Platform Engineering, DevEx and Infrastructure"
+brand_og_pitch: "Probably the most awesome platform engineering conference in"
+brand_color: "#E99A17"
+brand_twitter: "@platformday_com"
+brand_ga_id: "G-CQ2KV6LK8G"
+brand_gads_id: "AW-17496979257"
+brand_twt_pixel: "ofo1h"
+logo_image: "/assets/images/platformday_sticker.png"
+
+# probably don't need changing
+base_path: "https://www.platformday.com/"
+base_folder: "static"
+twitter_url: https://twitter.com/platformday_com
+linkedin_url: https://www.linkedin.com/company/platformday/
+youtube_url: https://www.youtube.com/@platformday
+mailto: "mailto:hello@platformday.com"
+youtube_playlist:
