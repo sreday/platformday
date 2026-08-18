@@ -7,9 +7,7 @@ youtube_url: https://www.youtube.com/@platformday
 mailto: "mailto:hello@platformday.com"
 
 hero_pictures:
-- ../photos/platformday-hero-1.jpg
 - ../photos/platformday-hero-2.jpg
-- ../photos/platformday-hero-3.jpg
 
 # NOTE: these are recomputed from the event folders at build time (see _build/generate.py)
 counts:

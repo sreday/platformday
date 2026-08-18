@@ -42,9 +42,7 @@ sponsors:
 
 # these get displayed at the top
 hero_pictures:
-- ../photos/platformday-hero-1.jpg
 - ../photos/platformday-hero-2.jpg
-- ../photos/platformday-hero-3.jpg
 
 # brand identity
 brand_name: "PLATFORMday"
