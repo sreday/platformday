@@ -42,3 +42,7 @@
 /* Header Tickets button matches the sister sites' coral */
 .header .navbar-btn .btn-secondary{background:#EC645E}
 .header .navbar-btn .btn-secondary:hover,.header .navbar-btn .btn-secondary:focus,.header .navbar-btn .btn-secondary:active{background:#e73830}
+
+/* Schedule section grey like the sister sites */
+.schedule-section.theme-bg-light{background:#f0f6fa}
+.schedule-tab-content .tab-pane:after{background:#e5ecf4}
