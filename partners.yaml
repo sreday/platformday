@@ -9,12 +9,71 @@
 # - Never show the same company twice on the home page: extra logo variants of
 #   an already-shown company go under hidden_duplicates.
 # Matching is case-insensitive.
+#
+# This file is homogenized across sreday and llmday - keep both copies in sync.
 
 non_sponsor_orgs:
   - hockeystick.png
+  - arf.png
+  - ksug.ai.png
+  - starterai.png
+  - filmforum.png
+  - uhub.png
+  - packt.png           # publisher / media partner
 
-community_partners: []
+community_partners:
+  - jug-amsterdam.png
+  - k8sug.png
+  - kube-events.png
+  - kube_events.png
+  - kube_careers.png
+  - kubespaces.png
+  - gdg_london.png
+  - NL_MEETUP.png
+  - chennaisre.png
+  - srecommunitycoimbatore.png
+  - srehyderabadi.png
+  - aigeeks.png
+  - cloud native lisbon.png
+  - cloud native porto.png
+  - devops braga.png
+  - devops lisbon.png
+  - kcd porto.png
+  - leiria tech talks.png
+  - viseu tech talks.png
+  - lisbon genai community.png
+  - aws porto.png
+  - synvert xgeeks.png
+  - AIFRONTIERS.png
+  - houseofai.png
+  - rtfm.png            # AI Talks NYC meetup (luma.com/ai-talks-nyc)
 
-sister_conferences_job_boards: []
+sister_conferences_job_boards:
+  - IacConf.png
+  - devit.png
+  - devitjobs.png
+  - DevIT-usa.png
+  - DevIT_black.png
+  - devevents.png       # dev.events conference listing
+  - dev_events.png
+  - "dev@1x_logo.png"
+  - oxfordknight.png    # tech recruitment agency
 
-hidden_duplicates: []
+# Non-tech or vague/unidentifiable entities - shown in the Partner
+# carousel, not the Sponsor one. Small TECH companies stay in sponsors.
+minor_companies:
+  - beeechoo.png        # unidentifiable brand
+  - dougbr.png          # personal/creator brand
+  - stackroute.png      # NIIT training arm - education, not a tech vendor
+  - ttthinking.png      # unidentifiable brand
+  - withjamie.png       # personal/creator brand
+
+# Extra logo files of companies already shown under another filename
+hidden_duplicates:
+  - kube_events.png     # duplicate of kube-events.png
+  - AI FRONTIERS.png    # duplicate of AIFRONTIERS.png
+  - devit.png           # DevITjobs - shown as DevIT-usa.png (latest logo)
+  - devitjobs.png       # DevITjobs - shown as DevIT-usa.png (latest logo)
+  - DevIT_black.png     # DevITjobs - shown as DevIT-usa.png (latest logo)
+  - dev_events.png      # dev.events - shown as devevents.png
+  - "dev@1x_logo.png"   # dev.events - shown as devevents.png
