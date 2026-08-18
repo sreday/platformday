@@ -26,6 +26,9 @@
             {% else %}
             Details coming soon...
             {% endif %}
+            {% if event.youtube_playlist %}
+            <a href="{{ event.youtube_playlist }}" class="yt-playlist-btn" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="white" style="vertical-align:middle;margin-right:5px"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31.5 31.5 0 0 0 0 12a31.5 31.5 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1C4.5 20.5 12 20.5 12 20.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31.5 31.5 0 0 0 24 12a31.5 31.5 0 0 0-.5-5.8zM9.7 15.5V8.5l6.3 3.5-6.3 3.5z"/></svg>Playlist</a>
+            {% endif %}
           </div>
         </div>
       </div>
@@ -190,12 +193,16 @@ function toggleNote(id) {
               <div class="meta">{{ event.date }}</div>
             </div>
             {% if event.url %}
+            {% if '/2025-' in event.url or '/2026-' in event.url or './2025-' in event.url or './2026-' in event.url %}
             <a href="{{ event.url }}" class="event-read-more-btn">Read more &rarr;</a>
-            {% else %}
-            Details coming soon...
-            {% endif %}
             {% if event.youtube_playlist %}
             <a href="{{ event.youtube_playlist }}" class="yt-playlist-btn" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="white" style="vertical-align:middle;margin-right:5px"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31.5 31.5 0 0 0 0 12a31.5 31.5 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1C4.5 20.5 12 20.5 12 20.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31.5 31.5 0 0 0 24 12a31.5 31.5 0 0 0-.5-5.8zM9.7 15.5V8.5l6.3 3.5-6.3 3.5z"/></svg>Playlist</a>
+            {% endif %}
+            {% else %}
+            <a href="{{ event.url }}">Read more &rarr;</a>
+            {% endif %}
+            {% else %}
+            Details coming soon...
             {% endif %}
           </div>
         </div>
@@ -244,6 +251,9 @@ function toggleNote(id) {
     {% endif %}
   </div>
 </section>
+{% endif %}
+{# style + script kept outside the events_past conditional so the Read-more /
+   Playlist buttons and show-more helpers also work when there are no past events #}
 <style>
 .past-conf-extra, .past-meetup-extra, .amb-extra { display: none; }
 .btn-past-more { text-decoration: none; }
@@ -252,8 +262,8 @@ function toggleNote(id) {
 #show-more-amb:hover, #show-more-amb:focus { background: #924307; color: #fff; border-color: #924307; text-decoration: none; }
 .btn-past-more { color: #000; background: #fff; border: 2px solid #fff; }
 .btn-past-more:hover, .btn-past-more:focus { background: #f0f0f0; color: #000; border-color: #f0f0f0; }
-.yt-playlist-btn { display: inline-block; margin-left: 12px; padding: 8px 18px; background: #B45309; color: #fff; border-radius: 6px; text-decoration: none; font-family: 'Montserrat', sans-serif; font-weight: 700; transition: background 0.2s ease; }
-.yt-playlist-btn:hover, .yt-playlist-btn:focus { background: #924307; color: #fff; text-decoration: none; }
+.yt-playlist-btn { display: inline-block; margin-left: 12px; padding: 8px 18px; background: #EC645E; color: #fff; border-radius: 6px; text-decoration: none; font-family: 'Montserrat', sans-serif; font-weight: 700; transition: background 0.2s ease; }
+.yt-playlist-btn:hover, .yt-playlist-btn:focus { background: #f08580; color: #fff; text-decoration: none; }
 .event-read-more-btn { display: inline-block; padding: 8px 18px; background: #B45309; color: #fff; border-radius: 6px; text-decoration: none; transition: background 0.2s ease; font-family: 'Montserrat', sans-serif; font-weight: 700; }
 .event-read-more-btn:hover, .event-read-more-btn:focus { background: #924307; color: #fff; text-decoration: none; }
 .card { transition: box-shadow .4s ease, border-color .4s ease; border: 1px solid transparent; }
@@ -278,7 +288,6 @@ function showMorePastMeetup() {
   document.getElementById('show-more-past-meetup').style.display = 'none';
 }
 </script>
-{% endif %}
 
 
 {% if testimonials %}
