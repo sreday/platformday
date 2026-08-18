@@ -7,7 +7,7 @@ start_time: "2125-11-06T09:00:00-08:00"
 # after  - hide ticket sales
 event_state: before
 date_string: "November 7, 2025"
-location_string: "Mars, Milky Way"
+location_string: "The Sunset Room, Austin, Texas, USA"
 # get this from the event url
 luma_evt: evt-xAhCqaXMWAXAEEm
 cfp_url: https://cfp.ninja/e/platformday-amsterdam-2026-q4
