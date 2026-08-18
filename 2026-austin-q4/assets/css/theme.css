@@ -26,3 +26,9 @@
 .hero-block .hero-cta-row .social-list{grid-column:2}
 .hero-block .hero-cta-row .cta-right{grid-column:3;justify-self:start}
 @media (max-width: 767.98px){.hero-block .hero-cta-row{display:flex;flex-direction:column;justify-content:center;gap:14px}}
+
+/* Hero CTA pills keep the sister-brand button colors (coral tickets, blue CFP) */
+.hero-block .hero-cta-row .btn-secondary{background:#EC645E}
+.hero-block .hero-cta-row .btn-secondary:hover,.hero-block .hero-cta-row .btn-secondary:focus,.hero-block .hero-cta-row .btn-secondary:active{background:#e73830}
+.hero-block .hero-cta-row .btn-primary{background:#098dcf}
+.hero-block .hero-cta-row .btn-primary:hover,.hero-block .hero-cta-row .btn-primary:focus,.hero-block .hero-cta-row .btn-primary:active{background:#076c9e}
