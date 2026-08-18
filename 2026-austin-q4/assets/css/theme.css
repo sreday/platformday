@@ -46,3 +46,10 @@
 /* Schedule section grey like the sister sites */
 .schedule-section.theme-bg-light{background:#f0f6fa}
 .schedule-tab-content .tab-pane:after{background:#e5ecf4}
+
+/* Generic buttons match the sister sites: primary blue, secondary coral (keep this tail on recompile) */
+.btn-primary{background:#098dcf}
+.btn-primary:hover,.btn-primary:focus,.btn-primary:active{background:#076c9e}
+.btn-secondary{background:#EC645E}
+.btn-secondary:hover,.btn-secondary:focus,.btn-secondary:active,.btn-secondary:not(:disabled):not(.disabled):active:focus{background:#e73830}
+.btn-ghost:hover{color:#098dcf}
