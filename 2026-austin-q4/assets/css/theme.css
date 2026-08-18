@@ -32,3 +32,9 @@
 .hero-block .hero-cta-row .btn-secondary:hover,.hero-block .hero-cta-row .btn-secondary:focus,.hero-block .hero-cta-row .btn-secondary:active{background:#e73830}
 .hero-block .hero-cta-row .btn-primary{background:#098dcf}
 .hero-block .hero-cta-row .btn-primary:hover,.hero-block .hero-cta-row .btn-primary:focus,.hero-block .hero-cta-row .btn-primary:active{background:#076c9e}
+
+/* Schedule + speaker cards stay neutral grey like the sister sites */
+.speakers-section .card{background:#f0f6fa}
+.speakers-section .card-footer{background:#e8f1f7}
+.schedule-nav .nav-link{background:#f0f6fa}
+@media (max-width: 767.98px){.schedule-tab-content .item{background:#f0f6fa}}
