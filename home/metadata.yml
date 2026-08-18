@@ -1,4 +1,4 @@
-brand_name: "Platformday"
+brand_name: "PLATFORMday"
 base_path: "https://www.platformday.com/"
 base_folder: "static"
 twitter_url: https://twitter.com/platformday_com
@@ -37,7 +37,7 @@ meetups_past: []
 description_template: |
  ### Platform engineers, assemble in {{ location }} on {{ start_date }}!
 
- **Platformday** is an in-person conference bringing together the people who build and run internal platforms: platform engineering, developer experience, infrastructure, and the tooling that ties them together.
+ **PLATFORMday** is an in-person conference bringing together the people who build and run internal platforms: platform engineering, developer experience, infrastructure, and the tooling that ties them together.
 
  Please note: this is an **in-person-only event**, with no option to present remotely. You’ll need to be present in {{ location }} on {{ start_date }} in order to deliver your talk.
 
@@ -75,6 +75,6 @@ description_template: |
 
  We welcome speakers from diverse backgrounds and all walks of life, not just traditional platform roles, but anyone working on developer experience, infrastructure, or operations in a broader sense. We accept a wide range of session types, as long as they align with the core themes of the conference.
 
- Questions? Want to bring Platformday to your city? Please ping **hello@platformday.com**.
+ Questions? Want to bring PLATFORMday to your city? Please ping **hello@platformday.com**.
 
  Thank you for presenting with us!

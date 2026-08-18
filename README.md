@@ -1,4 +1,4 @@
-# Platformday
+# PLATFORMday
 
 In-person conferences for platform engineering, developer experience & infrastructure.
 
@@ -47,7 +47,7 @@ make serve
 ```yaml
 events:
 
-  - name: Platformday Tokyo 2026 Q1
+  - name: PLATFORMday Tokyo 2026 Q1
     location: Tokyo, Japan
     photo_url: ./assets/images/events/platformday-2026-tokyo-q1.jpeg
     url: ./2026-tokyo-q1/
@@ -56,7 +56,7 @@ events:
 
 ## Theme colours
 
-Platformday uses an orange-on-black palette, shared with the PLATFORMday host
+PLATFORMday uses an orange-on-black palette, shared with the PLATFORMday host
 tiles on the sister sites (`--host-orange` in their `home/_templates/host.html`):
 
 | Token | Value |

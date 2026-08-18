@@ -1,7 +1,7 @@
-# Platformday — project overview for Claude Code
+# PLATFORMday — project overview for Claude Code
 
 ## What this is
-A static site generator for the Platformday conference series (platform engineering,
+A static site generator for the PLATFORMday conference series (platform engineering,
 developer experience, infrastructure). Each event is a separate folder
 (e.g. `2026-london-q1/`). Python + Jinja2 renders HTML into a `static/` subfolder per event.
 
@@ -60,7 +60,7 @@ and `metadata.yml` — those are per-event.
 
 ## Theme / palette
 
-Platformday's palette is orange on black, matching the brand logo and the
+PLATFORMday's palette is orange on black, matching the brand logo and the
 PLATFORMday swatch (`--host-orange: #E2971D`) on the sister sites' `/host` pages:
 
 - `$theme-color-primary: #E2971D`
@@ -89,7 +89,7 @@ A handful of palette hexes are also inlined directly in templates
   sister sites use a painted hero image (`../photos/<brand>-paint.png`), and its
   brand video element was removed. Both are marked with `TODO` comments.
 - The audience stats in `sponsorship.html` are series-wide figures inherited from
-  the template, not Platformday-specific.
+  the template, not PLATFORMday-specific.
 
 ## Sister repos
 Same structure: `sreday`, `llmday`, `devopsnotdead` (all under `~/github/`, and
