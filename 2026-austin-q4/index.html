@@ -620,13 +620,16 @@
     position: relative;
   }
   .modal-speaker .talk-title-bar {
-    background: #fff;
-    color: #222;
+    background: var(--brand);
+    color: #fff;
     font-weight: 700;
     font-size: 1.1rem;
     padding: 0.75rem 1rem;
     text-align: center;
-    border-bottom: 1px solid #eee;
+  }
+  /* almost-white speaker header (site-wide theme-bg-light stays cream) */
+  .modal-speaker .theme-bg-light {
+    background: #f8f9fa !important;
   }
   .modal-speaker .desc {
     padding-bottom: 0.125rem;
