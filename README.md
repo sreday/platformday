@@ -61,7 +61,7 @@ tiles on the sister sites (`--host-orange` in their `home/_templates/host.html`)
 
 | Token | Value |
 | --- | --- |
-| `$theme-color-primary` | `#E99A17` (brand orange) |
+| `$theme-color-primary` | `#E2971D` (brand orange) |
 | `$theme-color-secondary` | `#B45309` (burnt amber, buttons on white) |
 | `$theme-bg-light` | `#FDF3E0` |
 | `$theme-border-color` | `#F8DFAE` |

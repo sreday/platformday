@@ -61,9 +61,9 @@ and `metadata.yml` — those are per-event.
 ## Theme / palette
 
 Platformday's palette is orange on black, matching the brand logo and the
-PLATFORMday swatch (`--host-orange: #E99A17`) on the sister sites' `/host` pages:
+PLATFORMday swatch (`--host-orange: #E2971D`) on the sister sites' `/host` pages:
 
-- `$theme-color-primary: #E99A17`
+- `$theme-color-primary: #E2971D`
 - `$theme-color-secondary: #B45309` (burnt amber — used where white text sits on it)
 - `$theme-bg-light: #FDF3E0`
 - `$theme-border-color: #F8DFAE`
