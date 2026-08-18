@@ -161,7 +161,7 @@ print(f"  Total: {len(sponsor_logos)} sponsor logos, {len(partner_logos)} partne
 
 # MAIN PAGES
 print(DIVIDER)
-pages = ["index.html"]
+pages = ["index.html", "ambassadorship.html"]
 print(f"Generating main pages: {pages}")
 for page in pages:
     with open(BASE_FOLDER + "/" + page, "w", encoding="utf-8") as f:
@@ -171,7 +171,7 @@ for page in pages:
 
 # CLEAN-URL PAGES — served from /<folder>/, so _base.html's relative asset paths must become root-absolute
 print(DIVIDER)
-for _page, _folder in (("host.html", "host"),):
+for _page, _folder in (("host.html", "host"), ("ambassadorship.html", "ambassadorship")):
     print(f"Generating clean-url page: {_folder}/index.html")
     os.makedirs(BASE_FOLDER + "/" + _folder, exist_ok=True)
     _html = env.get_template(_page).render(page=_page, **context)
