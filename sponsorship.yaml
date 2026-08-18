@@ -1,7 +1,21 @@
+exchange_rates:
+  GBP:
+    symbol: "£"
+    rate: 1.0
+    name: "British Pound Sterling"
+  USD:
+    symbol: "$"
+    rate: 1.35
+    name: "US Dollar"
+  EUR:
+    symbol: "€"
+    rate: 1.18
+    name: "Euro"
+
 tiers:
   - id: leads
     name: "Conference Leads"
-    highlight: false
+
     requires: "Cannot be purchased solo"
     price:
       small: 500
@@ -12,7 +26,7 @@ tiers:
 
   - id: keynote
     name: "Keynote Session"
-    highlight: false
+
     price:
       small: 1000
       medium: 3000
@@ -21,9 +35,20 @@ tiers:
       - "30-minute morning slot"
       - "100% audience — no parallel talks"
 
+  - id: workshop
+    name: "Workshop"
+
+    price:
+      small: 1000
+      medium: 3000
+      large: 5000
+    benefits:
+      - "60-minute slot"
+      - "Let attendees play with your tech"
+
   - id: talk
     name: "Regular Session Slot"
-    highlight: false
+
     price:
       small: 500
       medium: 2000
@@ -34,18 +59,18 @@ tiers:
 
   - id: booth
     name: "Booth / Table"
-    highlight: false
+
     price:
       small: 1000
       medium: 2000
       large: 4000
     benefits:
-      - "Table (150 × 100cm) with a 24-inch monitor"
+      - "Table (150 × 100cm), optional monitor"
       - "Electricity, Wi-Fi, space for a rollup banner"
 
   - id: logo_swag
-    name: "Logo Sponsor + Swag Distribution"
-    highlight: false
+    name: "Logo Sponsor + Swag"
+
     price:
       small: 500
       medium: 1000
@@ -56,7 +81,7 @@ tiers:
 
   - id: food
     name: "Coffee Break / Lunch / Happy Hour"
-    highlight: false
+
     price_label:
       small: "£500 + £10pp"
       medium: "£1000 + £15pp"
@@ -67,59 +92,70 @@ tiers:
 
   - id: clothing
     name: "Branded Wearables"
-    highlight: false
+
     price_label:
       small: "£500 + variable"
       medium: "£1000 + variable"
       large: "£1000 + variable"
     benefits:
       - "Your logo on t-shirts, hoodies, socks, etc."
-      - "£10–£30 per person, depending on the item"
-
-  - id: tickets
-    name: "Discounted Ticket Pack"
-    highlight: false
-    price_label: "20% off 5+ tickets"
-    benefits:
-      - "Purchase 5 or more tickets at a discount"
-      - "Share your vouchers with anyone"
+      - "Price per person depends on the item"
 
   - id: startup_discount
-    name: "Startup Discount"
-    highlight: false
-    price_label: "20% off anything"
+    name: "Check eligibility for"
+    price_label: "20% Discount"
     benefits:
       - "Early-stage startups under $5M in funding"
-      - "Contact us to apply"
+      - "Sponsoring 3+ events in a year"
 
 #on request:
 
   - id: host
-    name: "Bring the conference to your city"
-    highlight: false
+    name: "Host PLATFORMday / SREday / LLMday"
+    url: "/host"
+
     price_label: "On request"
 
   - id: co_located
-    name: "Co-Located Event"
-    highlight: false
-    price_label: "On request"
+    name: "Co-located Event"
 
-  - id: workshop
-    name: "Workshop"
-    highlight: false
     price_label: "On request"
 
   - id: hackathon
     name: "Hackathon"
-    highlight: false
+
     price_label: "On request"
 
   - id: meetup
-    name: "Post-Conference Meetup"
-    highlight: false
+    name: "Post-conference Meetup"
+
+    price_label: "On request"
+
+  - id: speakers_dinner
+    name: "Speaker's Dinner"
+
     price_label: "On request"
 
   - id: email_blast
     name: "Attendee Email Blast"
-    highlight: false
+
     price_label: "On request"
+
+sister_brands:
+  - name: "SREday"
+    url: "https://sreday.com"
+    logo: "/assets/images/sreday_sticker.png"
+  - name: "LLMday"
+    url: "https://llmday.com"
+    logo: "/assets/images/llmday_sticker.png"
+  - name: "Conf42"
+    url: "https://conf42.com"
+    logo: "/assets/images/conf42_sticker.png"
+
+open_source_tools:
+  - name: "CFP Ninja"
+    url: "https://cfp.ninja/"
+    logo: "/assets/images/cfpninja sticker.png"
+  - name: "Certified FYI"
+    url: "https://certified.fyi/"
+    logo: "/assets/images/certified fyi sticker.png"

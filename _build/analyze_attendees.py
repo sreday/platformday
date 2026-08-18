@@ -1,11 +1,11 @@
 """
-analyze_attendees.py  - Attendee Analysis Playbook
+analyze_attendees.py  -  Attendee Analysis Playbook
 =====================================================
 This is the attendee analysis playbook for the conference series.
 It reads Luma attendee CSV exports and produces audience profile stats
 for use in sponsorship pages.
 
-Works across conference brands (LLMday, SREday, DevOpsNotDead, etc.).
+Works across conference brands (LLMday, SREday, etc.).
 Drop in CSV files from any Luma event export and run:
 
     python3 _build/analyze_attendees.py path/to/event1.csv path/to/event2.csv ...
@@ -36,7 +36,7 @@ Role labels are chosen to be accurate and professionally neutral:
       Distinct from "Researcher", who is employed to do research.
 
   "Researcher"
-      Professional researchers -employed at a university, lab, or
+      Professional researchers - employed at a university, lab, or
       company R&D unit. Distinct from students and from engineers
       whose job happens to involve some research component.
 
@@ -96,8 +96,6 @@ from pathlib import Path
 # PER-CONFERENCE CONTENT
 # Update TLDR when running for a new brand or after a significant
 # shift in audience composition.
-# "What they are working on" pills are NOT here -they are generated
-# dynamically at build time from talks.csv by generate.py.
 #
 # TLDR writing rules:
 #   - Focus on what attendees come for and enjoy, not what they don't
@@ -106,42 +104,40 @@ from pathlib import Path
 # ══════════════════════════════════════════════════════════════
 
 TLDR = (
-    "A hands-on crowd of DevOps engineers, SREs, and platform engineers "
-    "from startups and enterprises \u2014 actively building and operating production systems. "
-    "Senior practitioners who care about reliability and developer experience, "
-    "figuring out how to make platform engineering work at scale."
+    "A hands-on crowd of engineers, ML practitioners, and technical leaders "
+    "from startups and enterprises \u2014 actively shipping AI products into production. "
+    "Senior practitioners who care about architecture, reliability, and cost, "
+    "figuring out how to make agents work at scale."
 )
 assert len(TLDR) <= 300, f"TLDR is {len(TLDR)} chars \u2014 must be \u2264 300"
 
 # ── "What they are working on" topics ─────────────────────────────────────
 # Scored from talk titles + abstracts across all discovered talks.csv files.
 # Top WORKING_ON_HIGHLIGHT topics are highlighted on the page; the rest are
-# shown as plain pills. Review the output each season -keyword rules are a
+# shown as plain pills. Review the output each season - keyword rules are a
 # good starting point but can't reason about genuinely novel topics. Add new
 # keywords to WORKING_ON_KEYWORDS when the landscape shifts.
 WORKING_ON_HIGHLIGHT = 3   # top 3 highlighted, rest plain
 WORKING_ON_MAX       = 10  # cap output at 10 pills
 
 WORKING_ON_KEYWORDS = {
-    "CI/CD & Delivery":             ['ci/cd', 'continuous', 'pipeline', 'deploy', 'delivery', 'gitops', 'argocd'],
-    "Kubernetes & Containers":      ['kubernetes', 'k8s', 'container', 'docker', 'helm', 'operator'],
-    "Platform Engineering":         ['platform engineer', 'internal developer', 'developer portal', 'backstage', 'idp'],
-    "Observability & Monitoring":   ['observabil', 'monitor', 'tracing', 'opentelemetry', 'telemetry', 'logging', 'grafana'],
-    "Infrastructure as Code":       ['terraform', 'pulumi', 'ansible', 'infrastructure as code', 'iac', 'crossplane'],
-    "Cloud & Infrastructure":       ['cloud', 'aws', 'azure', 'gcp', 'multi-cloud', 'hybrid', 'serverless'],
-    "Reliability & Resilience":     ['reliability', 'sre', 'incident', 'on-call', 'slo', 'sla', 'chaos', 'resilience'],
-    "Security & DevSecOps":         ['security', 'devsecops', 'supply chain', 'vulnerab', 'shift left', 'sbom'],
-    "AI for DevOps":                ['ai', 'aiops', 'copilot', 'llm', 'agent', 'automation', 'ml'],
-    "Developer Experience":         ['developer experience', 'devex', 'dx', 'productivity', 'developer product'],
-    "FinOps & Cost":                ['finops', 'cost', 'cloud spend', 'optimize', 'efficiency'],
-    "Culture & Transformation":     ['culture', 'transformation', 'devops dead', 'team', 'collaboration'],
+    "Agents & Automation":          ['agent', 'agentic', 'autonomous agent', 'orchestrat', 'multi-agent', 'autonom'],
+    "Applied / Product AI":         ['product', 'ux', 'user interface', 'human-in-the-loop', 'coaching', 'application'],
+    "Production & Reliability":     ['production', 'reliability', 'failure', 'incident', 'on-call', 'slo', 'sla', 'resilience'],
+    "LLM Infrastructure & Cost":    ['infrastructure', 'gpu', 'cluster', 'cost', 'capacity', 'compute', 'latency', 'throughput'],
+    "RAG & Retrieval":              ['rag', 'retrieval', 'knowledge graph', 'graphrag', 'vector search', 'retriev'],
+    "LLM Evaluation & Testing":     ['evaluat', 'benchmark', 'testing', 'evals', 'verification', 'hallucin'],
+    "Open Source & Edge":           ['open.source', 'open source', 'edge', 'on.prem', 'private.*llm', 'local model', 'self-host'],
+    "Prompt & Context Engineering": ['prompt', 'context engineering', 'context window', 'few-shot', 'system prompt'],
+    "Multimodal & Specialized AI":  ['multimodal', 'vision', 'vlm', 'voice', 'neural', 'wearable', 'medical', 'healthcare', 'radiolog'],
+    "AI Ethics & Governance":       ['ethics', 'ai act', 'regulation', 'governance', 'bias', 'responsible', 'safety'],
+    "Fine-tuning & Training":       ['fine-tun', 'finetuning', 'grpo', 'rlhf', 'training', 'distillat', 'reinforcement'],
+    "AI Security":                  ['security', 'secure', 'vulnerab', 'attack', 'prompt injection', 'malicious'],
+    "MLOps & Observability":        ['mlops', 'observabil', 'monitor', 'tracing', 'opentelemetry', 'telemetry', 'sampling'],
+    "Coding Agents & DevEx":        ['coding agent', 'code generat', 'developer product', 'developer experienc', 'vibe cod'],
 }
 
 # ── Role display merge ─────────────────────────────────────────────────────
-# The classifier produces ~12 granular role buckets (useful for debugging and
-# catching edge cases). For the sponsorship page we cap at 6 display categories
-# -marketing readers don't need that level of detail.
-# Map granular label → display label. Anything not listed passes through as-is.
 ROLE_DISPLAY_MERGE = {
     "Software Engineer":          "Software / Platform / DevOps",
     "DevOps / SRE / Platform":    "Software / Platform / DevOps",
@@ -152,23 +148,15 @@ ROLE_DISPLAY_MERGE = {
     "Operations / Business":      "Business / Consulting / Product",
     "Consultant / Investor":      "Business / Consulting / Product",
     "Product Manager":            "Business / Consulting / Product",
-    # "ML / AI / Data"            → keep as-is
-    # "Independent / Job Seeker"  → keep as-is
-    # "Researcher"                → keep as-is
 }
 
-# ── Under-5% merge-up rules ────────────────────────────────────────────────
-# Any display category that ends up below 5% of total is absorbed into the
-# specified target. Applied after ROLE_DISPLAY_MERGE. Add entries here
-# whenever a new small bucket appears in future data.
 ROLE_UNDER5_FALLBACK = {
     "Researcher":               "ML / AI / Data",
     "Independent / Job Seeker": "Business / Consulting / Product",
 }
 
-# Same rule for company size: if a bucket falls under 5%, absorb it here.
 SIZE_UNDER5_FALLBACK = {
-    "Scale-up (50-500)":        "Startup (<50)",
+    "Scale-up (50-500)":          "Startup (<50)",
     "Solo Founder / Independent": "Startup (<50)",
 }
 
@@ -179,9 +167,6 @@ SIZE_UNDER5_FALLBACK = {
 # ══════════════════════════════════════════════════════════════
 
 ROLE_RULES = [
-
-    # ── ML / AI / Data ─────────────────────────────────────────
-    # Check before the generic software-engineer catch-all below.
     ("ML / AI / Data", lambda t: any(x in t for x in [
         'ml engineer', 'machine learning', 'mlops', 'nlp',
         'ai engineer', 'ai developer', 'ai software', 'ai security',
@@ -195,21 +180,12 @@ ROLE_RULES = [
     ]) and not any(x in t for x in [
         'product manager', 'director of', 'head of', 'vp of',
     ])),
-
-    # ── Independent / Job Seeker ───────────────────────────────
-    # Attendees who are in full-time education, actively seeking
-    # their next role, or otherwise unaffiliated with an employer.
     ("Independent / Job Seeker", lambda t: any(x in t for x in [
         'student', 'phd', 'mba', 'masters', "master's", 'ms cs',
         'grad assistant', 'graduate research', 'open to work',
-        'job search', 'job seeker', 'alumni engagement', 'data science ra',
-        'freelance artist', 'unemployed', 'looking for a new role',
-        'trainee', 'learner',
-    ]) or t.strip() in ['none', 'n/a', 'na']),
-
-    # ── Researcher ─────────────────────────────────────────────
-    # Professional researchers at universities, labs, or R&D units.
-    # Does not include engineers whose role involves some research.
+        'job search', 'alumni engagement', 'data science ra',
+        'freelance artist', 'unemployed',
+    ]) or t.strip() in ['none']),
     ("Researcher", lambda t: any(x in t for x in [
         'research scientist', 'ai researcher', 'senior research',
         'graduate research assistant', 'research engineer',
@@ -218,39 +194,25 @@ ROLE_RULES = [
     ]) and not any(x in t for x in [
         'product', 'software engineer', 'ml engineer', 'data scientist',
     ])),
-
-    # ── Founder / Entrepreneur ─────────────────────────────────
     ("Founder / Entrepreneur", lambda t: bool(
         re.search(r'\bfounder\b|co-founder|cofounder', t)
     )),
-
-    # ── C-Suite Executive ──────────────────────────────────────
     ("C-Suite Executive", lambda t: any(x in t for x in [
         'ceo', 'cto', 'cio', 'cpo', 'chief', 'wiceprezes',
     ])),
-
-    # ── Director / VP / Head ───────────────────────────────────
     ("Director / VP / Head", lambda t: any(x in t for x in [
         'vp ', 'vp of', ' vp', 'vice president', 'director',
         'head of', 'gm &', 'general manager',
     ])),
-
-    # ── Engineering Lead / Manager ─────────────────────────────
     ("Engineering Lead / Manager", lambda t: any(x in t for x in [
         'engineering manager', 'platform engineering manager',
         'tech lead', 'team lead', 'sdm', 'engineering lead',
-        'practice lead', 'delivery lead', 'infrastructure practice lead',
-        'principal advisor',
     ])),
-
-    # ── DevOps / SRE / Platform ────────────────────────────────
     ("DevOps / SRE / Platform", lambda t: any(x in t for x in [
         'devops', 'sre', 'site reliability', 'dev sec ops', 'devsecops',
         'platform engineer', 'developer / sre', 'principal devops',
         'senior devops',
     ])),
-
-    # ── Software Engineer ──────────────────────────────────────
     ("Software Engineer", lambda t: any(x in t for x in [
         'software engineer', 'software developer', 'software architect',
         'full stack', 'backend', 'frontend', 'front-end', 'front end',
@@ -267,8 +229,6 @@ ROLE_RULES = [
         'staff developer', 'field cto', 'fractional cto',
         'it project', 'it consultant', 'software eng',
         ' engineer', ' developer', ' architect', 'swe', 'fde',
-        'tech support', 'storage', 'creative technologist',
-        'open source advocate', 'tech author', 'application security',
     ]) and not any(x in t for x in [
         'product manager', 'business', 'market', 'psycholog',
         'accountant', 'coordinator', 'operations', 'lecturer',
@@ -276,15 +236,11 @@ ROLE_RULES = [
         'data engineer', 'ai engineer', 'ml engineer',
         'machine learning', 'prompt engineer',
     ])),
-
-    # ── Product Manager ────────────────────────────────────────
     ("Product Manager", lambda t: any(x in t for x in [
         'product manager', 'product owner', 'chief product',
         'senior product', 'ai product manager', 'product partnerships',
         'product developer', 'product engineer',
     ]) or t.strip() in ['pm', 'cpo']),
-
-    # ── Consultant / Investor ──────────────────────────────────
     ("Consultant / Investor", lambda t: any(x in t for x in [
         'consultant', 'investor', 'angel investor', 'investment',
         'business analyst', 'deal origination', 'scout', 'funding',
@@ -294,17 +250,14 @@ ROLE_RULES = [
         'principal', 'partner', 'sr associate', 'owner',
         'analyst', 'architect',
     ]),
-
-    # ── Operations / Business ──────────────────────────────────
     ("Operations / Business", lambda t: any(x in t for x in [
         'operations', 'coordinator', 'admin', 'specialist',
         'project manager', 'project coordinator', 'psycholog',
         'accountant', 'media', 'redaktor', 'marketing', 'growth',
-        'education', 'deputy', 'organizer', 'organiser', 'promotion', 'recruiter',
+        'education', 'deputy', 'organizer', 'promotion', 'recruiter',
         'business transformation', 'digital transformation',
         'tech marketing', 'ai software evangelist', 'prod support',
-        'site manager', 'sales development', 'sales executive',
-        'business development', 'talent acquisition',
+        'site manager',
     ]) or t.strip() in ['team', 'manager', 'fde', 'se', 'ai', 'engineer']),
 ]
 
@@ -324,7 +277,6 @@ def classify_role(raw_title):
 # COMPANY SIZE CLASSIFIER
 # ══════════════════════════════════════════════════════════════
 
-# Well-known organisations reliably above ~500 employees.
 KNOWN_ENTERPRISE = {
     'google', 'microsoft', 'amazon', 'aws', 'meta', 'apple', 'ibm',
     'oracle', 'salesforce', 'cisco', 'intel', 'nvidia', 'adobe', 'sap',
@@ -350,16 +302,13 @@ KNOWN_SCALEUP = {
     '365 data', 'mirantis', 'digitalocean', 'n-able', 'liveperson',
 }
 
-# Values that indicate the person did not supply a company name.
 NO_COMPANY_VALUES = {
     'n/a', 'na', 'n\\a', '-', 'none', 'tbd', 'private', 'it company',
     'student', 'job searching', 'looking for', 'unemployed', 'job seeker',
     'self', '',
 }
 
-SOLO_SIGNALS = [
-    'freelance', 'independent', 'self-employed',
-]
+SOLO_SIGNALS = ['freelance', 'independent', 'self-employed']
 
 
 def classify_company_size(company):
@@ -459,7 +408,7 @@ def pct(n, total):
 
 def read_csv(path):
     rows = []
-    with open(path, encoding='utf-8-sig', errors='replace') as f:
+    with open(path, encoding='utf-8-sig') as f:
         reader = csv.DictReader(line.replace('\0', '') for line in f)
         for row in reader:
             rows.append(row)
@@ -518,7 +467,7 @@ _VENDOR_RE = re.compile(
     r'\b(?:' + '|'.join(re.escape(v) for v in VENDOR_COMPANIES) + r')\b'
 )
 
-# Keep in sync with _event_template/_build/generate.py
+# Display names for companies whose CSV values don't title-case cleanly
 COMPANY_DISPLAY_NAMES = {
     # Acronyms / all-caps
     'aws': 'AWS', 'ibm': 'IBM', 'ing': 'ING', 'sap': 'SAP', 'hp': 'HP',
@@ -531,7 +480,7 @@ COMPANY_DISPLAY_NAMES = {
     'monday.com': 'Monday.com', 'victoriametrics': 'VictoriaMetrics',
     'linearb': 'LinearB',
     # Attendee-specific
-    'pwc': 'PwC', 'ey': 'EY', 'n26': 'N26', 'lg': 'LG',
+    'pwc': 'PwC', 'ey': 'EY', 'n26': 'N26', 'lg': 'LG', 'gog.com': 'GOG.com',
 }
 
 
@@ -563,12 +512,14 @@ def _company_weight(c_lower, display, single_event):
     return 1
 
 
+
+
 def print_section(title, items):
-    print(f"\n{'='*52}")
+    print(f"\n{'═'*52}")
     print(title)
-    print('='*52)
+    print('═'*52)
     for item in items:
-        bar = "#" * (item["pct"] // 2)
+        bar = "█" * (item["pct"] // 2)
         print(f"  {item['label']:<35} {item['pct']:>3}%  {bar}")
 
 
@@ -619,7 +570,7 @@ def patch_sponsorship_template(repo_root, topic_pills):
     template_path = repo_root / '_event_template' / '_templates' / 'sponsorship.html'
 
     if not template_path.exists():
-        print(f"\n  WARNING: Template not found at {template_path} - skipping patch.")
+        print(f"\n  ⚠  Template not found at {template_path} - skipping patch.")
         return
 
     original = template_path.read_text(encoding='utf-8')
@@ -631,7 +582,7 @@ def patch_sponsorship_template(repo_root, topic_pills):
     end_idx   = original.find(end_sentinel)
 
     if start_idx == -1 or end_idx == -1:
-        print("\n  WARNING: Sentinel comments not found in template - skipping patch.")
+        print("\n  ⚠  Sentinel comments not found in template - skipping patch.")
         print("     Expected markers:")
         print(f"       '{start_sentinel}...'")
         print(f"       '{end_sentinel}...'")
@@ -641,7 +592,7 @@ def patch_sponsorship_template(repo_root, topic_pills):
 
     patched = original[:start_idx] + new_block + original[end_idx:]
     template_path.write_text(patched, encoding='utf-8')
-    print(f"\n  OK  Sponsorship template patched: {template_path}")
+    print(f"\n  ✓  Sponsorship template patched: {template_path}")
 
 
 # ══════════════════════════════════════════════════════════════
@@ -662,8 +613,8 @@ def main():
             r['_source'] = Path(p).stem
         rows.extend(loaded)
 
-    # De-duplicate by name -the same person may attend multiple events.
-    # Keep the first occurrence (earliest event loaded).
+    # De-duplicate by name - treat all CSVs as one combined event.
+    # Keep the first occurrence (earliest file loaded).
     seen_names = set()
     deduped = []
     dupes = 0
@@ -684,8 +635,8 @@ def main():
     single_event = _find_single_event_companies(rows)
 
     # ── Classify ──────────────────────────────────────────────
-    raw_role_counts = Counter(classify_role(r.get('Job Title', ''))      for r in rows)
-    senior_counts   = Counter(classify_seniority(r.get('Job Title', '')) for r in rows)
+    raw_role_counts = Counter(classify_role(r.get('Job Title', ''))       for r in rows)
+    senior_counts   = Counter(classify_seniority(r.get('Job Title', ''))  for r in rows)
 
     # Company size uses 0.5x weight for host / single-event companies
     size_counts = Counter()
@@ -696,13 +647,11 @@ def main():
         label = classify_company_size(company)
         size_counts[label] += _company_weight(c_lower, display, single_event)
 
-    # Merge granular roles into display categories (max 6 for the page)
     role_counts = Counter()
     for label, count in raw_role_counts.items():
         display_label = ROLE_DISPLAY_MERGE.get(label, label)
         role_counts[display_label] += count
 
-    # Merge up any display category that falls under 5%
     def merge_under5(counts, fallback_map, denom=None):
         if denom is None:
             denom = total
@@ -733,7 +682,7 @@ def main():
         if classify_role(r.get('Job Title', '')) == "Other"
     ]
     if unclassified:
-        print(f"\n  Unclassified job titles ({len(unclassified)}) -add rules for these:")
+        print(f"\n  Unclassified job titles ({len(unclassified)}) - add rules for these:")
         for t in sorted(set(unclassified)):
             print(f"    {t}")
 
@@ -749,16 +698,16 @@ def main():
     if talks_files:
         print(f"\n  Found {len(talks_files)} talks.csv file(s) for topic extraction.")
     else:
-        print("\n  No talks.csv files found -skipping topic extraction.")
+        print("\n  No talks.csv files found - skipping topic extraction.")
         print(f"  Expected location: {repo_root}/20*/_db/talks.csv")
 
     stats = {
         "total_attendees_sampled": total,
-        "tldr":           TLDR,
-        "role_breakdown": role_stats,
-        "company_size":   size_stats,
-        "seniority":      senior_stats,
-        "working_on":     topic_pills,
+        "tldr":            TLDR,
+        "role_breakdown":  role_stats,
+        "company_size":    size_stats,
+        "seniority":       senior_stats,
+        "working_on":      topic_pills,
     }
 
     # ── Print summary ─────────────────────────────────────────
@@ -766,26 +715,25 @@ def main():
     print_section("COMPANY SIZE",    size_stats)
     print_section("SENIORITY",       senior_stats)
 
-    print(f"\n{'='*52}")
+    print(f"\n{'═'*52}")
     print("TLDR")
-    print('='*52)
+    print('═'*52)
     print(f"  {TLDR}")
 
     if topic_pills:
-        print(f"\n{'='*52}")
+        print(f"\n{'═'*52}")
         print("WHAT THEY ARE WORKING ON")
-        print('='*52)
-        print("  Review these -keyword rules are a starting point, not ground truth.")
+        print('═'*52)
+        print("  Review these - keyword rules are a starting point, not ground truth.")
         print("  Add missing emerging topics to WORKING_ON_KEYWORDS if needed.\n")
         for p in topic_pills:
-            tag = "* " if p['highlight'] else "  "
+            tag = "★ " if p['highlight'] else "  "
             print(f"  {tag}{p['label']:<38} {p['count']} talks")
 
     # ── Write JSON ────────────────────────────────────────────
     out_path = Path(__file__).parent / "attendee_stats.json"
     with open(out_path, "w") as f:
         json.dump(stats, f, indent=2)
-
     print(f"\n  Stats written to {out_path}")
 
     # ── Patch sponsorship template in place ───────────────────

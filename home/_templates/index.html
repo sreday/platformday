@@ -35,6 +35,13 @@
     <div class="text-center mt-4">
       <a class="btn-secondary btn btn-lg" href="https://luma.com/sre" target="_blank">Subscribe to our LUMA calendar</a>
     </div>
+    {% if hero_video %}
+    <div class="hero-video-standalone mt-5">
+      <video autoplay muted loop playsinline poster="{{ hero_pictures[0] }}">
+        <source src="{{ hero_video }}?v=2" type="video/mp4">
+      </video>
+    </div>
+    {% endif %}
     {% endif %}
     {% if meetups %}
     <h3 class="section-heading text-center mb-3">Upcoming meetups</h3>
@@ -86,8 +93,7 @@
 </section>
 {% endif %}
 
-{# Ambassador section hidden — uncomment to restore #}
-{% if false and ambassadors %}
+{% if ambassadors %}
 <section id="ambassadors" class="section theme-bg-light">
     <div class="container">
         <h2 class="section-heading text-center mb-3">{{ brand_name }} Ambassadors</h2>
@@ -240,8 +246,10 @@ function toggleNote(id) {
 </section>
 <style>
 .past-conf-extra, .past-meetup-extra, .amb-extra { display: none; }
-.btn-past-more, #show-more-amb { text-decoration: none; }
-.btn-past-more:hover, .btn-past-more:focus, #show-more-amb:hover, #show-more-amb:focus { text-decoration: none; }
+.btn-past-more { text-decoration: none; }
+.btn-past-more:hover, .btn-past-more:focus { text-decoration: none; }
+#show-more-amb { background: #B45309; color: #fff; border-color: #B45309; text-decoration: none; }
+#show-more-amb:hover, #show-more-amb:focus { background: #924307; color: #fff; border-color: #924307; text-decoration: none; }
 .btn-past-more { color: #000; background: #fff; border: 2px solid #fff; }
 .btn-past-more:hover, .btn-past-more:focus { background: #f0f0f0; color: #000; border-color: #f0f0f0; }
 .yt-playlist-btn { display: inline-block; margin-left: 12px; padding: 8px 18px; background: #B45309; color: #fff; border-radius: 6px; text-decoration: none; font-family: 'Montserrat', sans-serif; font-weight: 700; transition: background 0.2s ease; }
@@ -253,6 +261,8 @@ function toggleNote(id) {
 #events .card-img-top, #past-events .card-img-top { transition: filter .2s ease; }
 #events .card-img-top:hover, #past-events .card-img-top:hover { filter: brightness(1.1) contrast(0.9); }
 #past-events .card:hover { border-color: rgba(255,255,255,.25); box-shadow: 0 0 20px rgba(255,255,255,.12), 0 0 48px rgba(255,255,255,.05); }
+#ambassadors img.rounded-circle { transition: filter .2s ease; }
+#ambassadors img.rounded-circle:hover { filter: brightness(1.1) contrast(0.9); }
 </style>
 <script>
 function showMoreAmb() {
