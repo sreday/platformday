@@ -258,6 +258,7 @@ section[id] {
             
             <a href="./2026-austin-q4/" class="event-read-more-btn">Read more &rarr;</a>
             
+            
           </div>
         </div>
       </div>
@@ -277,6 +278,41 @@ section[id] {
 
 
 
+
+<style>
+.past-conf-extra, .past-meetup-extra, .amb-extra { display: none; }
+.btn-past-more { text-decoration: none; }
+.btn-past-more:hover, .btn-past-more:focus { text-decoration: none; }
+#show-more-amb { background: #B45309; color: #fff; border-color: #B45309; text-decoration: none; }
+#show-more-amb:hover, #show-more-amb:focus { background: #924307; color: #fff; border-color: #924307; text-decoration: none; }
+.btn-past-more { color: #000; background: #fff; border: 2px solid #fff; }
+.btn-past-more:hover, .btn-past-more:focus { background: #f0f0f0; color: #000; border-color: #f0f0f0; }
+.yt-playlist-btn { display: inline-block; margin-left: 12px; padding: 8px 18px; background: #EC645E; color: #fff; border-radius: 6px; text-decoration: none; font-family: 'Montserrat', sans-serif; font-weight: 700; transition: background 0.2s ease; }
+.yt-playlist-btn:hover, .yt-playlist-btn:focus { background: #f08580; color: #fff; text-decoration: none; }
+.event-read-more-btn { display: inline-block; padding: 8px 18px; background: #B45309; color: #fff; border-radius: 6px; text-decoration: none; transition: background 0.2s ease; font-family: 'Montserrat', sans-serif; font-weight: 700; }
+.event-read-more-btn:hover, .event-read-more-btn:focus { background: #924307; color: #fff; text-decoration: none; }
+.card { transition: box-shadow .4s ease, border-color .4s ease; border: 1px solid transparent; }
+#events .card:hover { border-color: rgba(233,154,23,.5); box-shadow: 0 0 20px rgba(233,154,23,.25), 0 0 48px rgba(233,154,23,.1); }
+#events .card-img-top, #past-events .card-img-top { transition: filter .2s ease; }
+#events .card-img-top:hover, #past-events .card-img-top:hover { filter: brightness(1.1) contrast(0.9); }
+#past-events .card:hover { border-color: rgba(255,255,255,.25); box-shadow: 0 0 20px rgba(255,255,255,.12), 0 0 48px rgba(255,255,255,.05); }
+#ambassadors img.rounded-circle { transition: filter .2s ease; }
+#ambassadors img.rounded-circle:hover { filter: brightness(1.1) contrast(0.9); }
+</style>
+<script>
+function showMoreAmb() {
+  document.querySelectorAll('.amb-extra').forEach(function(el) { el.classList.remove('amb-extra'); });
+  document.getElementById('show-more-amb').style.display = 'none';
+}
+function showMorePastConf() {
+  document.querySelectorAll('.past-conf-extra').forEach(function(el) { el.classList.remove('past-conf-extra'); });
+  document.getElementById('show-more-past-conf').style.display = 'none';
+}
+function showMorePastMeetup() {
+  document.querySelectorAll('.past-meetup-extra').forEach(function(el) { el.classList.remove('past-meetup-extra'); });
+  document.getElementById('show-more-past-meetup').style.display = 'none';
+}
+</script>
 
 
 
