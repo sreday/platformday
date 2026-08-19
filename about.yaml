@@ -1,0 +1,38 @@
+# "About the conference" panel on every event index page.
+# blurb: paragraph shown when the panel is expanded.
+# categories: the buckets under "Topics so far:" (order = display order AND
+#   tiebreak priority). Keyword matching (see the ABOUT block in generate.py):
+#   - case-insensitive; keywords of <=3 chars match whole words only (plus
+#     optional plural "s"); longer keywords are word-boundary prefix matches
+#     ("observab" matches "observability")
+#   - a title hit scores 3, an abstract hit 1; multi-word phrases count double
+#   - each talk lands in exactly one category (highest score; earlier category
+#     wins ties); unmatched talks go under "...and more"
+blurb: >-
+  PLATFORMday is a worldwide series of community events for engineers who
+  build the platforms modern software runs on. Across cities around the
+  world, we bring together people working in platform engineering, developer
+  experience, infrastructure and cloud native tooling to share real-world
+  experience, connect with their local community and explore how these
+  disciplines are evolving in the age of AI.
+categories:
+  - name: Platform Engineering
+    keywords: [platform engineering, platform team, platform as a product, paved road, golden path, platform strateg]
+  - name: Developer Experience
+    keywords: [developer experience, devex, dx, productivity, cognitive load, onboarding, inner loop]
+  - name: Internal Developer Platforms
+    keywords: [internal developer platform, idp, backstage, portal, self-service, service catalog, scaffold]
+  - name: CI/CD & Software Delivery
+    keywords: [ci/cd, cicd, continuous delivery, continuous integration, pipeline, deployment, release, gitops]
+  - name: Infrastructure as Code
+    keywords: [terraform, pulumi, infrastructure as code, iac, crossplane, opentofu, provisioning]
+  - name: Kubernetes & Cloud Native
+    keywords: [kubernetes, k8s, cloud native, container, helm, operator, service mesh, istio]
+  - name: DevOps & Automation
+    keywords: [devops, automation, sre, observab, monitoring, incident, reliability]
+  - name: APIs, Tooling & Integrations
+    keywords: [api, sdk, cli, tooling, integration, plugin, developer tools]
+  - name: Cloud Infrastructure
+    keywords: [cloud, aws, azure, gcp, serverless, multi-cloud, finops, cost]
+  - name: AI for Developer Platforms
+    keywords: [ai, llm, copilot, genai, machine learning, ai-assisted, agent]
