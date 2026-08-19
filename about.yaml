@@ -9,7 +9,7 @@
 #   - each talk lands in exactly one category (highest score; earlier category
 #     wins ties); unmatched talks go under "...and more"
 blurb: >-
-  PLATFORMday is a worldwide series of community events for engineers who
+  <strong>PLATFORMday</strong> is a worldwide series of community events for engineers who
   build the platforms modern software runs on. Across cities around the
   world, we bring together people working in platform engineering, developer
   experience, infrastructure and cloud native tooling to share real-world
