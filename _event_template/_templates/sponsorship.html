@@ -4,7 +4,7 @@
 <meta name="robots" content="noindex, nofollow">
 <style>
 /* ── Sponsorship page styles ─────────────────────────── */
-:root { --sp-accent: #8B5E3C; }
+:root { --sp-accent: #E2971D; }
 
 .sp-hero {
   position: relative;
@@ -13,7 +13,7 @@
   overflow: hidden;
   /* TODO: swap for brand artwork at ../photos/platformday-paint.png (sister sites use a painted hero) */
   background:
-    radial-gradient(circle at 80% 20%, rgba(233,154,23,.45) 0%, rgba(233,154,23,0) 55%),
+    radial-gradient(circle at 80% 20%, rgba(226,151,29,.45) 0%, rgba(226,151,29,0) 55%),
     linear-gradient(135deg, #E2971D 0%, #97640F 45%, #3B2A08 100%);
 }
 .sp-hero-overlay {
@@ -39,7 +39,7 @@
   border-radius: 999px;
   margin-bottom: 1.2rem;
 }
-.sp-stat-bar { background: var(--sp-accent); color: #fff; padding: 20px 0; }
+.sp-stat-bar { background: var(--sp-accent); color: #1a1a1a; padding: 20px 0; }
 .sp-stat-bar .number { font-size: 2rem; font-weight: 700; }
 .sp-stat-bar .unit   { font-size: .8rem; text-transform: uppercase; letter-spacing: .06em; }
 
@@ -94,15 +94,15 @@
 }
 .sp-currency-btn:hover { color: #ccc; }
 .sp-currency-btn.active {
-  color: #fff;
+  color: #1a1a1a;
 }
 
 /* ── Sponsor pills ───────────────────────────────────── */
 .sp-pill {
   display: inline-block;
-  background: #2e2117;
+  background: #2e2410;
   color: var(--sp-accent);
-  border: 1px solid rgba(139,94,60,.35);
+  border: 1px solid rgba(226,151,29,.35);
   border-radius: 999px;
   padding: 4px 14px;
   font-size: .82rem;
@@ -117,7 +117,7 @@
   align-items: center;
   gap: 12px;
   background: var(--sp-accent);
-  color: #fff;
+  color: #1a1a1a;
   border: none;
   border-radius: 999px;
   padding: 13px 34px;
@@ -127,7 +127,7 @@
   letter-spacing: .01em;
   transition: background .2s, box-shadow .2s;
 }
-.btn-stats:hover  { background: #704b30; box-shadow: 0 4px 18px rgba(139,94,60,.4); }
+.btn-stats:hover  { background: #f0a52e; box-shadow: 0 4px 18px rgba(226,151,29,.4); }
 .btn-stats:active { transform: scale(.97); }
 .btn-stats-icon { display: flex; align-items: center; flex-shrink: 0; }
 .btn-stats-chevron { transition: transform .3s ease; }
@@ -181,16 +181,16 @@
 .sp-stats-empty    { color: #999; font-size: .9rem; margin: 0; }
 /* Pills inside white panel override the dark pill rule */
 #sp-dark-body .sp-stats-inner .sp-pill {
-  background: #faf5f0;
-  color: var(--sp-accent);
-  border-color: #d9bfa7;
+  background: #FDF3E0;
+  color: #BA7B12;
+  border-color: #F8DFAE;
 }
 
 /* ── New stats panel styles ──────────────────────────── */
 .sp-stats-inner {
-  --spi-green:       #8B5E3C;
-  --spi-green-light: #f7efe8;
-  --spi-green-mid:   #d9c0a8;
+  --spi-green:       #BA7B12;
+  --spi-green-light: #FDF3E0;
+  --spi-green-mid:   #F8DFAE;
   --spi-border:      #efefef;
   --spi-faint:       #f5f5f5;
 }
@@ -204,14 +204,14 @@
   padding: 11px 19px; border: 1px solid var(--spi-green-mid);
   border-radius: 999px; background: var(--spi-green-light); text-align: center;
 }
-.sp-stats-big-num-value { font-family: 'Montserrat', sans-serif; font-size: 1.52rem; font-weight: 700; color: #5c3a1a; line-height: 1; letter-spacing: -.01em; }
+.sp-stats-big-num-value { font-family: 'Montserrat', sans-serif; font-size: 1.52rem; font-weight: 700; color: #7a520d; line-height: 1; letter-spacing: -.01em; }
 .sp-stats-big-num-value sup { font-size: .72rem; color: var(--spi-green); vertical-align: super; font-weight: 700; }
-.sp-stats-big-num-label { font-size: .58rem; color: #8a603a; text-transform: uppercase; letter-spacing: .07em; margin-top: 4px; }
+.sp-stats-big-num-label { font-size: .58rem; color: #BA7B12; text-transform: uppercase; letter-spacing: .07em; margin-top: 4px; }
 
 /* TLDR pill */
 .sp-stats-tldr {
   display: inline-block; background: var(--spi-green-light); border: 1px solid var(--spi-green-mid);
-  border-radius: 999px; padding: 8px 18px; font-size: .9rem; color: #5c3a1a; margin-bottom: 22px;
+  border-radius: 999px; padding: 8px 18px; font-size: .9rem; color: #7a520d; margin-bottom: 22px;
 }
 
 /* 2-col grid + cards */
@@ -241,10 +241,10 @@
   display: inline-flex; align-items: center;
   border-radius: 999px; padding: 6px 16px;
   font-size: .9rem; border: 1px solid var(--spi-green-mid);
-  background: var(--spi-green-light); color: #5c3a1a;
+  background: var(--spi-green-light); color: #7a520d;
   text-decoration: none; transition: background .15s, border-color .15s;
 }
-.sp-stats-pill:hover { background: var(--spi-green-light); border-color: var(--spi-green-mid); color: #5c3a1a; cursor: default; }
+.sp-stats-pill:hover { background: var(--spi-green-light); border-color: var(--spi-green-mid); color: #7a520d; cursor: default; }
 
 /* timeline */
 .sp-stats-timeline { position: relative; padding: 20px 0 8px; margin-bottom: 8px; }
@@ -270,7 +270,7 @@
   border-radius: 8px; padding: 8px 10px; text-align: center;
   text-decoration: none; width: 100%; transition: background .15s;
 }
-.sp-stats-tl-chip:hover { background: #f0e2d4; text-decoration: none; }
+.sp-stats-tl-chip:hover { background: #fae7be; text-decoration: none; }
 .sp-stats-tl-prospectus {
   display: block;
   margin-top: 6px;
@@ -279,20 +279,20 @@
   border-radius: 6px;
   padding: 4px 10px;
   font-size: .75rem;
-  color: #5c3a1a;
+  color: #7a520d;
   text-align: center;
   text-decoration: none;
   transition: background .15s;
 }
-.sp-stats-tl-prospectus:hover { background: #f0e2d4; text-decoration: none; color: #5c3a1a; }
+.sp-stats-tl-prospectus:hover { background: #fae7be; text-decoration: none; color: #7a520d; }
 .sp-stats-tl-prospectus.past { background: #e8e8e8; border-color: #ccc; color: #555; }
 .sp-stats-tl-prospectus.past:hover { background: #d8d8d8; text-decoration: none; color: #555; }
-.sp-stats-tl-city  { font-family: 'Montserrat', sans-serif; font-size: .8rem; font-weight: 700; color: #5c3a1a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.sp-stats-tl-date  { font-size: .75rem; color: #8a603a; margin-top: 2px; }
-.sp-stats-tl-seats { font-size: .75rem; color: #8a603a; }
-.sp-stats-tl-past  { font-size: .7rem; color: #cfb08f; font-style: italic; }
+.sp-stats-tl-city  { font-family: 'Montserrat', sans-serif; font-size: .8rem; font-weight: 700; color: #7a520d; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sp-stats-tl-date  { font-size: .75rem; color: #BA7B12; margin-top: 2px; }
+.sp-stats-tl-seats { font-size: .75rem; color: #BA7B12; }
+.sp-stats-tl-past  { font-size: .7rem; color: #e8d49b; font-style: italic; }
 .sp-stats-tl-pin-event { flex: 0 0 auto; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding-top: 0; }
-.sp-stats-tl-pin { font-size: 2.25rem; line-height: 1; color: #6b4a1a; margin-bottom: 10px; position: relative; top: -4px; }
+.sp-stats-tl-pin { font-size: 2.25rem; line-height: 1; color: #7a520d; margin-bottom: 10px; position: relative; top: -4px; }
 
 /* GIF */
 .sp-stats-gif-wrap { margin-top: 32px; border-radius: 12px; overflow: hidden; width: 90%; margin-left: auto; margin-right: auto; }
@@ -310,8 +310,8 @@
 .sp-custom-card {
   border-radius: 12px;
   padding: 36px 32px;
-  background: #2a2217;
-  border: 1px solid rgba(139,94,60,.3);
+  background: #332608;
+  border: 1px solid rgba(226,151,29,.3);
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 0;
@@ -319,7 +319,7 @@
 }
 .sp-custom-card-left {
   padding-right: 32px;
-  border-right: 1px solid rgba(139,94,60,.3);
+  border-right: 1px solid rgba(226,151,29,.3);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -333,7 +333,7 @@
 }
 .sp-custom-card-left .sp-custom-subtitle {
   font-size: 1rem;
-  color: #c49a7b;
+  color: #e2b269;
   margin-bottom: 0;
 }
 .sp-custom-divider { display: none; }
@@ -351,7 +351,7 @@
 .sp-custom-ideas a:hover { color: #fff; text-shadow: 0 0 12px rgba(255,255,255,.8), 0 0 26px rgba(255,255,255,.4); }
 @media (max-width: 640px) {
   .sp-custom-card { grid-template-columns: 1fr; }
-  .sp-custom-card-left { border-right: none; border-bottom: 1px solid rgba(139,94,60,.3); padding-right: 0; padding-bottom: 20px; margin-bottom: 20px; }
+  .sp-custom-card-left { border-right: none; border-bottom: 1px solid rgba(226,151,29,.3); padding-right: 0; padding-bottom: 20px; margin-bottom: 20px; }
   .sp-custom-ideas { padding-left: 0; }
   .sp-stats-tl-events { display: grid; grid-template-columns: 1fr 1fr; overflow-x: visible; }
   .sp-stats-tl-pin-event { grid-column: 1 / -1; }
@@ -378,7 +378,7 @@
 .sp-tier-subtitle { font-size: .85rem; color: #999; margin-bottom: 2px; }
 .sp-tier-price    { font-size: 2.2rem; font-weight: 800; color: #fff; transition: opacity .18s ease; }
 .sp-tier-price.sp-fade { opacity: 0; }
-.sp-tier-price.sp-discounted { color: #E2971D; }
+.sp-tier-price.sp-discounted { color: #4adb8b; }
 
 /* Currency symbol slide/fade on currency switch */
 .sp-cur-sym { display: inline-block; transition: transform .18s ease, opacity .18s ease; }
@@ -441,8 +441,8 @@
 /* Active discount card glow */
 .sp-discount-card-active {
   border-color: var(--sp-accent) !important;
-  box-shadow: 0 0 20px rgba(139,94,60,.25) !important;
-  background: #2e241e !important;
+  box-shadow: 0 0 20px rgba(226,151,29,.3) !important;
+  background: #3a2a08 !important;
 }
 .sp-tier-body     { flex: 1; display: flex; flex-direction: column; justify-content: center; }
 .sp-tier-benefits { list-style: none; padding: 0; margin: 0 0 12px; }
@@ -513,7 +513,7 @@
 }
 .sp-faq-q {
   font-weight: 700;
-  color: #6e4a1a;
+  color: #7a520d;
   margin-bottom: 6px;
   font-size: .95rem;
 }
@@ -1088,7 +1088,7 @@ window.addEventListener('hashchange', function() { spAutoExpand(window.location.
 <section class="sp-section sp-section-alt" id="buy">
   <div class="container">
     <h2 class="sp-section-title text-center">Ready to give PLATFORMday a try?</h2>
-    <p class="text-center" style="color:#aaa;margin-top:-.6rem;margin-bottom:1.5rem;">Secure your sponsorship with <a href="https://www.linkedin.com/in/marek-pawlikowski/" target="_blank" rel="noopener noreferrer" style="color:#c49a7b;">Mark Pawlikowski</a></p>
+    <p class="text-center" style="color:#aaa;margin-top:-.6rem;margin-bottom:1.5rem;">Secure your sponsorship with <a href="https://www.linkedin.com/in/marek-pawlikowski/" target="_blank" rel="noopener noreferrer" style="color:#e2b269;">Mark Pawlikowski</a></p>
     <div class="row justify-content-center">
       <div class="col-12 col-lg-10 d-flex flex-wrap justify-content-center gap-3">
         {% if calendly_sponsor_url %}<a href="{{ calendly_sponsor_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary sp-cta-btn">Hop on a call</a>{% endif %}
