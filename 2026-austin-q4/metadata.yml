@@ -9,7 +9,7 @@ event_state: before
 date_string: "October 15, 2026"
 location_string: "The Sunset Room, Austin, Texas, USA"
 # get this from the event url
-luma_evt: evt-xAhCqaXMWAXAEEm
+luma_evt: evt-nY7FR4LEtAu2bMr
 cfp_url: https://cfp.ninja/e/platformday-2026-austin-q4
 
 # the number of tracks needs to be the same per day
