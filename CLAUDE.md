@@ -85,9 +85,10 @@ A handful of palette hexes are also inlined directly in templates
 
 ## Outstanding brand TODOs
 - `photos/platformday-hero-*.jpg` are the generic template hero photos.
-- `_event_template/_templates/sponsorship.html` uses a CSS gradient where the
-  sister sites use a painted hero image (`../photos/<brand>-paint.png`), and its
-  brand video element was removed. Both are marked with `TODO` comments.
+- `_event_template/_templates/sponsorship.html` has its painted hero
+  (`../photos/platformday-paint.png`, added 2026-08-19) but its brand video
+  element is still removed — marked with a `TODO` comment
+  (needs `assets/images/platformday.mp4`).
 - The audience stats in `sponsorship.html` are series-wide figures inherited from
   the template, not PLATFORMday-specific.
 
