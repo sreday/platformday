@@ -60,8 +60,9 @@ logo_image: ""
 # probably don't need changing
 base_path: "https://www.platformday.com/"
 base_folder: "static"
-twitter_url: https://twitter.com/platformday_com
+twitter_url: https://twitter.com/sreday_com
 linkedin_url: https://www.linkedin.com/company/platformday/
 youtube_url: https://www.youtube.com/@platformday
 mailto: "mailto:hello@platformday.com"
 youtube_playlist:
+calendly_sponsor_url: "https://calendly.com/sreday/30min"
