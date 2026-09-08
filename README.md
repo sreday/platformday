@@ -66,35 +66,28 @@ tiles on the sister sites (`--host-orange` in their `home/_templates/host.html`)
 | `$theme-bg-light` | `#FDF3E0` |
 | `$theme-border-color` | `#F8DFAE` |
 
-The palette lives in **two** SCSS trees that must be kept in sync:
+The palette lives in ONE SCSS tree, shared by the home page and the event pages
+(the home page used to have its own copy under `home/template/assets`; removed 2026-09-08):
 
-- `_assets/template_v1/assets/scss/theme.scss` — used by event pages
-- `home/template/assets/scss/theme.scss` — used by the home page
+- `_assets/template_v1/assets/scss/theme.scss` -> compiled to `_assets/template_v1/assets/css/theme.css`
 
-To change a colour, edit both `theme.scss` files and rebuild the CSS:
+`theme.css` = compiled SCSS (the first 12 lines: Bootstrap/DevConf banners + two long compiled lines)
+**plus hand-written rules appended after it** (line 13 onwards: hero social pill, hero CTA row,
+button colours, header/schedule tweaks, home hover effects). To change a colour, edit `theme.scss`,
+recompile, and keep the hand-written tail:
 
 ```sh
-# event pages
 cd _assets/template_v1/assets/scss
-tail -n 1 ../css/theme.css > /tmp/tail.css          # preserve hand-written rules
-sass --style=compressed --no-source-map theme.scss /tmp/new.css
-cat /tmp/new.css /tmp/tail.css > ../css/theme.css
-
-# home page (preserves the last TWO lines)
-cd home/template/assets/scss
-tail -n 2 ../css/theme.css > /tmp/tail.css
+tail -n +13 ../css/theme.css > /tmp/tail.css          # hand-written rules, keep them
 sass --style=compressed --no-source-map theme.scss /tmp/new.css
 cat /tmp/new.css /tmp/tail.css > ../css/theme.css
 
 # normalize fractional rgb() from modern dart-sass back to hex
-python _build/normalize_css_colors.py \
-  _assets/template_v1/assets/css/theme.css \
-  home/template/assets/css/theme.css
+python _build/normalize_css_colors.py _assets/template_v1/assets/css/theme.css
 ```
 
-Note that `theme.css` carries a small number of hand-written rules appended
-*after* the compiled output — that is why the tail is preserved above rather
-than simply overwriting the file.
+Check `head -12 ../css/theme.css` still ends with the compiled `*/body{...}` line before relying on
+`tail -n +13`; if the compiled banner ever changes length, adjust the line number.
 
 ## Home-page sponsor vs partner carousels
 

@@ -69,9 +69,9 @@ PLATFORMday swatch (`--host-orange: #E2971D`) on the sister sites' `/host` pages
 - `$theme-border-color: #F8DFAE`
 - Primary-as-text spots use the darker `#BA7B12` for contrast on white.
 
-**The palette is defined in two places that must stay in sync:**
-`_assets/template_v1/assets/scss/theme.scss` (events) and
-`home/template/assets/scss/theme.scss` (home).
+**The palette is defined once:** `_assets/template_v1/assets/scss/theme.scss`, compiled into
+`_assets/template_v1/assets/css/theme.css`, which both the home page and the event pages copy at build time
+(since 2026-09-08; the former `home/template/assets` copy is gone).
 
 `theme.css` is compiled SCSS **plus hand-written rules appended after** the
 compiled output (1 extra line for `_assets`, 2 for `home/template`). Preserve
