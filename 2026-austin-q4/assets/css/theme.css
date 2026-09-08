@@ -53,3 +53,8 @@
 .btn-secondary{background:#EC645E}
 .btn-secondary:hover,.btn-secondary:focus,.btn-secondary:active,.btn-secondary:not(:disabled):not(.disabled):active:focus{background:#e73830}
 .btn-ghost:hover{color:#098dcf}
+/* Home page: gentle hover on ambassador photos and event cards (was in the former home/template theme) */
+#ambassadors img:hover{filter:brightness(1.06)}
+#ambassadors img{transition:filter .2s ease}
+.card-img-top:hover{filter:brightness(1.06)}
+.card-img-top{transition:filter .2s ease}
