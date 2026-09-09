@@ -58,3 +58,5 @@
 #ambassadors img{transition:filter .2s ease}
 .card-img-top:hover{filter:brightness(1.06)}
 .card-img-top{transition:filter .2s ease}
+/* Anchors whose heading sits at the very top of the section (no section padding): leave room under the 70px fixed header. html #x outranks the inline section[id] rule in _base.html. */
+html #about, html #stats, html #faq, html #sisters { scroll-margin-top: 100px; }
