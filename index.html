@@ -281,15 +281,18 @@ section[id] {
 
 <style>
 .past-conf-extra, .past-meetup-extra, .amb-extra { display: none; }
+@media (max-width: 767.98px) { .amb-extra-m, .past-conf-extra-m, .past-meetup-extra-m, .testimonial-extra-m { display: none; } }
+.note-toggle { display: inline-block; padding: .6rem 0; }
+@media (max-width: 767.98px) { .yt-playlist-btn { margin-left: 0; margin-top: .5rem; } }
 .btn-past-more { text-decoration: none; }
 .btn-past-more:hover, .btn-past-more:focus { text-decoration: none; }
 #show-more-amb { background: #E2971D; color: #fff; border-color: #E2971D; text-decoration: none; }
 #show-more-amb:hover, #show-more-amb:focus { background: #EAA83B; color: #fff; border-color: #EAA83B; text-decoration: none; }
 .btn-past-more { color: #000; background: #fff; border: 2px solid #fff; }
 .btn-past-more:hover, .btn-past-more:focus { background: #f0f0f0; color: #000; border-color: #f0f0f0; }
-.yt-playlist-btn { display: inline-block; margin-left: 12px; padding: 8px 18px; background: #EC645E; color: #fff; border-radius: 6px; text-decoration: none; font-family: 'Montserrat', sans-serif; font-weight: 700; transition: background 0.2s ease; }
+.yt-playlist-btn { display: inline-block; margin-left: 12px; padding: 10px 18px; min-height: 44px; line-height: 24px; background: #EC645E; color: #fff; border-radius: 6px; text-decoration: none; font-family: 'Montserrat', sans-serif; font-weight: 700; transition: background 0.2s ease; }
 .yt-playlist-btn:hover, .yt-playlist-btn:focus { background: #f08580; color: #fff; text-decoration: none; }
-.event-read-more-btn { display: inline-block; padding: 8px 18px; background: #E2971D; color: #fff; border-radius: 6px; text-decoration: none; transition: background 0.2s ease; font-family: 'Montserrat', sans-serif; font-weight: 700; }
+.event-read-more-btn { display: inline-block; padding: 10px 18px; min-height: 44px; line-height: 24px; background: #E2971D; color: #fff; border-radius: 6px; text-decoration: none; transition: background 0.2s ease; font-family: 'Montserrat', sans-serif; font-weight: 700; }
 .event-read-more-btn:hover, .event-read-more-btn:focus { background: #EAA83B; color: #fff; text-decoration: none; }
 .card { transition: box-shadow .4s ease, border-color .4s ease; border: 1px solid transparent; }
 #events .card:hover { border-color: rgba(233,154,23,.5); box-shadow: 0 0 20px rgba(233,154,23,.25), 0 0 48px rgba(233,154,23,.1); }
@@ -300,18 +303,31 @@ section[id] {
 #ambassadors img.rounded-circle:hover { filter: brightness(1.1) contrast(0.9); }
 </style>
 <script>
-function showMoreAmb() {
-  document.querySelectorAll('.amb-extra').forEach(function(el) { el.classList.remove('amb-extra'); });
-  document.getElementById('show-more-amb').style.display = 'none';
+/* Show-more lists: desktop hides items past the desktop limit (.x-extra),
+   phones (<768px) additionally hide everything past the 2nd item (.x-extra-m).
+   One tap reveals the whole list on either viewport. */
+function showMoreList(cls, btnId) {
+  document.querySelectorAll('.' + cls + ', .' + cls + '-m').forEach(function (el) {
+    el.classList.remove(cls); el.classList.remove(cls + '-m');
+  });
+  var b = document.getElementById(btnId);
+  if (b) { b.dataset.expanded = '1'; b.style.display = 'none'; }
 }
-function showMorePastConf() {
-  document.querySelectorAll('.past-conf-extra').forEach(function(el) { el.classList.remove('past-conf-extra'); });
-  document.getElementById('show-more-past-conf').style.display = 'none';
+function showMoreAmb()        { showMoreList('amb-extra', 'show-more-amb'); }
+function showMorePastConf()   { showMoreList('past-conf-extra', 'show-more-past-conf'); }
+function showMorePastMeetup() { showMoreList('past-meetup-extra', 'show-more-past-meetup'); }
+var mobileMQ = window.matchMedia('(max-width: 767.98px)');
+function updateShowMoreLabels() {
+  document.querySelectorAll('.show-more-btn').forEach(function (b) {
+    if (b.dataset.expanded) return;
+    var limit = mobileMQ.matches ? +b.dataset.mobile : +b.dataset.desktop;
+    b.textContent = 'Show ' + (+b.dataset.total - limit) + ' more';
+  });
+  if (typeof hideShortReadMore === 'function') hideShortReadMore();
 }
-function showMorePastMeetup() {
-  document.querySelectorAll('.past-meetup-extra').forEach(function(el) { el.classList.remove('past-meetup-extra'); });
-  document.getElementById('show-more-past-meetup').style.display = 'none';
-}
+document.addEventListener('DOMContentLoaded', updateShowMoreLabels);
+(mobileMQ.addEventListener ? mobileMQ.addEventListener('change', updateShowMoreLabels) : mobileMQ.addListener(updateShowMoreLabels));
+window.addEventListener('resize', function () { clearTimeout(window.__showMoreT); window.__showMoreT = setTimeout(updateShowMoreLabels, 150); });
 </script>
 
 
@@ -328,322 +344,322 @@ function showMorePastMeetup() {
         <div class="sponsor-carousel-wrap" style="background:#fff;border-radius:999px;box-shadow:0 4px 20px rgba(0,0,0,.07);padding:28px 0;margin:1.95rem auto 1.5rem;overflow:hidden;width:100%;">
           <div class="sponsor-carousel-track">
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/aliengiraffe.png" alt="aliengiraffe"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/aliengiraffe.png" alt="aliengiraffe" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/altinity.png" alt="altinity"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/altinity.png" alt="altinity" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/antimetal.png" alt="antimetal"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/antimetal.png" alt="antimetal" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/atlas.png" alt="atlas"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/atlas.png" alt="atlas" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/bluebricks.png" alt="bluebricks"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/bluebricks.png" alt="bluebricks" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/cardinal.png" alt="cardinal"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/cardinal.png" alt="cardinal" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/cast_ai.png" alt="cast_ai"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/cast_ai.png" alt="cast_ai" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/catawiki.png" alt="catawiki"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/catawiki.png" alt="catawiki" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/causely.png" alt="causely"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/causely.png" alt="causely" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/chainguard.png" alt="chainguard"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/chainguard.png" alt="chainguard" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/clickhouse.png" alt="clickhouse"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/clickhouse.png" alt="clickhouse" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/codejet.png" alt="codejet"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/codejet.png" alt="codejet" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/codiac.png" alt="codiac"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/codiac.png" alt="codiac" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/coralogix.png" alt="coralogix"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/coralogix.png" alt="coralogix" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/cribl.png" alt="cribl"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/cribl.png" alt="cribl" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/criteo.png" alt="criteo"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/criteo.png" alt="criteo" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/datadog.png" alt="datadog"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/datadog.png" alt="datadog" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/densify.png" alt="densify"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/densify.png" alt="densify" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/dynatrace.png" alt="dynatrace"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/dynatrace.png" alt="dynatrace" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/env0.png" alt="env0"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/env0.png" alt="env0" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/evolv.png" alt="evolv"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/evolv.png" alt="evolv" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/ewake.png" alt="ewake"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/ewake.png" alt="ewake" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/ford.png" alt="ford"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/ford.png" alt="ford" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/gable.png" alt="gable"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/gable.png" alt="gable" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/gatling.png" alt="gatling"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/gatling.png" alt="gatling" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/google.png" alt="google"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/google.png" alt="google" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/grafanalabs.png" alt="grafanalabs"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/grafanalabs.png" alt="grafanalabs" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/guhatek.png" alt="guhatek"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/guhatek.png" alt="guhatek" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/harness.png" alt="harness"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/harness.png" alt="harness" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/hcltech.png" alt="hcltech"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/hcltech.png" alt="hcltech" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/hyground.png" alt="hyground"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/hyground.png" alt="hyground" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/ilert.png" alt="ilert"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/ilert.png" alt="ilert" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/imply.png" alt="imply"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/imply.png" alt="imply" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/incident.png" alt="incident"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/incident.png" alt="incident" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/incidentfox.png" alt="incidentfox"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/incidentfox.png" alt="incidentfox" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/ing.png" alt="ing"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/ing.png" alt="ing" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/kerno.png" alt="kerno"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/kerno.png" alt="kerno" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/komodor.png" alt="komodor"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/komodor.png" alt="komodor" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/kyndryl.png" alt="kyndryl"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/kyndryl.png" alt="kyndryl" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/lightrun.png" alt="lightrun"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/lightrun.png" alt="lightrun" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/maibornwolff.png" alt="maibornwolff"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/maibornwolff.png" alt="maibornwolff" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/mezmo.png" alt="mezmo"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/mezmo.png" alt="mezmo" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/microsoft.png" alt="microsoft"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/microsoft.png" alt="microsoft" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/monday.png" alt="monday"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/monday.png" alt="monday" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/netdata.png" alt="netdata"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/netdata.png" alt="netdata" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/neubird.png" alt="neubird"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/neubird.png" alt="neubird" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/new relic.png" alt="new relic"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/new relic.png" alt="new relic" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/nofire.png" alt="nofire"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/nofire.png" alt="nofire" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/openobserve.png" alt="openobserve"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/openobserve.png" alt="openobserve" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/owu.png" alt="owu"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/owu.png" alt="owu" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/pagerduty.png" alt="pagerduty"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/pagerduty.png" alt="pagerduty" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/phoebe.png" alt="phoebe"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/phoebe.png" alt="phoebe" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/pomerium.png" alt="pomerium"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/pomerium.png" alt="pomerium" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/port.png" alt="port"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/port.png" alt="port" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/posthog.png" alt="posthog"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/posthog.png" alt="posthog" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/qubit.png" alt="qubit"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/qubit.png" alt="qubit" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/quesma.png" alt="quesma"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/quesma.png" alt="quesma" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/riversafe.png" alt="riversafe"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/riversafe.png" alt="riversafe" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/rootly.png" alt="rootly"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/rootly.png" alt="rootly" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/runwhen.png" alt="runwhen"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/runwhen.png" alt="runwhen" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/seattlesystems.png" alt="seattlesystems"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/seattlesystems.png" alt="seattlesystems" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/senser-tech.png" alt="senser-tech"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/senser-tech.png" alt="senser-tech" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/sentry.png" alt="sentry"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/sentry.png" alt="sentry" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/shipfox.png" alt="shipfox"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/shipfox.png" alt="shipfox" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/sidero.png" alt="sidero"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/sidero.png" alt="sidero" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/signadot.png" alt="signadot"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/signadot.png" alt="signadot" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/spacelift.png" alt="spacelift"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/spacelift.png" alt="spacelift" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/stackgen.png" alt="stackgen"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/stackgen.png" alt="stackgen" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/stigian.png" alt="stigian"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/stigian.png" alt="stigian" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/stormforge.png" alt="stormforge"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/stormforge.png" alt="stormforge" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/teleport.png" alt="teleport"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/teleport.png" alt="teleport" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/tracer.png" alt="tracer"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/tracer.png" alt="tracer" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/traversal.png" alt="traversal"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/traversal.png" alt="traversal" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/ultimosoft.png" alt="ultimosoft"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/ultimosoft.png" alt="ultimosoft" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/unpack.png" alt="unpack"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/unpack.png" alt="unpack" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/viam.png" alt="viam"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/viam.png" alt="viam" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/virtana.png" alt="virtana"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/virtana.png" alt="virtana" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/wildmoose.png" alt="wildmoose"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/wildmoose.png" alt="wildmoose" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/xurrent.png" alt="xurrent"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/xurrent.png" alt="xurrent" decoding="async"></div>
             
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/aliengiraffe.png" alt="aliengiraffe"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/aliengiraffe.png" alt="aliengiraffe" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/altinity.png" alt="altinity"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/altinity.png" alt="altinity" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/antimetal.png" alt="antimetal"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/antimetal.png" alt="antimetal" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/atlas.png" alt="atlas"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/atlas.png" alt="atlas" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/bluebricks.png" alt="bluebricks"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/bluebricks.png" alt="bluebricks" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/cardinal.png" alt="cardinal"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/cardinal.png" alt="cardinal" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/cast_ai.png" alt="cast_ai"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/cast_ai.png" alt="cast_ai" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/catawiki.png" alt="catawiki"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/catawiki.png" alt="catawiki" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/causely.png" alt="causely"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/causely.png" alt="causely" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/chainguard.png" alt="chainguard"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/chainguard.png" alt="chainguard" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/clickhouse.png" alt="clickhouse"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/clickhouse.png" alt="clickhouse" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/codejet.png" alt="codejet"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/codejet.png" alt="codejet" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/codiac.png" alt="codiac"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/codiac.png" alt="codiac" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/coralogix.png" alt="coralogix"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/coralogix.png" alt="coralogix" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/cribl.png" alt="cribl"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/cribl.png" alt="cribl" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/criteo.png" alt="criteo"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/criteo.png" alt="criteo" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/datadog.png" alt="datadog"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/datadog.png" alt="datadog" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/densify.png" alt="densify"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/densify.png" alt="densify" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/dynatrace.png" alt="dynatrace"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/dynatrace.png" alt="dynatrace" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/env0.png" alt="env0"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/env0.png" alt="env0" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/evolv.png" alt="evolv"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/evolv.png" alt="evolv" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/ewake.png" alt="ewake"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/ewake.png" alt="ewake" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/ford.png" alt="ford"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/ford.png" alt="ford" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/gable.png" alt="gable"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/gable.png" alt="gable" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/gatling.png" alt="gatling"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/gatling.png" alt="gatling" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/google.png" alt="google"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/google.png" alt="google" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/grafanalabs.png" alt="grafanalabs"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/grafanalabs.png" alt="grafanalabs" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/guhatek.png" alt="guhatek"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/guhatek.png" alt="guhatek" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/harness.png" alt="harness"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/harness.png" alt="harness" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/hcltech.png" alt="hcltech"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/hcltech.png" alt="hcltech" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/hyground.png" alt="hyground"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/hyground.png" alt="hyground" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/ilert.png" alt="ilert"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/ilert.png" alt="ilert" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/imply.png" alt="imply"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/imply.png" alt="imply" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/incident.png" alt="incident"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/incident.png" alt="incident" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/incidentfox.png" alt="incidentfox"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/incidentfox.png" alt="incidentfox" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/ing.png" alt="ing"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/ing.png" alt="ing" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/kerno.png" alt="kerno"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/kerno.png" alt="kerno" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/komodor.png" alt="komodor"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/komodor.png" alt="komodor" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/kyndryl.png" alt="kyndryl"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/kyndryl.png" alt="kyndryl" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/lightrun.png" alt="lightrun"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/lightrun.png" alt="lightrun" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/maibornwolff.png" alt="maibornwolff"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/maibornwolff.png" alt="maibornwolff" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/mezmo.png" alt="mezmo"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/mezmo.png" alt="mezmo" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/microsoft.png" alt="microsoft"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/microsoft.png" alt="microsoft" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/monday.png" alt="monday"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/monday.png" alt="monday" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/netdata.png" alt="netdata"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/netdata.png" alt="netdata" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/neubird.png" alt="neubird"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/neubird.png" alt="neubird" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/new relic.png" alt="new relic"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/new relic.png" alt="new relic" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/nofire.png" alt="nofire"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/nofire.png" alt="nofire" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/openobserve.png" alt="openobserve"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/openobserve.png" alt="openobserve" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/owu.png" alt="owu"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/owu.png" alt="owu" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/pagerduty.png" alt="pagerduty"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/pagerduty.png" alt="pagerduty" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/phoebe.png" alt="phoebe"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/phoebe.png" alt="phoebe" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/pomerium.png" alt="pomerium"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/pomerium.png" alt="pomerium" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/port.png" alt="port"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/port.png" alt="port" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/posthog.png" alt="posthog"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/posthog.png" alt="posthog" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/qubit.png" alt="qubit"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/qubit.png" alt="qubit" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/quesma.png" alt="quesma"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/quesma.png" alt="quesma" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/riversafe.png" alt="riversafe"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/riversafe.png" alt="riversafe" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/rootly.png" alt="rootly"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/rootly.png" alt="rootly" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/runwhen.png" alt="runwhen"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/runwhen.png" alt="runwhen" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/seattlesystems.png" alt="seattlesystems"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/seattlesystems.png" alt="seattlesystems" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/senser-tech.png" alt="senser-tech"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/senser-tech.png" alt="senser-tech" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/sentry.png" alt="sentry"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/sentry.png" alt="sentry" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/shipfox.png" alt="shipfox"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/shipfox.png" alt="shipfox" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/sidero.png" alt="sidero"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/sidero.png" alt="sidero" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/signadot.png" alt="signadot"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/signadot.png" alt="signadot" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/spacelift.png" alt="spacelift"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/spacelift.png" alt="spacelift" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/stackgen.png" alt="stackgen"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/stackgen.png" alt="stackgen" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/stigian.png" alt="stigian"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/stigian.png" alt="stigian" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/stormforge.png" alt="stormforge"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/stormforge.png" alt="stormforge" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/teleport.png" alt="teleport"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/teleport.png" alt="teleport" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/tracer.png" alt="tracer"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/tracer.png" alt="tracer" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/traversal.png" alt="traversal"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/traversal.png" alt="traversal" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/ultimosoft.png" alt="ultimosoft"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/ultimosoft.png" alt="ultimosoft" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/unpack.png" alt="unpack"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/unpack.png" alt="unpack" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/viam.png" alt="viam"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/viam.png" alt="viam" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/virtana.png" alt="virtana"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/virtana.png" alt="virtana" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/wildmoose.png" alt="wildmoose"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/wildmoose.png" alt="wildmoose" decoding="async"></div>
             
-            <div class="sponsor-carousel-item"><img src="./sponsors/xurrent.png" alt="xurrent"></div>
+            <div class="sponsor-carousel-item"><img src="./sponsors/xurrent.png" alt="xurrent" decoding="async"></div>
             
           </div>
         </div>
@@ -668,6 +684,11 @@ function showMorePastMeetup() {
           transition: filter 0.2s ease;
         }
         .sponsor-carousel-item img:hover { filter: grayscale(0%) brightness(1.1) contrast(0.9); }
+        @media (max-width: 767.98px) {
+          .sponsor-carousel-item { margin-right: 1.75rem; }
+          .sponsor-carousel-item img { height: 68px; max-width: 220px; }
+          .sponsor-carousel-wrap { padding: 16px 0 !important; } /* wrap padding is inline */
+        }
         @keyframes sponsor-scroll {
           0%   { transform: translate3d(0, 0, 0); }
           100% { transform: translate3d(-50%, 0, 0); }
@@ -986,8 +1007,16 @@ function showMorePastMeetup() {
         <div class="section-intro text-center text-white" style="margin-bottom:1rem;">or schedule a call below</div>
         <div class="sponsors-cta text-center">
 <!-- Calendly inline widget begin -->
-<div class="calendly-inline-widget" data-url="https://calendly.com/sreday/30min" style="min-width:320px;height:700px;"></div>
-<script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
+<div class="calendly-inline-widget d-none d-md-block" data-url="https://calendly.com/sreday/30min" style="min-width:320px;height:700px;"></div>
+<a class="btn btn-primary btn-lg w-100 d-md-none" href="https://calendly.com/sreday/30min" target="_blank" rel="noopener noreferrer">Schedule a call</a>
+<script>
+  // Phones get the button above instead of the 700px inline widget; skip widget.js there.
+  if (window.matchMedia('(min-width: 768px)').matches) {
+    var calendlyJs = document.createElement('script');
+    calendlyJs.src = 'https://assets.calendly.com/assets/external/widget.js'; calendlyJs.async = true;
+    document.head.appendChild(calendlyJs);
+  }
+</script>
 <!-- Calendly inline widget end -->
         </div>
       </div>
@@ -1005,166 +1034,166 @@ function showMorePastMeetup() {
         <div class="partner-carousel-wrap" style="background:#fff;border-radius:999px;box-shadow:0 4px 20px rgba(0,0,0,.07);padding:28px 0;margin:1.95rem auto 1.5rem;overflow:hidden;width:100%;">
           <div class="partner-carousel-track">
             
-            <div class="partner-carousel-item"><img src="./sponsors/AIFRONTIERS.png" alt="AIFRONTIERS"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/AIFRONTIERS.png" alt="AIFRONTIERS" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/aigeeks.png" alt="aigeeks"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/aigeeks.png" alt="aigeeks" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/arf.png" alt="arf"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/arf.png" alt="arf" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/aws porto.png" alt="aws porto"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/aws porto.png" alt="aws porto" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/beeechoo.png" alt="beeechoo"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/beeechoo.png" alt="beeechoo" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/chennaisre.png" alt="chennaisre"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/chennaisre.png" alt="chennaisre" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/cloud native lisbon.png" alt="cloud native lisbon"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/cloud native lisbon.png" alt="cloud native lisbon" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/cloud native porto.png" alt="cloud native porto"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/cloud native porto.png" alt="cloud native porto" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/devevents.png" alt="devevents"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/devevents.png" alt="devevents" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/DevIT-usa.png" alt="DevIT-usa"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/DevIT-usa.png" alt="DevIT-usa" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/devops braga.png" alt="devops braga"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/devops braga.png" alt="devops braga" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/devops lisbon.png" alt="devops lisbon"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/devops lisbon.png" alt="devops lisbon" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/dougbr.png" alt="dougbr"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/dougbr.png" alt="dougbr" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/filmforum.png" alt="filmforum"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/filmforum.png" alt="filmforum" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/gdg_london.png" alt="gdg_london"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/gdg_london.png" alt="gdg_london" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/hockeystick.png" alt="hockeystick"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/hockeystick.png" alt="hockeystick" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/houseofai.png" alt="houseofai"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/houseofai.png" alt="houseofai" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/IacConf.png" alt="IacConf"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/IacConf.png" alt="IacConf" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/jug-amsterdam.png" alt="jug-amsterdam"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/jug-amsterdam.png" alt="jug-amsterdam" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/k8sug.png" alt="k8sug"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/k8sug.png" alt="k8sug" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/kcd porto.png" alt="kcd porto"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/kcd porto.png" alt="kcd porto" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/ksug.ai.png" alt="ksug"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/ksug.ai.png" alt="ksug" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/kube-events.png" alt="kube-events"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/kube-events.png" alt="kube-events" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/kube_careers.png" alt="kube_careers"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/kube_careers.png" alt="kube_careers" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/kubespaces.png" alt="kubespaces"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/kubespaces.png" alt="kubespaces" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/leiria tech talks.png" alt="leiria tech talks"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/leiria tech talks.png" alt="leiria tech talks" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/lisbon genai community.png" alt="lisbon genai community"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/lisbon genai community.png" alt="lisbon genai community" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/NL_MEETUP.png" alt="NL_MEETUP"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/NL_MEETUP.png" alt="NL_MEETUP" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/oxfordknight.png" alt="oxfordknight"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/oxfordknight.png" alt="oxfordknight" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/packt.png" alt="packt"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/packt.png" alt="packt" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/rtfm.png" alt="rtfm"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/rtfm.png" alt="rtfm" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/srecommunitycoimbatore.png" alt="srecommunitycoimbatore"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/srecommunitycoimbatore.png" alt="srecommunitycoimbatore" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/srehyderabadi.png" alt="srehyderabadi"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/srehyderabadi.png" alt="srehyderabadi" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/stackroute.png" alt="stackroute"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/stackroute.png" alt="stackroute" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/starterai.png" alt="starterai"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/starterai.png" alt="starterai" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/synvert xgeeks.png" alt="synvert xgeeks"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/synvert xgeeks.png" alt="synvert xgeeks" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/ttthinking.png" alt="ttthinking"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/ttthinking.png" alt="ttthinking" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/uhub.png" alt="uhub"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/uhub.png" alt="uhub" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/viseu tech talks.png" alt="viseu tech talks"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/viseu tech talks.png" alt="viseu tech talks" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/withjamie.png" alt="withjamie"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/withjamie.png" alt="withjamie" decoding="async"></div>
             
             
-            <div class="partner-carousel-item"><img src="./sponsors/AIFRONTIERS.png" alt="AIFRONTIERS"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/AIFRONTIERS.png" alt="AIFRONTIERS" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/aigeeks.png" alt="aigeeks"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/aigeeks.png" alt="aigeeks" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/arf.png" alt="arf"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/arf.png" alt="arf" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/aws porto.png" alt="aws porto"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/aws porto.png" alt="aws porto" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/beeechoo.png" alt="beeechoo"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/beeechoo.png" alt="beeechoo" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/chennaisre.png" alt="chennaisre"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/chennaisre.png" alt="chennaisre" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/cloud native lisbon.png" alt="cloud native lisbon"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/cloud native lisbon.png" alt="cloud native lisbon" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/cloud native porto.png" alt="cloud native porto"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/cloud native porto.png" alt="cloud native porto" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/devevents.png" alt="devevents"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/devevents.png" alt="devevents" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/DevIT-usa.png" alt="DevIT-usa"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/DevIT-usa.png" alt="DevIT-usa" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/devops braga.png" alt="devops braga"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/devops braga.png" alt="devops braga" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/devops lisbon.png" alt="devops lisbon"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/devops lisbon.png" alt="devops lisbon" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/dougbr.png" alt="dougbr"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/dougbr.png" alt="dougbr" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/filmforum.png" alt="filmforum"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/filmforum.png" alt="filmforum" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/gdg_london.png" alt="gdg_london"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/gdg_london.png" alt="gdg_london" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/hockeystick.png" alt="hockeystick"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/hockeystick.png" alt="hockeystick" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/houseofai.png" alt="houseofai"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/houseofai.png" alt="houseofai" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/IacConf.png" alt="IacConf"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/IacConf.png" alt="IacConf" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/jug-amsterdam.png" alt="jug-amsterdam"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/jug-amsterdam.png" alt="jug-amsterdam" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/k8sug.png" alt="k8sug"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/k8sug.png" alt="k8sug" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/kcd porto.png" alt="kcd porto"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/kcd porto.png" alt="kcd porto" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/ksug.ai.png" alt="ksug"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/ksug.ai.png" alt="ksug" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/kube-events.png" alt="kube-events"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/kube-events.png" alt="kube-events" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/kube_careers.png" alt="kube_careers"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/kube_careers.png" alt="kube_careers" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/kubespaces.png" alt="kubespaces"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/kubespaces.png" alt="kubespaces" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/leiria tech talks.png" alt="leiria tech talks"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/leiria tech talks.png" alt="leiria tech talks" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/lisbon genai community.png" alt="lisbon genai community"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/lisbon genai community.png" alt="lisbon genai community" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/NL_MEETUP.png" alt="NL_MEETUP"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/NL_MEETUP.png" alt="NL_MEETUP" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/oxfordknight.png" alt="oxfordknight"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/oxfordknight.png" alt="oxfordknight" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/packt.png" alt="packt"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/packt.png" alt="packt" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/rtfm.png" alt="rtfm"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/rtfm.png" alt="rtfm" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/srecommunitycoimbatore.png" alt="srecommunitycoimbatore"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/srecommunitycoimbatore.png" alt="srecommunitycoimbatore" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/srehyderabadi.png" alt="srehyderabadi"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/srehyderabadi.png" alt="srehyderabadi" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/stackroute.png" alt="stackroute"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/stackroute.png" alt="stackroute" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/starterai.png" alt="starterai"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/starterai.png" alt="starterai" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/synvert xgeeks.png" alt="synvert xgeeks"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/synvert xgeeks.png" alt="synvert xgeeks" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/ttthinking.png" alt="ttthinking"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/ttthinking.png" alt="ttthinking" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/uhub.png" alt="uhub"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/uhub.png" alt="uhub" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/viseu tech talks.png" alt="viseu tech talks"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/viseu tech talks.png" alt="viseu tech talks" decoding="async"></div>
             
-            <div class="partner-carousel-item"><img src="./sponsors/withjamie.png" alt="withjamie"></div>
+            <div class="partner-carousel-item"><img src="./sponsors/withjamie.png" alt="withjamie" decoding="async"></div>
             
           </div>
         </div>
@@ -1182,6 +1211,11 @@ function showMorePastMeetup() {
           object-fit: contain; transition: filter 0.2s ease;
         }
         .partner-carousel-item img:hover { filter: grayscale(0%) brightness(1.1) contrast(0.9); }
+        @media (max-width: 767.98px) {
+          .partner-carousel-item { margin-right: 1.75rem; }
+          .partner-carousel-item img { height: 68px; max-width: 220px; }
+          .partner-carousel-wrap { padding: 16px 0 !important; } /* wrap padding is inline */
+        }
         @keyframes partner-scroll {
           0%   { transform: translate3d(0, 0, 0); }
           100% { transform: translate3d(-50%, 0, 0); }
