@@ -67,6 +67,10 @@
     .check li .where:hover { color: var(--accent); border-bottom-color: var(--accent); }
     .check li .more { color: #999; font-style: italic; grid-column: 2 / -1; }
     @media (max-width: 720px) { .check li { grid-template-columns: 12px 1fr; } .check li .where { grid-column: 2; } .check li span:last-child { grid-column: 2; } }
+    details.past { margin-top: 18px; }
+    details.past summary { cursor: pointer; color: #666; font-size: .9rem; margin-bottom: 12px; }
+    details.past summary::marker { color: var(--accent); }
+    details.past .check-head small { color: #999; font-size: .8rem; margin-left: 4px; }
     details.ladder { margin-top: 18px; font-size: .85rem; color: #555; }
     details.ladder summary { cursor: pointer; color: #666; }
     details.ladder table { margin-top: 0; background: #fff; border: 1px solid #e6e6e6; border-radius: 10px; overflow: hidden; font-size: .82rem; }
@@ -169,13 +173,14 @@
       
     </div>
     
+    
   </section>
   
 
   <div class="sisters">
     <a href="https://sreday.com/status/" style="--c: #713660">SREday status</a><a href="https://llmday.com/status/" style="--c: #26986A">LLMday status</a>
   </div>
-  <div class="foot">Generated 2026-09-13 22:15 UTC at build time. Organizer tool, not linked from the site.</div>
+  <div class="foot">Generated 2026-09-13 22:31 UTC at build time. Organizer tool, not linked from the site.</div>
 </main>
 <script>
 (function () {
