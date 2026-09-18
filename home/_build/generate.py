@@ -187,7 +187,7 @@ for _page, _folder in (("host.html", "host"), ("ambassadorship.html", "ambassado
 print(DIVIDER)
 with open(BASE_FOLDER + "/404.html", "w", encoding="utf-8") as f:
     print("Writing out 404.html")
-    f.write(env.get_template("404.html").render(**{**context, "brand_color": "#E2971D", "redirects": []}))
+    f.write(env.get_template("404.html").render(**{**context, "brand_color": "#E2971D", "punchline": "This page laid an egg.", "redirects": []}))
 
 # /404-index.json (Marek 2026-09-18): what the 404 page may suggest ("Did you mean ...") or, for harmless slips,
 # redirect to. Event folders of home/metadata.yml (upcoming first, in list order) + the pages each one built
