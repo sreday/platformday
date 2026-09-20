@@ -37,6 +37,13 @@ events:
     size: medium
     youtube_playlist:
 
+  - name: PLATFORMday San Francisco 2026 Q4
+    location: Sentry, San Francisco, California, United States
+    photo_url: ./assets/images/events/platformday-2026-san-francisco-q4.png
+    url: ./2026-san-francisco-q4/
+    size: medium
+    youtube_playlist:
+
 events_past:
 
 meetups: []
