@@ -9,7 +9,7 @@ event_state: before
 date_string: "November 6, 2026"
 location_string: "Sentry, San Francisco, California, USA"
 # get this from the event url (empty until the Luma event exists = "Tickets will be available soon")
-luma_evt:
+luma_evt: evt-1TVXI2HPW5Ah0pL
 cfp_url: https://cfp.ninja/e/platformday-2026-san-francisco-q4
 
 # the number of tracks needs to be the same per day
