@@ -201,6 +201,9 @@
     html.tabbed .regs, html.tabbed .added, html.tabbed .spons, html.tabbed .checks, html.tabbed .waitlist { display: none; margin-top: 22px; }
     html.tabbed .regs.is-active, html.tabbed .added.is-active, html.tabbed .spons.is-active, html.tabbed .checks.is-active, html.tabbed .waitlist.is-active { display: block; }
     html.tabbed .regs h2, html.tabbed .added h2, html.tabbed .spons h2, html.tabbed .checks h2, html.tabbed .waitlist h2 { display: none; }
+    /* A short tab (an empty waitlist, two sponsors) must not shrink the page and yank the scroll position back up (Marek
+       2026-09-22): every panel keeps at least the height of a well-filled Speakers list */
+    html.tabbed .regs.is-active, html.tabbed .added.is-active, html.tabbed .spons.is-active, html.tabbed .checks.is-active, html.tabbed .waitlist.is-active { min-height: 640px; }
     /* Waitlist tab (Marek 2026-09-22): speakers who applied after a lineup was full; search + a show-placed toggle */
     .wl-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; margin: 0 0 12px; }
     .wl-search { flex: 1 1 260px; max-width: 420px; padding: 10px 14px; border: 1px solid #ddd; border-radius: 999px; font: inherit; font-size: .95rem; outline: none; background: #fff; }
@@ -405,8 +408,8 @@
 
   <section class="regs">
     <h2>Registrations</h2>
-    <div class="fresh" data-built="2026-09-22T17:14:55+00:00" title="Not live: the numbers refresh every time the website is built">
-      <span class="pill fresh-pill">Last build</span><span class="fresh-text">2026-09-22 17:14 UTC</span>
+    <div class="fresh" data-built="2026-09-22T17:16:07+00:00" title="Not live: the numbers refresh every time the website is built">
+      <span class="pill fresh-pill">Last build</span><span class="fresh-text">2026-09-22 17:16 UTC</span>
     </div>
     
     
@@ -641,8 +644,30 @@
   </section>
   <section class="waitlist">
     <h2>Waitlist</h2>
-    <div class="sub">Speakers who applied after a lineup was full, newest first. As of the last build; someone disappears once they are in a later PLATFORMday lineup.</div>
-    <div class="added-note">The waitlist feed could not be read in this build (The read operation timed out).</div>
+    <div class="sub">Speakers who applied after a lineup was full, newest first: <strong>1</strong> waiting. As of the last build; someone disappears once they are in a later PLATFORMday lineup.</div>
+    
+    
+    <div class="wl-tools">
+      <input type="search" class="wl-search" id="wl-search" placeholder="Search name, company, city, conference, talk" autocomplete="off">
+      <span class="wl-count" id="wl-count"></span>
+      
+    </div>
+    <div class="wl" id="wl">
+      <table>
+        <thead><tr><th>When</th><th>Speaker</th><th>Waitlisted for</th><th>Talk</th></tr></thead>
+        <tbody>
+        
+        <tr class="wl-row" data-s="mark pawlikowski bongo bongo platformday austin 2026 q4 austin">
+          <td class="wl-when">22 Sep 2026</td>
+          <td class="wl-who"><a href="https://www.linkedin.com/in/marek-pawlikowski/" target="_blank" rel="noopener">Mark</a><small>Pawlikowski</small></td>
+          <td class="wl-for"><a href="https://platformday.com/2026-austin-q4/">PLATFORMday Austin 2026 Q4</a><small>Austin · October 14, 2026</small></td>
+          <td class="wl-talk">Bongo BOngo</td>
+        </tr>
+        
+        </tbody>
+      </table>
+      <div class="wl-empty" id="wl-empty" hidden>Nobody matches that.</div>
+    </div>
     
   </section>
   <section class="spons">
@@ -684,7 +709,7 @@
   </section>
   
 
-  <div class="foot">Generated 2026-09-22 17:14 UTC at build time. Organizer tool, not linked from the site.</div>
+  <div class="foot">Generated 2026-09-22 17:16 UTC at build time. Organizer tool, not linked from the site.</div>
 </main>
 <script>
 (function () {                                     // Registrations / Speakers / Sponsors / Data checks as tabs (Marek 2026-09-17)
