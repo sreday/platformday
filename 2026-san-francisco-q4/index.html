@@ -248,10 +248,18 @@
         <p class="ac-blurb"><strong>PLATFORMday</strong> is a worldwide series of community events for engineers who build the platforms modern software runs on. Across cities around the world, we bring together people working in platform engineering, developer experience, infrastructure and cloud native tooling to share real-world experience, connect with their local community and explore how these disciplines are evolving in the age of AI.</p>
         
         <h5 class="ac-topics-heading">Companies presenting:</h5>
-        <p class="ac-companies">Faros, New Premise, Splunk (Cisco)</p>
+        <p class="ac-companies">Faros, New Premise, Splunk (Cisco), Wipro</p>
         
         
         <h5 class="ac-topics-heading">Topics so far:</h5>
+        
+        <div class="ac-topic-group">
+          <div class="ac-topic-name">Kubernetes & Cloud Native</div>
+          <ul class="ac-topic-talks">
+            <li><a href="Prasad_MK_Wipro_Your_Logs_Vanished_and_Nothing_Errored_Three_Ways_Kubernetes_Drops_Logs_Silently.html#speakers-section">Your Logs Vanished and Nothing Errored: Three Ways Kubernetes Drops Logs Silently</a></li>
+            
+          </ul>
+        </div>
         
         <div class="ac-topic-group">
           <div class="ac-topic-name">DevOps & Automation</div>
@@ -737,7 +745,33 @@
 
       <div class="col mb-4">
         <div class="card rounded">
-          <a href="#modal-speaker-3" data-bs-toggle="modal" data-bs-target="#modal-speaker-3"><img src="../speakers/Sergey Sergeev.png" class="card-img-top rounded-0" alt=""></a>
+          <a href="#modal-speaker-3" data-bs-toggle="modal" data-bs-target="#modal-speaker-3"><img src="../speakers/Prasad M.K..png" class="card-img-top rounded-0" alt=""></a>
+          <div class="card-body">
+            <h5 class="card-title mb-2">Prasad M.K.</h5>
+            <div class="card-text mb-3">
+              <div class="meta">Wipro</div>
+            </div><!--//card-text-->
+            <div class="event-card-buttons">
+              <a href="./Prasad_MK_Wipro_Your_Logs_Vanished_and_Nothing_Errored_Three_Ways_Kubernetes_Drops_Logs_Silently#speakers-section" class="event-read-more-btn">Read more</a>
+              
+            </div>
+          </div><!--//card-->
+          <div class="card-footer text-muted">
+            <ul class="social-list list-inline mb-0">
+              
+              <li class="list-inline-item"><a  href="https://www.linkedin.com/in/prasad-m-k/"><i class="fab fa-linkedin-in fa-fw"></i></a></li>
+              
+              
+            </ul><!--//social-list-->
+          </div>
+        </div><!--//card-->
+      </div><!--//col-->
+
+      
+
+      <div class="col mb-4">
+        <div class="card rounded">
+          <a href="#modal-speaker-4" data-bs-toggle="modal" data-bs-target="#modal-speaker-4"><img src="../speakers/Sergey Sergeev.png" class="card-img-top rounded-0" alt=""></a>
           <div class="card-body">
             <h5 class="card-title mb-2">Sergey Sergeev</h5>
             <div class="card-text mb-3">
@@ -1279,6 +1313,49 @@ You'll leave with the four-operation merge loop and a checklist of failure modes
 
 <!-- Modal Speaker 3 -->
 <div class="modal modal-speaker modal-speaker-3" id="modal-speaker-3" tabindex="-1" role="dialog" aria-labelledby="speaker-3-ModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-body p-0">
+              <button type="button" class="modal-close-btn" data-bs-dismiss="modal" aria-label="Close">&times;</button>
+              <div class="theme-bg-light p-5">
+                  <div class="row">
+                      <div class="col-12 col-md-auto text-center">
+                          <img class="profile-image mb-3 mb-md-0 me-md-4 rounded-circle mx-auto" src="../speakers/Prasad M.K..png" alt="" />
+                      </div>
+
+                      <div class="col text-center text-md-start mx-auto">
+                          <h2 class="name mb-2">Prasad M.K.</h2>
+                          <div class="meta mb-2">Wipro</div>
+                          <ul class="social-list list-inline mb-0">
+                            
+                            <li class="list-inline-item"><a  href="https://www.linkedin.com/in/prasad-m-k/"><i class="fab fa-linkedin-in fa-fw"></i></a></li>
+                            
+                            
+                          </ul><!--//social-list-->
+                      </div><!--//col-->
+                  </div><!--//row-->
+              </div>
+              <div class="talk-title-bar">Your Logs Vanished and Nothing Errored: Three Ways Kubernetes Drops Logs Silently</div>
+              <div class="desc p-2 p-lg-3">
+                <h5 style="color:var(--brand);font-weight:700;">Abstract</h5>
+                <p><p>Kubernetes loses container logs in three ways that never reach the application: kubelet rotation lag under heavy writes, disk-pressure eviction that deletes a pod's log directory, and a race between rotation and the log shipper's read cycle. Each one is documented in Kubernetes and Fluent Bit issue trackers (#110630, #134324, #10414), but nobody ties them together. I'll show how application-level sequence markers make these gaps visible, and how to classify each gap by cause using kubelet events and node conditions. Attendees leave with the settings to tune and a simple way to detect loss in their own pipelines.</p></p>
+              </div>
+              <div class="desc p-2 p-lg-3">
+                <p></p>
+              </div>
+
+              <div class="desc p-2 p-lg-3">
+                <h5 style="color:var(--brand);font-weight:700;">Bio</h5>
+                <p><p>Prasad M.K. is a Cloud Solution Architect and Full Stack SRE with 25+ years of experience engineering high-availability systems for Fortune 500 accounts. He specializes in Kubernetes, large-scale data pipelines (Kafka/Pulsar), and agentic AI architectures on AWS Bedrock. Prasad is the author of DAY ONE AI and regularly publishes research on AI agent governance and system design.</p></p>
+              </div>
+
+          </div><!--//modal-body-->
+      </div><!--//modal-content-->
+  </div><!--//modal-dialog-->
+</div><!--//modal-->
+
+<!-- Modal Speaker 4 -->
+<div class="modal modal-speaker modal-speaker-4" id="modal-speaker-4" tabindex="-1" role="dialog" aria-labelledby="speaker-4-ModalLabel" aria-hidden="true">
   <div class="modal-dialog">
       <div class="modal-content">
           <div class="modal-body p-0">
