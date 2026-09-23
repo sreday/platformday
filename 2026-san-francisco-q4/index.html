@@ -247,6 +247,29 @@
       <div class="ac-panel-inner">
         <p class="ac-blurb"><strong>PLATFORMday</strong> is a worldwide series of community events for engineers who build the platforms modern software runs on. Across cities around the world, we bring together people working in platform engineering, developer experience, infrastructure and cloud native tooling to share real-world experience, connect with their local community and explore how these disciplines are evolving in the age of AI.</p>
         
+        <h5 class="ac-topics-heading">Companies presenting:</h5>
+        <p class="ac-companies">Faros, New Premise</p>
+        
+        
+        <h5 class="ac-topics-heading">Topics so far:</h5>
+        
+        <div class="ac-topic-group">
+          <div class="ac-topic-name">DevOps & Automation</div>
+          <ul class="ac-topic-talks">
+            <li><a href="Miko_Pawlikowski_SRE_Author_Keynote_7_Deadly_Traps_ofSRE.html#speakers-section">7 Deadly Traps of SRE</a></li>
+            
+          </ul>
+        </div>
+        
+        <div class="ac-topic-group">
+          <div class="ac-topic-name">AI for Developer Platforms</div>
+          <ul class="ac-topic-talks">
+            <li><a href="Felipe_Sanz_New_Premise_The_Exam_Moved_to_Monday_Agent_Memory_That_Knows_What_to_Forget.html#speakers-section">The Exam Moved to Monday: Agent Memory That Knows What to Forget</a></li>
+            <li><a href="Byron_Ellis_Faros_Preventing_a_Software_Dark_Age.html#speakers-section">Preventing a Software Dark Age</a></li>
+            
+          </ul>
+        </div>
+        
         
         
         <p class="ac-more-soon">We'll announce more talks soon, stay tuned!</p>
@@ -630,6 +653,58 @@
   <div class="container">
     <h3 class="section-heading text-center mb-3">Speakers</h3>
     <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5">
+
+      
+
+      <div class="col mb-4">
+        <div class="card rounded">
+          <a href="#modal-speaker-2" data-bs-toggle="modal" data-bs-target="#modal-speaker-2"><img src="../speakers/Byron Ellis.png" class="card-img-top rounded-0" alt=""></a>
+          <div class="card-body">
+            <h5 class="card-title mb-2">Byron Ellis</h5>
+            <div class="card-text mb-3">
+              <div class="meta">Faros</div>
+            </div><!--//card-text-->
+            <div class="event-card-buttons">
+              <a href="./Byron_Ellis_Faros_Preventing_a_Software_Dark_Age#speakers-section" class="event-read-more-btn">Read more</a>
+              
+            </div>
+          </div><!--//card-->
+          <div class="card-footer text-muted">
+            <ul class="social-list list-inline mb-0">
+              
+              <li class="list-inline-item"><a  href="https://www.linkedin.com/in/byellis/"><i class="fab fa-linkedin-in fa-fw"></i></a></li>
+              
+              
+            </ul><!--//social-list-->
+          </div>
+        </div><!--//card-->
+      </div><!--//col-->
+
+      
+
+      <div class="col mb-4">
+        <div class="card rounded">
+          <a href="#modal-speaker-1" data-bs-toggle="modal" data-bs-target="#modal-speaker-1"><img src="../speakers/Felipe Sanz.png" class="card-img-top rounded-0" alt=""></a>
+          <div class="card-body">
+            <h5 class="card-title mb-2">Felipe Sanz</h5>
+            <div class="card-text mb-3">
+              <div class="meta">New Premise</div>
+            </div><!--//card-text-->
+            <div class="event-card-buttons">
+              <a href="./Felipe_Sanz_New_Premise_The_Exam_Moved_to_Monday_Agent_Memory_That_Knows_What_to_Forget#speakers-section" class="event-read-more-btn">Read more</a>
+              
+            </div>
+          </div><!--//card-->
+          <div class="card-footer text-muted">
+            <ul class="social-list list-inline mb-0">
+              
+              <li class="list-inline-item"><a  href="https://www.linkedin.com/in/felipesanze/"><i class="fab fa-linkedin-in fa-fw"></i></a></li>
+              
+              
+            </ul><!--//social-list-->
+          </div>
+        </div><!--//card-->
+      </div><!--//col-->
 
       
 
@@ -1085,6 +1160,95 @@ document.getElementById('lead-form').addEventListener('submit', function(ev) {
   }
 </style>
 
+
+<!-- Modal Speaker 1 -->
+<div class="modal modal-speaker modal-speaker-1" id="modal-speaker-1" tabindex="-1" role="dialog" aria-labelledby="speaker-1-ModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-body p-0">
+              <button type="button" class="modal-close-btn" data-bs-dismiss="modal" aria-label="Close">&times;</button>
+              <div class="theme-bg-light p-5">
+                  <div class="row">
+                      <div class="col-12 col-md-auto text-center">
+                          <img class="profile-image mb-3 mb-md-0 me-md-4 rounded-circle mx-auto" src="../speakers/Felipe Sanz.png" alt="" />
+                      </div>
+
+                      <div class="col text-center text-md-start mx-auto">
+                          <h2 class="name mb-2">Felipe Sanz</h2>
+                          <div class="meta mb-2">New Premise</div>
+                          <ul class="social-list list-inline mb-0">
+                            
+                            <li class="list-inline-item"><a  href="https://www.linkedin.com/in/felipesanze/"><i class="fab fa-linkedin-in fa-fw"></i></a></li>
+                            
+                            
+                          </ul><!--//social-list-->
+                      </div><!--//col-->
+                  </div><!--//row-->
+              </div>
+              <div class="talk-title-bar">The Exam Moved to Monday: Agent Memory That Knows What to Forget</div>
+              <div class="desc p-2 p-lg-3">
+                <h5 style="color:var(--brand);font-weight:700;">Abstract</h5>
+                <p><p>Most agent memory starts as an append-only log: embed what the user said, store it, retrieve the nearest matches later. Then a student tells their AI tutor the midterm is Thursday, and a week later says it moved to Monday. Both facts are now in the vector store, and similarity search has no way to know the second cancels the first.
+This talk walks through the long-term memory I designed and built for an AI tutor used by university students. Every extracted fact ends in one of four operations: add, update, delete, or ignore. Vector similarity only finds the closest existing memory. A small LLM picks the operation, because embeddings show that two sentences concern the same exam and say nothing about which is still true.
+I'll cover the rest of the pipeline too: a cheap router that skips the nine turns in ten with nothing worth remembering, six education-specific memory categories, twenty recalled candidates reranked to five, and a chat that keeps answering when memory fails. I'll also cover the failure modes this design brings, including two data stores written without a transaction and background writes that a deploy can drop.
+You'll leave with the four-operation merge loop and a checklist of failure modes for your own memory layer.</p></p>
+              </div>
+              <div class="desc p-2 p-lg-3">
+                <p></p>
+              </div>
+
+              <div class="desc p-2 p-lg-3">
+                <h5 style="color:var(--brand);font-weight:700;">Bio</h5>
+                <p><p>Felipe Sanz is the founder of <a href="https://newpremise.ai/">New Premise</a>, an Austin consultancy that helps companies put AI to work one department at a time and measures the result in return on investment. Before New Premise, he designed and built the long-term memory system and the evaluation process for an AI tutor used by university students, following three and a half years at Celonis building machine learning for the global go-to-market organization. Felipe has also volunteered with Austin AI Hub, building AI tools for nonprofits that fight human trafficking, and guest lectured on advanced databases at IE University. He writes about AI at felipe-sanz.com.</p></p>
+              </div>
+
+          </div><!--//modal-body-->
+      </div><!--//modal-content-->
+  </div><!--//modal-dialog-->
+</div><!--//modal-->
+
+<!-- Modal Speaker 2 -->
+<div class="modal modal-speaker modal-speaker-2" id="modal-speaker-2" tabindex="-1" role="dialog" aria-labelledby="speaker-2-ModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-body p-0">
+              <button type="button" class="modal-close-btn" data-bs-dismiss="modal" aria-label="Close">&times;</button>
+              <div class="theme-bg-light p-5">
+                  <div class="row">
+                      <div class="col-12 col-md-auto text-center">
+                          <img class="profile-image mb-3 mb-md-0 me-md-4 rounded-circle mx-auto" src="../speakers/Byron Ellis.png" alt="" />
+                      </div>
+
+                      <div class="col text-center text-md-start mx-auto">
+                          <h2 class="name mb-2">Byron Ellis</h2>
+                          <div class="meta mb-2">Faros</div>
+                          <ul class="social-list list-inline mb-0">
+                            
+                            <li class="list-inline-item"><a  href="https://www.linkedin.com/in/byellis/"><i class="fab fa-linkedin-in fa-fw"></i></a></li>
+                            
+                            
+                          </ul><!--//social-list-->
+                      </div><!--//col-->
+                  </div><!--//row-->
+              </div>
+              <div class="talk-title-bar">Preventing a Software Dark Age</div>
+              <div class="desc p-2 p-lg-3">
+                <h5 style="color:var(--brand);font-weight:700;">Abstract</h5>
+                <p><p>As organizations adopt agentic engineering, planning, iteration, and PR reviews are all occurring via agents without much in the way of visibility. Architectural decisions and design context are moving transient AI session transcripts rather than durable engineering artifacts that have been the foundation of developing reliable software. It’s not that the work of design and review isn’t happening, it’s that we’re in a dark age where the record of it is deleted due to a 30 day retention policy because unlike traditional SDLC artifacts we can’t be sure it doesn’t contain sensitive data. In this talk we’ll cover some ideas on how we as an industry can start to dig into this session data not only to understand ROI but also perhaps to generate new durable artifacts that actually let us produce more reliable software than we could before.</p></p>
+              </div>
+              <div class="desc p-2 p-lg-3">
+                <p></p>
+              </div>
+
+              <div class="desc p-2 p-lg-3">
+                <h5 style="color:var(--brand);font-weight:700;">Bio</h5>
+                <p><p>Byron recently joined Faros.ai with the suitably ambiguous title “Member of Technical Staff” to build tools that help organizations fully adopt agentic development practices after going through the process first hand. He came to Faros.ai from Linked in where he was a Principal Staff Engineer at LinkedIn where he focused on large scale Data Infrastructure projects. Prior to that he spent time in Google Cloud on the BigQuery and Dataflow teams as well as YouTube where he spent several years working on Trust and Safety infrastructure.</p></p>
+              </div>
+
+          </div><!--//modal-body-->
+      </div><!--//modal-content-->
+  </div><!--//modal-dialog-->
+</div><!--//modal-->
 
 <!-- Modal Speaker 0 -->
 <div class="modal modal-speaker modal-speaker-0" id="modal-speaker-0" tabindex="-1" role="dialog" aria-labelledby="speaker-0-ModalLabel" aria-hidden="true">
