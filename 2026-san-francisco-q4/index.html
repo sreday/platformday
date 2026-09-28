@@ -248,7 +248,7 @@
         <p class="ac-blurb"><strong>PLATFORMday</strong> is a worldwide series of community events for engineers who build the platforms modern software runs on. Across cities around the world, we bring together people working in platform engineering, developer experience, infrastructure and cloud native tooling to share real-world experience, connect with their local community and explore how these disciplines are evolving in the age of AI.</p>
         
         <h5 class="ac-topics-heading">Companies presenting:</h5>
-        <p class="ac-companies">Faros, New Premise, Splunk (Cisco), Wipro</p>
+        <p class="ac-companies">Amazon, Faros, New Premise, Splunk (Cisco), Wipro</p>
         
         
         <h5 class="ac-topics-heading">Topics so far:</h5>
@@ -270,6 +270,14 @@
         </div>
         
         <div class="ac-topic-group">
+          <div class="ac-topic-name">APIs, Tooling & Integrations</div>
+          <ul class="ac-topic-talks">
+            <li><a href="Arunkumar_Mathiyazhagan_Amazon_Ghost_APIs__Why_Your_Deprecated_Endpoints_Are_an_Attackers_Best_Frien.html#speakers-section">Ghost APIs — Why Your Deprecated Endpoints Are an Attacker&#39;s Best Friend</a></li>
+            
+          </ul>
+        </div>
+        
+        <div class="ac-topic-group">
           <div class="ac-topic-name">AI for Developer Platforms</div>
           <ul class="ac-topic-talks">
             <li><a href="Felipe_Sanz_New_Premise_The_Exam_Moved_to_Monday_Agent_Memory_That_Knows_What_to_Forget.html#speakers-section">The Exam Moved to Monday: Agent Memory That Knows What to Forget</a></li>
@@ -280,8 +288,6 @@
         </div>
         
         
-        
-        <p class="ac-more-soon">We'll announce more talks soon, stay tuned!</p>
         
         <button class="ac-close-row" type="button" onclick="acClose()" aria-label="Close About the conference">
           <span class="ac-close-chip">Close
@@ -662,6 +668,32 @@
   <div class="container">
     <h3 class="section-heading text-center mb-3">Speakers</h3>
     <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5">
+
+      
+
+      <div class="col mb-4">
+        <div class="card rounded">
+          <a href="#modal-speaker-5" data-bs-toggle="modal" data-bs-target="#modal-speaker-5"><img src="../speakers/Arunkumar Mathiyazhagan.png" class="card-img-top rounded-0" alt=""></a>
+          <div class="card-body">
+            <h5 class="card-title mb-2">Arunkumar Mathiyazhagan</h5>
+            <div class="card-text mb-3">
+              <div class="meta">Amazon</div>
+            </div><!--//card-text-->
+            <div class="event-card-buttons">
+              <a href="./Arunkumar_Mathiyazhagan_Amazon_Ghost_APIs__Why_Your_Deprecated_Endpoints_Are_an_Attackers_Best_Frien#speakers-section" class="event-read-more-btn">Read more</a>
+              
+            </div>
+          </div><!--//card-->
+          <div class="card-footer text-muted">
+            <ul class="social-list list-inline mb-0">
+              
+              <li class="list-inline-item"><a  href="https://www.linkedin.com/in/auhuman/"><i class="fab fa-linkedin-in fa-fw"></i></a></li>
+              
+              
+            </ul><!--//social-list-->
+          </div>
+        </div><!--//card-->
+      </div><!--//col-->
 
       
 
@@ -1393,6 +1425,53 @@ In twenty-five minutes I’ll walk the architecture as lived experience: what br
               <div class="desc p-2 p-lg-3">
                 <h5 style="color:var(--brand);font-weight:700;">Bio</h5>
                 <p><p>Sergey Sergeev is a Senior Staff Engineering Architect for Observability for AI at Splunk (Cisco). He took AI Agent Monitoring from hackathon demo to GA, contributes to the OpenTelemetry GenAI Semantic Conventions SIG, and designs production instrumentation and evaluation systems for agentic workloads. He holds two US patents and has 20+ years building high-scale distributed data systems.</p></p>
+              </div>
+
+          </div><!--//modal-body-->
+      </div><!--//modal-content-->
+  </div><!--//modal-dialog-->
+</div><!--//modal-->
+
+<!-- Modal Speaker 5 -->
+<div class="modal modal-speaker modal-speaker-5" id="modal-speaker-5" tabindex="-1" role="dialog" aria-labelledby="speaker-5-ModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-body p-0">
+              <button type="button" class="modal-close-btn" data-bs-dismiss="modal" aria-label="Close">&times;</button>
+              <div class="theme-bg-light p-5">
+                  <div class="row">
+                      <div class="col-12 col-md-auto text-center">
+                          <img class="profile-image mb-3 mb-md-0 me-md-4 rounded-circle mx-auto" src="../speakers/Arunkumar Mathiyazhagan.png" alt="" />
+                      </div>
+
+                      <div class="col text-center text-md-start mx-auto">
+                          <h2 class="name mb-2">Arunkumar Mathiyazhagan</h2>
+                          <div class="meta mb-2">Amazon</div>
+                          <ul class="social-list list-inline mb-0">
+                            
+                            <li class="list-inline-item"><a  href="https://www.linkedin.com/in/auhuman/"><i class="fab fa-linkedin-in fa-fw"></i></a></li>
+                            
+                            
+                          </ul><!--//social-list-->
+                      </div><!--//col-->
+                  </div><!--//row-->
+              </div>
+              <div class="talk-title-bar">Ghost APIs — Why Your Deprecated Endpoints Are an Attacker's Best Friend</div>
+              <div class="desc p-2 p-lg-3">
+                <h5 style="color:var(--brand);font-weight:700;">Abstract</h5>
+                <p><p>Every API team deprecates endpoints, but almost none fully kill the traffic. Across complex distributed systems, deprecated endpoints frequently remain reachable long after documentation is removed—creating a sprawling, invisible attack surface hiding in plain sight. We call these Ghost APIs.
+In this session, I will walk through how to identify, measure, and systematically eliminate that attack surface—developing a security pattern that establishes a secure-by-default reference standard across distributed services. Attendees will learn:
+- How Ghost APIs form and why they persist even in mature, well-governed API platforms.
+- A practical playbook for API deprecation that combines continuous traffic analytics, client outreach, and secure-by-default interceptors.
+- How to build deprecation hygiene into your CI/CD pipeline so Ghost APIs never accumulate again.</p></p>
+              </div>
+              <div class="desc p-2 p-lg-3">
+                <p></p>
+              </div>
+
+              <div class="desc p-2 p-lg-3">
+                <h5 style="color:var(--brand);font-weight:700;">Bio</h5>
+                <p><p>Senior Software Engineer at AWS Athena with 16+ years of experience leading teams and architecting hyperscaler-scale distributed systems serving 30k TPS across 35 AWS regions. Deep technical expertise in low-level memory and IO optimization, serverless compute platforms (Firecracker microVMs), and Java/Python/Go/Rust distributed microservices. Recognized for delivering re:Invent launches end-to-end.</p></p>
               </div>
 
           </div><!--//modal-body-->
