@@ -17,10 +17,11 @@ cfp_url: https://cfp.ninja/e/platformday-2026-san-francisco-q4
 days: 1
 attendees: 100
 speakers: 10+
-tracks: 1
+tracks: 2
 
 rooms:
 - main room
+- mini room
 
 breaks:
 - title: Coffee break
