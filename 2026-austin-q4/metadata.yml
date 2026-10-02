@@ -8,6 +8,7 @@ start_time: "2026-10-15T09:00:00-05:00"
 event_state: before
 date_string: "October 15, 2026"
 location_string: "The Sunset Room, Austin, Texas, USA"
+city_name: "Austin"
 # get this from the event url
 luma_evt: evt-nY7FR4LEtAu2bMr
 cfp_url: https://cfp.ninja/e/platformday-2026-austin-q4
