@@ -27,6 +27,11 @@ Output lands in `<event>/static/`, then the top-level Makefile assembles
 everything into the root `static/` — that's the deployable folder
 (GitHub Actions pushes it to the `gh-pages` branch).
 
+## talks.csv status
+`talk` / `keynote` / `workshop` are on the site (keynote = plenary + pill, workshop = pill), `draft` is left out of the build
+but counted separately on /status/; legacy `confirmed` = talk and a `Keynote:` title prefix still works. Table in README.md.
+Classifier: `talk_kind()` in `_event_template/_build/generate.py` (mirrored in home/_build/generate.py and _build/redflag.py).
+
 ## Folder structure
 
 ```
