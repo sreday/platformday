@@ -1,0 +1,250 @@
+{# ── /headshots/ (hidden, organizer tool, Marek 2026-10-06). Replaces the After Effects step of making a speaker headshot:
+     a transparent PNG (keyed in Photoshop) goes into the brand circle, black and white, with zoom, position, exposure,
+     shadows and highlights, and comes out as the 1000x1000 PNG the speakers/ folder uses. Everything runs in the browser,
+     nothing is uploaded. The circle is home/assets/images/headshot-circle.png; its centre and radius are read from that
+     file's transparency, so another brand only needs its own circle PNG. Rendered by home/_build/generate.py (clean-url
+     pages), never listed in the sitemap. ── #}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>{{ brand_name }} headshots</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:600,700|Roboto:400,500,700&display=swap" rel="stylesheet">
+  <style>
+    :root { --accent: {{ brand_color | default('#E2971D') }}; }
+    html, body { margin: 0; background: #f4f4f6; color: #111; font-family: 'Roboto', sans-serif; }
+    .wrap { max-width: 1180px; margin: 0 auto; padding: 40px 20px 70px; }
+    .brand { font-family: 'Montserrat', sans-serif; font-weight: 700; color: var(--accent); font-size: .9rem; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 6px; }
+    h1 { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 1.8rem; margin: 0 0 6px; }
+    .sub { color: #666; font-size: .95rem; margin: 0 0 26px; max-width: 760px; line-height: 1.5; }
+    .grid { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 28px; align-items: start; }
+    @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+    .card { background: #fff; border: 1px solid #e6e6e6; border-radius: 18px; box-shadow: 0 4px 20px rgba(0,0,0,.06); padding: 22px; }
+    /* the preview: the 1000x1000 canvas on a checkerboard so transparency shows; drag it to move the photo */
+    .stage { position: relative; border-radius: 12px; overflow: hidden; touch-action: none; cursor: grab;
+      background: #fff conic-gradient(#e9e9ee 25%, #fff 0 50%, #e9e9ee 0 75%, #fff 0) 0 0 / 28px 28px; }
+    .stage.dragging { cursor: grabbing; }
+    .stage canvas { display: block; width: 100%; height: auto; aspect-ratio: 1; }
+    .empty { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; text-align: center; color: #777; font-size: .95rem; pointer-events: none; padding: 20px; }
+    .empty b { color: var(--accent); }
+    .empty[hidden] { display: none; }
+    .stage.over { outline: 3px dashed var(--accent); outline-offset: -6px; }
+    .ctl + .ctl { margin-top: 18px; }
+    .ctl label, .lbl { display: flex; justify-content: space-between; font-weight: 600; font-size: .9rem; margin-bottom: 6px; }
+    .ctl label output { font-weight: 500; color: #777; font-variant-numeric: tabular-nums; }
+    .ctl input[type=range] { width: 100%; accent-color: var(--accent); cursor: pointer; }
+    .ctl input[type=text] { width: 100%; box-sizing: border-box; padding: 10px 12px; border: 1px solid #ddd; border-radius: 10px; font: inherit; }
+    .drop { display: flex; align-items: center; gap: 12px; border: 2px dashed #ccc; border-radius: 12px; padding: 12px 14px; background: #fafafa; cursor: pointer; font-size: .9rem; color: #555; line-height: 1.4; }
+    .drop:hover, .drop.over { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 6%, #fff); }
+    .drop b { color: var(--accent); }
+    .drop input { display: none; }
+    .hint { color: #888; font-size: .8rem; margin-top: 4px; }
+    .joy-row { display: flex; align-items: center; gap: 14px; }
+    .joy { position: relative; width: 76px; height: 76px; border-radius: 50%; flex: none; cursor: grab; touch-action: none;
+      background: radial-gradient(circle at 50% 40%, #fff, #ececec); border: 2px solid color-mix(in srgb, var(--accent) 35%, #ddd); box-shadow: inset 0 2px 6px rgba(0,0,0,.08); }
+    .joy:active { cursor: grabbing; }
+    .joy i { position: absolute; left: 50%; top: 50%; width: 28px; height: 28px; margin: -14px 0 0 -14px; border-radius: 50%;
+      background: var(--accent); box-shadow: 0 3px 8px rgba(0,0,0,.25), inset 0 2px 0 rgba(255,255,255,.35); }
+    .row { display: flex; gap: 10px; margin-top: 22px; }
+    .btn { flex: 1; border: 0; border-radius: 999px; padding: 12px 16px; font: 700 .95rem 'Montserrat', sans-serif; cursor: pointer; }
+    .btn-main { background: var(--accent); color: #fff; }
+    .btn-main:disabled { opacity: .45; cursor: not-allowed; }
+    .btn-ghost { background: #f0f0f3; color: #333; }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand">{{ brand_name }} · tools</div>
+  <h1>Headshot maker</h1>
+  <p class="sub">Drop a speaker photo with a transparent background (keyed in Photoshop). It goes into the {{ brand_name }} circle in black and white, the head may rise above the circle. Adjust, then download the 1000x1000 PNG for the <code>speakers/</code> folder. Nothing leaves your computer.</p>
+  <div class="grid">
+    <div class="card">
+      <div class="stage" id="stage"><canvas id="cv" width="1000" height="1000"></canvas><div class="empty" id="empty"><div><b>Drop a transparent PNG here</b><br>or choose one on the right</div></div></div>
+    </div>
+    <div class="card">
+      <div class="ctl">
+        <span class="lbl">Photo</span>
+        <label class="drop" id="drop"><input type="file" id="file" accept="image/png,image/webp,image/*"><span id="drop-text"><b>Choose a photo</b> or drop it here. A keyed PNG with a transparent background.</span></label>
+      </div>
+      <div class="ctl">
+        <span class="lbl">File name</span>
+        <input type="text" id="name" placeholder="Speaker Name.png" spellcheck="false">
+        <div class="hint">Use the same name as the talks.csv photo column.</div>
+      </div>
+      <div class="ctl"><label for="zoom">Zoom <output id="zoom-v">1.25x</output></label><input type="range" id="zoom" min="0.5" max="3" step="0.01" value="1.25" data-default="1.25"></div>
+      <div class="ctl">
+        <span class="lbl">Position</span>
+        <div class="joy-row"><div class="joy" id="joy" role="slider" aria-label="Photo position" title="Drag to move the photo, double-click to centre it"><i id="knob"></i></div><span class="hint">Drag the knob, or drag the photo itself.<br>Double-click the knob to centre.</span></div>
+      </div>
+      <div class="ctl"><label for="exp">Exposure <output id="exp-v">0.00 EV</output></label><input type="range" id="exp" min="-2" max="2" step="0.01" value="0" data-default="0"></div>
+      <div class="ctl"><label for="sha">Shadows <output id="sha-v">0</output></label><input type="range" id="sha" min="-100" max="100" step="1" value="0" data-default="0"></div>
+      <div class="ctl"><label for="hil">Highlights <output id="hil-v">0</output></label><input type="range" id="hil" min="-100" max="100" step="1" value="0" data-default="0"></div>
+      <div class="hint">Double-click a slider to reset it.</div>
+      <div class="row"><button type="button" class="btn btn-ghost" id="reset">Reset all</button><button type="button" class="btn btn-main" id="dl" disabled>Download PNG</button></div>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var SIZE = 1000, WORK_MAX = 2000;
+  var cv = $('cv'), ctx = cv.getContext('2d');
+  var circle = new Image(), C = { x: 499.5, y: 598.5, r: 370.5 };      // replaced by the measured circle once it loads
+  var src = null, work = null, gray = null, tone = null;               // source image, grey working copy, its pixels, toned copy
+  var headTop = 0;                                                     // first row of the photo with the person in it, 0..1
+  var pan = { x: 0, y: 0 }, JOY_R = 23, PAN_RANGE = 370;
+  var zoom = $('zoom'), exp = $('exp'), sha = $('sha'), hil = $('hil');
+
+  // ── the circle: centre and radius from its own transparency (any brand's circle PNG works) ──
+  circle.onload = function () {
+    var c = document.createElement('canvas'); c.width = circle.width; c.height = circle.height;
+    var g = c.getContext('2d'); g.drawImage(circle, 0, 0);
+    var d = g.getImageData(0, 0, c.width, c.height).data, x0 = c.width, x1 = -1, y0 = c.height, y1 = -1;
+    for (var y = 0; y < c.height; y++) for (var x = 0; x < c.width; x++) {
+      if (d[(y * c.width + x) * 4 + 3] > 128) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
+    }
+    if (x1 > x0) { var k = SIZE / c.width; C = { x: (x0 + x1) / 2 * k, y: (y0 + y1) / 2 * k, r: (x1 - x0) / 2 * k }; }
+    draw();
+  };
+  circle.src = '/assets/images/headshot-circle.png';
+
+  // ── the photo: kept full size for the download, plus a grey working copy (max 2000 px) for the live preview ──
+  function load(file) {
+    if (!file || !/^image\//.test(file.type)) { $('drop-text').textContent = 'That is not an image file. A PNG, please.'; return; }
+    var url = URL.createObjectURL(file), img = new Image();
+    img.onload = function () {
+      src = img;
+      var s = Math.min(1, WORK_MAX / Math.max(img.width, img.height));
+      work = document.createElement('canvas'); work.width = Math.round(img.width * s); work.height = Math.round(img.height * s);
+      var w = work.getContext('2d'); w.drawImage(img, 0, 0, work.width, work.height);
+      gray = toGray(w.getImageData(0, 0, work.width, work.height));
+      headTop = findHeadTop(gray);
+      tone = document.createElement('canvas'); tone.width = work.width; tone.height = work.height;
+      $('name').value = file.name.replace(/\.[^.]+$/, '') + '.png';
+      $('drop-text').innerHTML = '<b></b> · click to change'; $('drop-text').querySelector('b').textContent = file.name;
+      $('empty').hidden = true; $('dl').disabled = false;
+      resetAll(); retone();
+    };
+    img.onerror = function () { $('drop-text').textContent = 'That image could not be read. Try a PNG.'; };
+    img.src = url;
+  }
+  function findHeadTop(id) {                                            // the first row where the person starts (0.5% of the row opaque)
+    var d = id.data, w = id.width, need = Math.max(2, w * 0.005);
+    for (var y = 0; y < id.height; y++) { var n = 0; for (var x = 0; x < w; x++) if (d[(y * w + x) * 4 + 3] > 128 && ++n >= need) return y / id.height; }
+    return 0;
+  }
+  function toGray(id) {                                                   // Rec.709 luminance, alpha kept
+    var d = id.data;
+    for (var i = 0; i < d.length; i += 4) { var l = 0.2126 * d[i] + 0.7152 * d[i + 1] + 0.0722 * d[i + 2]; d[i] = d[i + 1] = d[i + 2] = l; }
+    return id;
+  }
+
+  // ── tone: exposure, shadows and highlights as one 256-entry curve on the grey values ──
+  function lut() {
+    var ev = parseFloat(exp.value), sh = parseFloat(sha.value) / 100, hi = parseFloat(hil.value) / 100, t = new Uint8ClampedArray(256);
+    for (var v = 0; v < 256; v++) {
+      var l = Math.min(1, (v / 255) * Math.pow(2, ev));
+      l += sh * 0.5 * Math.pow(1 - l, 2) * l * 4 * (sh > 0 ? 1 : l + 0.25);   // lift / deepen the darks, endpoints stay put
+      l += hi * 0.5 * Math.pow(l, 2) * (1 - l) * 4;                            // brighten / pull down the lights
+      t[v] = Math.round(Math.max(0, Math.min(1, l)) * 255);
+    }
+    return t;
+  }
+  function applyTone(id, t) {
+    var o = new ImageData(new Uint8ClampedArray(id.data), id.width, id.height), d = o.data;
+    for (var i = 0; i < d.length; i += 4) { var g = t[d[i]]; d[i] = d[i + 1] = d[i + 2] = g; }
+    return o;
+  }
+  var pending = false;
+  function retone() {
+    if (pending) return; pending = true;
+    requestAnimationFrame(function () { pending = false; if (gray) tone.getContext('2d').putImageData(applyTone(gray, lut()), 0, 0); draw(); });
+  }
+
+  // ── compose: circle in colour, the person clipped to the circle plus everything above its centre ──
+  // default framing as in the After Effects files (e.g. Wassim Melakhessou): at zoom 1.25 the photo is 1.25x the circle's
+  // width, centred, with the top of the head 0.2 r above the circle (y 154 on the 1000 px canvas)
+  function placement(img) {
+    var z = parseFloat(zoom.value), w = 2 * C.r * z, h = img.height * (w / img.width), top = C.y - C.r * 1.2;
+    return { x: C.x - w / 2 + pan.x * PAN_RANGE, y: top - headTop * h + pan.y * PAN_RANGE, w: w, h: h };
+  }
+  function compose(g, person, size) {
+    var k = size / SIZE;
+    g.clearRect(0, 0, size, size);
+    if (circle.complete && circle.naturalWidth) g.drawImage(circle, 0, 0, size, size);
+    if (!person) return;
+    var p = placement(person);
+    g.save(); g.scale(k, k);
+    g.beginPath(); g.arc(C.x, C.y, C.r, 0, Math.PI * 2); g.rect(0, 0, SIZE, C.y);      // circle ∪ above the centre line
+    g.clip('nonzero');
+    g.imageSmoothingQuality = 'high';
+    g.drawImage(person, p.x, p.y, p.w, p.h);
+    g.restore();
+  }
+  function draw() { compose(ctx, tone && gray ? tone : null, SIZE); }
+
+  // ── download: drawn again from the full-size source so it stays sharp ──
+  $('dl').addEventListener('click', function () {
+    if (!src) return;
+    var full = document.createElement('canvas'); full.width = src.width; full.height = src.height;
+    var f = full.getContext('2d'); f.drawImage(src, 0, 0);
+    f.putImageData(applyTone(toGray(f.getImageData(0, 0, full.width, full.height)), lut()), 0, 0);
+    var out = document.createElement('canvas'); out.width = out.height = SIZE;
+    compose(out.getContext('2d'), full, SIZE);
+    out.toBlob(function (b) {
+      var a = document.createElement('a'), name = ($('name').value.trim() || 'headshot').replace(/\.png$/i, '') + '.png';
+      a.href = URL.createObjectURL(b); a.download = name; document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function () { URL.revokeObjectURL(a.href); }, 4000);
+    }, 'image/png');
+  });
+
+  // ── controls ──
+  function readouts() {
+    $('zoom-v').textContent = parseFloat(zoom.value).toFixed(2) + 'x';
+    var e = parseFloat(exp.value); $('exp-v').textContent = (e > 0 ? '+' : '') + e.toFixed(2) + ' EV';
+    $('sha-v').textContent = (sha.value > 0 ? '+' : '') + sha.value; $('hil-v').textContent = (hil.value > 0 ? '+' : '') + hil.value;
+  }
+  [zoom, exp, sha, hil].forEach(function (r) {
+    r.addEventListener('input', function () { readouts(); if (r === zoom) draw(); else retone(); });
+    r.addEventListener('dblclick', function () { r.value = r.dataset.default; readouts(); if (r === zoom) draw(); else retone(); });
+  });
+  function resetAll() { [zoom, exp, sha, hil].forEach(function (r) { r.value = r.dataset.default; }); setPan(0, 0, true); readouts(); }
+  $('reset').addEventListener('click', function () { resetAll(); retone(); });
+
+  // joystick (as on the community hero page): the knob's place is the photo's offset, -1..1 = ±370 px
+  var joy = $('joy'), knob = $('knob');
+  function setPan(x, y, quiet) {
+    var d = Math.sqrt(x * x + y * y); if (d > 1) { x /= d; y /= d; }
+    pan = { x: x, y: y }; knob.style.transform = 'translate(' + (x * JOY_R) + 'px,' + (y * JOY_R) + 'px)'; if (!quiet) draw();
+  }
+  function joyAt(e) { var b = joy.getBoundingClientRect(); setPan((e.clientX - b.left - b.width / 2) / JOY_R, (e.clientY - b.top - b.height / 2) / JOY_R); }
+  joy.addEventListener('pointerdown', function (e) { e.preventDefault(); joy.setPointerCapture(e.pointerId); joyAt(e); });
+  joy.addEventListener('pointermove', function (e) { if (joy.hasPointerCapture(e.pointerId)) joyAt(e); });
+  joy.addEventListener('dblclick', function () { setPan(0, 0); });
+
+  // drag the photo itself on the preview (moves it 1:1 with the pointer)
+  var stage = $('stage'), last = null;
+  stage.addEventListener('pointerdown', function (e) { if (!src) return; stage.setPointerCapture(e.pointerId); stage.classList.add('dragging'); last = { x: e.clientX, y: e.clientY }; });
+  stage.addEventListener('pointermove', function (e) {
+    if (!last || !stage.hasPointerCapture(e.pointerId)) return;
+    var k = SIZE / stage.getBoundingClientRect().width;
+    setPan(pan.x + (e.clientX - last.x) * k / PAN_RANGE, pan.y + (e.clientY - last.y) * k / PAN_RANGE); last = { x: e.clientX, y: e.clientY };
+  });
+  ['pointerup', 'pointercancel'].forEach(function (ev) { stage.addEventListener(ev, function () { last = null; stage.classList.remove('dragging'); }); });
+
+  // file input + drag and drop (on the picker and on the preview)
+  $('file').addEventListener('change', function () { if (this.files && this.files[0]) load(this.files[0]); });
+  [$('drop'), stage].forEach(function (el) {
+    ['dragenter', 'dragover'].forEach(function (ev) { el.addEventListener(ev, function (e) { e.preventDefault(); el.classList.add('over'); }); });
+    ['dragleave', 'drop'].forEach(function (ev) { el.addEventListener(ev, function (e) { e.preventDefault(); el.classList.remove('over'); }); });
+    el.addEventListener('drop', function (e) { if (e.dataTransfer.files && e.dataTransfer.files[0]) load(e.dataTransfer.files[0]); });
+  });
+  readouts(); draw();
+  window.__headshot = { load: load, setPan: setPan, compose: compose };   // for automated checks
+})();
+</script>
+</body>
+</html>
