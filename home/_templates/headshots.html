@@ -82,7 +82,7 @@
       <div class="ctl"><label for="exp">Exposure <output id="exp-v">0.00 EV</output></label><input type="range" id="exp" min="-2" max="2" step="0.01" value="0" data-default="0"></div>
       <div class="ctl"><label for="sha">Shadows <output id="sha-v">0</output></label><input type="range" id="sha" min="-100" max="100" step="1" value="0" data-default="0"></div>
       <div class="ctl"><label for="hil">Highlights <output id="hil-v">0</output></label><input type="range" id="hil" min="-100" max="100" step="1" value="0" data-default="0"></div>
-      <div class="hint">Double-click a slider to reset it.</div>
+      <div class="hint">Double-click a slider to reset it. The faint line is the eye-level guide (preview only, not in the download).</div>
       <div class="row"><button type="button" class="btn btn-ghost" id="reset">Reset all</button><button type="button" class="btn btn-main" id="dl" disabled>Download PNG</button></div>
     </div>
   </div>
@@ -171,20 +171,38 @@
     var z = parseFloat(zoom.value), w = 2 * C.r * z, h = img.height * (w / img.width), top = C.y - C.r * 1.2;
     return { x: C.x - w / 2 + pan.x * PAN_RANGE, y: top - headTop * h + pan.y * PAN_RANGE, w: w, h: h };
   }
+  // Pixel-exact edges (Marek 2026-10-06): the person is masked with the circle PNG's OWN alpha (plus everything above the
+  // cutoff line), and the circle is erased wherever the person is, so on the anti-aliased rim the colour comes from the
+  // person only - no orange line between the speaker and the transparent background.
+  // the speaker may leave the circle only above this line: 20% of the circle's height above its centre (Marek 2026-10-06;
+  // was the centre line itself)
+  var CUT = 0.2;
+  function layer(size) { var c = document.createElement('canvas'); c.width = c.height = size; return c; }
   function compose(g, person, size) {
-    var k = size / SIZE;
+    var k = size / SIZE, hasCircle = circle.complete && circle.naturalWidth;
     g.clearRect(0, 0, size, size);
-    if (circle.complete && circle.naturalWidth) g.drawImage(circle, 0, 0, size, size);
-    if (!person) return;
+    if (!person) { if (hasCircle) g.drawImage(circle, 0, 0, size, size); return; }
     var p = placement(person);
-    g.save(); g.scale(k, k);
-    g.beginPath(); g.arc(C.x, C.y, C.r, 0, Math.PI * 2); g.rect(0, 0, SIZE, C.y);      // circle ∪ above the centre line
-    g.clip('nonzero');
-    g.imageSmoothingQuality = 'high';
-    g.drawImage(person, p.x, p.y, p.w, p.h);
-    g.restore();
+    var P = layer(size), pg = P.getContext('2d');                       // the person, placed
+    pg.imageSmoothingQuality = 'high';
+    pg.drawImage(person, p.x * k, p.y * k, p.w * k, p.h * k);
+    var Cc = layer(size), cg = Cc.getContext('2d');                     // the circle with the person cut out of it
+    if (hasCircle) cg.drawImage(circle, 0, 0, size, size);
+    cg.globalCompositeOperation = 'destination-out'; cg.drawImage(P, 0, 0);
+    var M = layer(size), mg = M.getContext('2d');                       // mask: circle alpha + above the cutoff line
+    if (hasCircle) mg.drawImage(circle, 0, 0, size, size); else { mg.beginPath(); mg.arc(C.x * k, C.y * k, C.r * k, 0, Math.PI * 2); mg.fill(); }
+    mg.fillStyle = '#000'; mg.fillRect(0, 0, size, Math.round((C.y - CUT * 2 * C.r) * k));
+    pg.globalCompositeOperation = 'destination-in'; pg.drawImage(M, 0, 0);
+    g.drawImage(Cc, 0, 0); g.drawImage(P, 0, 0);
   }
-  function draw() { compose(ctx, tone && gray ? tone : null, SIZE); }
+  // eye-level guide, preview only (never in the download): a thin white chord across the circle 0.668 r above its centre,
+  // as in the After Effects guide (y 350-352 on the PLATFORMday circle), drawn over the speaker at low opacity
+  var EYE = 0.668;
+  function guide(g) {
+    var y = C.y - EYE * C.r, half = Math.sqrt(Math.max(0, C.r * C.r - (C.y - y) * (C.y - y)));
+    g.save(); g.globalAlpha = 0.35; g.fillStyle = '#fff'; g.fillRect(C.x - half, y - 1.5, 2 * half, 3); g.restore();
+  }
+  function draw() { compose(ctx, tone && gray ? tone : null, SIZE); guide(ctx); }
 
   // ── download: drawn again from the full-size source so it stays sharp ──
   $('dl').addEventListener('click', function () {
