@@ -76,7 +76,6 @@
 <div class="wrap">
   <div class="brand">{{ brand_name }} · tools</div>
   <h1>Headshot maker</h1>
-  <p class="sub">Drop up to 5 speaker photos with a transparent background (keyed in Photoshop), e.g. for a joint talk. It goes into the {{ brand_name }} circle in black and white, the head may rise above the circle. Adjust, then download the 1000x1000 PNG for the <code>speakers/</code> folder. Nothing leaves your computer.</p>
   <div class="grid">
     <div class="card">
       <div class="stage" id="stage"><canvas id="cv" width="1000" height="1000"></canvas><div class="empty" id="empty"><div><b>Drop transparent PNGs here</b><br>or add them on the right (up to 5)</div></div></div>
@@ -91,7 +90,7 @@
       <div class="ctl">
         <span class="lbl">File name</span>
         <input type="text" id="name" placeholder="Speaker Name.png" spellcheck="false">
-        <div class="hint">Use the same name as the talks.csv photo column.</div>
+        <div class="hint">Follows the layers (back to front): "A & B", "A, B & C". Use the same name as the talks.csv photo column.</div>
       </div>
       <div class="editing" id="editing">Add a photo to start.</div>
       <button type="button" class="btn btn-auto" id="auto" disabled>&#10024; Auto</button>
@@ -142,7 +141,6 @@
     var room = MAX_LAYERS - layers.length;
     if (room <= 0) { $('drop-text').textContent = 'Five layers already: remove one to add another.'; return; }
     if (list.length > room) $('drop-text').textContent = 'Only ' + room + ' more fit (5 at most); the rest were skipped.';
-    if (!nameTouched && !layers.length) $('name').value = list[0].name.replace(/\.[^.]+$/, '') + '.png';   // named after the first photo
     // one at a time, in the order given, so the layer order follows the files (the first is the back)
     (function next(i) { if (i < Math.min(list.length, room)) load(list[i], function () { next(i + 1); }); })(0);
   }
@@ -261,7 +259,14 @@
       setTimeout(function () { URL.revokeObjectURL(a.href); }, 4000);
     }, 'image/png');
   });
-  $('name').addEventListener('input', function () { nameTouched = true; });
+  // the file name follows the layers (Marek 2026-10-06): back to front = left to right after Auto, "A", "A & B",
+  // "A, B & C"; it updates on every add, remove and reorder until the name is typed by hand (emptying it hands it back)
+  function autoName() {
+    if (nameTouched) return;
+    var n = layers.map(function (L) { return L.name.replace(/\.[^.]+$/, ''); });
+    $('name').value = n.length ? (n.length === 1 ? n[0] : n.slice(0, -1).join(', ') + ' & ' + n[n.length - 1]) + '.png' : '';
+  }
+  $('name').addEventListener('input', function () { nameTouched = this.value.trim() !== ''; if (!nameTouched) autoName(); });
 
   // ── Auto (Marek 2026-10-06): frame the face and set the tones like the headshots already on the site ──
   // Targets measured with the same face model on the 17 finished PLATFORMday headshots (speakers/*.png, 1000 px canvas,
@@ -373,7 +378,7 @@
       var dy = before.get(L) - L.li.getBoundingClientRect().top;
       if (dy) L.li.animate([{ transform: 'translateY(' + dy + 'px)' }, { transform: 'none' }], { duration: 280, easing: 'cubic-bezier(.2,.8,.2,1)' });
     });
-    $('count').textContent = layers.length + ' / ' + MAX_LAYERS;
+    $('count').textContent = layers.length + ' / ' + MAX_LAYERS; autoName();
     $('empty').hidden = layers.length > 0; $('dl').disabled = !layers.length;
     sliders.forEach(function (r) { r.disabled = !layers.length; }); $('reset').disabled = !layers.length; $('auto').disabled = !layers.length;
     $('auto').innerHTML = layers.length > 1 ? '&#10024; Auto (all layers)' : '&#10024; Auto';
@@ -404,7 +409,7 @@
   }
   function remove(i) {
     layers.splice(i, 1);
-    if (!layers.length) { active = -1; if (!nameTouched) $('name').value = ''; }
+    if (!layers.length) active = -1;
     else if (active >= layers.length || active > i) active = Math.max(0, active - 1);
     else if (active === i) active = Math.min(i, layers.length - 1);
     select(active);
