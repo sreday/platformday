@@ -68,7 +68,7 @@ jobs:
               shutil.copyfile(os.path.join('_inbox', p), os.path.join('speakers', name)); ok.append(name); print('IMPORTED', name)
           if ok: open('.headshots-inbox-sha', 'w').write(head + '\n')
           out.write('imported=%d\nbaseline=0\n' % len(ok))
-          open('_imported.txt', 'w').write('\n'.join(ok))
+          open('_imported.txt', 'w').write(''.join(n + '\n' for n in ok))
           PY
       - name: Commit and build
         if: steps.pick.outputs.imported != '0' || steps.pick.outputs.baseline == '1'
@@ -78,7 +78,7 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -- .headshots-inbox-sha
-          if [ -s _imported.txt ]; then while IFS= read -r n; do git add -- "speakers/$n"; done < _imported.txt; fi
+          if [ -s _imported.txt ]; then while IFS= read -r n || [ -n "$n" ]; do git add -- "speakers/$n"; done < _imported.txt; fi
           if git diff --cached --quiet; then exit 0; fi
           if [ "${{ steps.pick.outputs.baseline }}" = "1" ]; then msg="Headshot inbox: starting point"; else msg="Import ${{ steps.pick.outputs.imported }} headshot(s) from headshots-inbox"; fi
           git commit -q -m "$msg" -m "$(cat _imported.txt 2>/dev/null)"
