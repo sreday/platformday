@@ -279,11 +279,15 @@
   $('name').addEventListener('input', function () { nameTouched = this.value.trim() !== ''; if (!nameTouched) autoName(); });
 
   // ── Auto (Marek 2026-10-06): frame the face and set the tones like the headshots already on the site ──
-  // Targets measured with the same face model on the 17 finished PLATFORMday headshots (speakers/*.png, 1000 px canvas,
-  // circle centre 499.5/598.5, r 370.5): eye line y 347 (median, sd 14), eye midpoint x 507, face width 262 px (sd 12),
-  // eye distance 118 px (sd 8); grey levels of the face skin p10 / p50 / p90 = 91 / 181 / 217. Stored relative to the
-  // circle so another brand's circle keeps the same proportions.
-  var AUTO = { eyeY: 0.678, eyeDX: 0.0216, faceW: 0.7066, ipd: 0.3199, p10: 91, p50: 181, p90: 217 };
+  // Calibrated on the 14 PLATFORMday speakers that have both the raw photo (Dropbox) and the finished After Effects
+  // headshot (speakers/*.png, 1000 px canvas, circle centre 499.5/598.5, r 370.5), comparing them with the same face model:
+  // - size: the whole head, top of the hair to the chin, is 430 px in the finished files; it predicts the real scale within
+  //   7% for all 14 (face width / eye distance were off by up to 29%, e.g. Daniel Hudsky)
+  // - position: eye line at y 347 (13 of 14 within 345-353), face centred at x 507
+  // - tones: one gentle house look (exposure +0.05, shadows +20, highlights +5) came closest to the finished files (typical
+  //   error 9.7 grey levels against 17.8 untouched); matching every face to one brightness pushed the sliders to their ends.
+  // Stored relative to the circle so another brand's circle keeps the same proportions.
+  var AUTO = { headChin: 1.160, faceH: 0.850, eyeY: 0.678, faceDX: 0.0213, exp: 0.05, sha: 20, hil: 5 };
   var MP = 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@1.0.1';
   var MODEL = 'https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task';
   var landmarker = null;
@@ -306,41 +310,20 @@
       if (!best || w > best.w) best = { lm: lm, w: w };
     });
     if (!best) return null;
-    var lm = best.lm, a = lm[468], b = lm[473];
-    return { ex: (a.x + b.x) / 2, ey: (a.y + b.y) / 2, faceW: best.w, ipdPx: Math.hypot((a.x - b.x) * c.width, (a.y - b.y) * c.height), detW: c.width,
-             l: lm[234], r: lm[454], mouth: lm[13] };
-  }
-  function skinLevels(L, f) {                                             // p10 / p50 / p90 of the face skin, from the grey copy
-    var g = L.gray, W = g.width, H = g.height, d = g.data, vals = [];
-    var x0 = f.l.x + (f.r.x - f.l.x) * .25, x1 = f.l.x + (f.r.x - f.l.x) * .75, y0 = f.ey + (f.mouth.y - f.ey) * .25, y1 = f.mouth.y - (f.mouth.y - f.ey) * .1;
-    for (var y = Math.round(y0 * H); y < y1 * H; y++) for (var x = Math.round(Math.min(x0, x1) * W); x < Math.max(x0, x1) * W; x++) {
-      var i = (y * W + x) * 4; if (d[i + 3] >= 250) vals.push(d[i]);
-    }
-    if (vals.length < 50) return null;
-    vals.sort(function (p, q) { return p - q; });
-    var pc = function (q) { return vals[Math.floor(q * (vals.length - 1))]; };
-    return { p10: pc(.1), p50: pc(.5), p90: pc(.9) };
-  }
-  function bestTone(lv) {                                                 // the slider values whose curve lands the skin on target
-    var best = null;
-    for (var ev = -1; ev <= 1.0001; ev += 0.05) for (var sh = -50; sh <= 50; sh += 5) for (var hi = -50; hi <= 50; hi += 5) {
-      var e1 = toneValue(lv.p50, ev, sh / 100, hi / 100) - AUTO.p50, e2 = toneValue(lv.p90, ev, sh / 100, hi / 100) - AUTO.p90,
-          e3 = toneValue(lv.p10, ev, sh / 100, hi / 100) - AUTO.p10;
-      var cost = e1 * e1 + e2 * e2 + 0.25 * e3 * e3 + 30 * ev * ev + 0.01 * (sh * sh + hi * hi);   // small pull towards no change
-      if (!best || cost < best.cost) best = { cost: cost, exp: Math.round(ev * 100) / 100, sha: sh, hil: hi };
-    }
-    return best;
+    var lm = best.lm;
+    return { ey: (lm[468].y + lm[473].y) / 2, fx: (lm[234].x + lm[454].x) / 2, chin: lm[152].y, brow: lm[10].y };
   }
   function autoLayer(L, f, i, n) {
-    // several people: smaller faces, side by side in layer order (back = left), eyes still on the guide
-    var shrink = n === 1 ? 1 : n === 2 ? 0.78 : 0.62, faceT = AUTO.faceW * C.r * shrink, ipdT = AUTO.ipd * C.r * shrink;
-    var w = (faceT / f.faceW + ipdT * f.detW / f.ipdPx) / 2;              // photo width that gives the target face size
-    L.zoom = Math.max(0.5, Math.min(3, w / (2 * C.r))); w = 2 * C.r * L.zoom;
-    var h = L.tone.height * (w / L.tone.width), top = C.y - C.r * 1.2;
-    var tx = C.x + AUTO.eyeDX * C.r + (n > 1 ? (i - (n - 1) / 2) * faceT * 1.15 : 0), ty = C.y - AUTO.eyeY * C.r;
-    L.pan = { x: (tx - C.x + w / 2 - f.ex * w) / PAN_RANGE, y: (ty - top + L.headTop * h - f.ey * h) / PAN_RANGE };
-    var lv = skinLevels(L, f), t = lv && bestTone(lv);
-    if (t) { L.exp = t.exp; L.sha = t.sha; L.hil = t.hil; }
+    // several people: smaller heads, side by side in layer order (back = left), eyes still on the guide
+    var shrink = n === 1 ? 1 : n === 2 ? 0.78 : 0.62, top = C.y - C.r * 1.2;
+    var headN = f.chin - L.headTop, h;                                    // top of the hair to the chin, 0..1 of the photo height
+    if (headN > 0.05) h = AUTO.headChin * C.r * shrink / headN;           // photo height that gives the target head size
+    else h = AUTO.faceH * C.r * shrink / Math.max(0.02, f.chin - f.brow);  // no clear hair line: fall back to the face height
+    var w = h * L.tone.width / L.tone.height;
+    L.zoom = Math.max(0.5, Math.min(3, w / (2 * C.r))); w = 2 * C.r * L.zoom; h = L.tone.height * (w / L.tone.width);
+    var tx = C.x + AUTO.faceDX * C.r + (n > 1 ? (i - (n - 1) / 2) * AUTO.headChin * C.r * shrink * 0.75 : 0), ty = C.y - AUTO.eyeY * C.r;
+    L.pan = { x: (tx - C.x + w / 2 - f.fx * w) / PAN_RANGE, y: (ty - top + L.headTop * h - f.ey * h) / PAN_RANGE };
+    L.exp = AUTO.exp; L.sha = AUTO.sha; L.hil = AUTO.hil;
     L.tone.getContext('2d').putImageData(applyTone(L.gray, lut(L)), 0, 0); thumb(L);
   }
   $('auto').addEventListener('click', function () {
