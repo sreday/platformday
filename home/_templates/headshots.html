@@ -67,6 +67,9 @@
     .editing { font-size: .85rem; color: #777; margin: 18px 0 14px; padding-top: 14px; border-top: 1px solid #eee; }
     .editing b { color: #333; }
     .ctl input:disabled { opacity: .4; cursor: not-allowed; }
+    .btn-auto { width: 100%; margin: 0 0 6px; background: color-mix(in srgb, var(--accent) 12%, #fff); color: color-mix(in srgb, var(--accent) 75%, #000); border: 2px solid var(--accent); }
+    .btn-auto:disabled { opacity: .45; cursor: not-allowed; }
+    .auto-msg { min-height: 1.2em; margin-bottom: 8px; }
   </style>
 </head>
 <body>
@@ -91,6 +94,8 @@
         <div class="hint">Use the same name as the talks.csv photo column.</div>
       </div>
       <div class="editing" id="editing">Add a photo to start.</div>
+      <button type="button" class="btn btn-auto" id="auto" disabled>&#10024; Auto</button>
+      <div class="hint auto-msg" id="auto-msg">Frames the face and sets the tones like the headshots already on the site.</div>
       <div class="ctl"><label for="zoom">Zoom <output id="zoom-v">1.25x</output></label><input type="range" id="zoom" min="0.5" max="3" step="0.01" value="1.25" data-default="1.25"></div>
       <div class="ctl">
         <span class="lbl">Position</span>
@@ -171,14 +176,15 @@
   }
 
   // ── tone: exposure, shadows and highlights of one layer as one 256-entry curve on the grey values ──
+  function toneValue(v, ev, sh, hi) {                                     // one grey value through exposure, shadows, highlights
+    var l = Math.min(1, (v / 255) * Math.pow(2, ev));
+    l += sh * 0.5 * Math.pow(1 - l, 2) * l * 4 * (sh > 0 ? 1 : l + 0.25);     // lift / deepen the darks, endpoints stay put
+    l += hi * 0.5 * Math.pow(l, 2) * (1 - l) * 4;                              // brighten / pull down the lights
+    return Math.max(0, Math.min(1, l)) * 255;
+  }
   function lut(L) {
-    var ev = L.exp, sh = L.sha / 100, hi = L.hil / 100, t = new Uint8ClampedArray(256);
-    for (var v = 0; v < 256; v++) {
-      var l = Math.min(1, (v / 255) * Math.pow(2, ev));
-      l += sh * 0.5 * Math.pow(1 - l, 2) * l * 4 * (sh > 0 ? 1 : l + 0.25);   // lift / deepen the darks, endpoints stay put
-      l += hi * 0.5 * Math.pow(l, 2) * (1 - l) * 4;                            // brighten / pull down the lights
-      t[v] = Math.round(Math.max(0, Math.min(1, l)) * 255);
-    }
+    var t = new Uint8ClampedArray(256);
+    for (var v = 0; v < 256; v++) t[v] = Math.round(toneValue(v, L.exp, L.sha / 100, L.hil / 100));
     return t;
   }
   function applyTone(id, t) {
@@ -257,6 +263,85 @@
   });
   $('name').addEventListener('input', function () { nameTouched = true; });
 
+  // ── Auto (Marek 2026-10-06): frame the face and set the tones like the headshots already on the site ──
+  // Targets measured with the same face model on the 17 finished PLATFORMday headshots (speakers/*.png, 1000 px canvas,
+  // circle centre 499.5/598.5, r 370.5): eye line y 347 (median, sd 14), eye midpoint x 507, face width 262 px (sd 12),
+  // eye distance 118 px (sd 8); grey levels of the face skin p10 / p50 / p90 = 91 / 181 / 217. Stored relative to the
+  // circle so another brand's circle keeps the same proportions.
+  var AUTO = { eyeY: 0.678, eyeDX: 0.0216, faceW: 0.7066, ipd: 0.3199, p10: 91, p50: 181, p90: 217 };
+  var MP = 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@1.0.1';
+  var MODEL = 'https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task';
+  var landmarker = null;
+  function getLandmarker() {                                              // loaded on the first Auto only (~4 MB, then cached)
+    if (!landmarker) landmarker = import(MP + '/vision_bundle.mjs').then(function (m) {
+      return m.FilesetResolver.forVisionTasks(MP + '/wasm').then(function (fs) {
+        return m.FaceLandmarker.createFromOptions(fs, { baseOptions: { modelAssetPath: MODEL }, runningMode: 'IMAGE', numFaces: 3 });
+      });
+    });
+    landmarker.catch(function () { landmarker = null; });
+    return landmarker;
+  }
+  function findFace(fl, L) {                                              // the biggest face in the photo, in 0..1 of the photo
+    var c = document.createElement('canvas'), s = Math.min(1, 1024 / Math.max(L.src.width, L.src.height));
+    c.width = Math.round(L.src.width * s); c.height = Math.round(L.src.height * s);
+    var g = c.getContext('2d'); g.fillStyle = '#808080'; g.fillRect(0, 0, c.width, c.height); g.drawImage(L.src, 0, 0, c.width, c.height);
+    var res = fl.detect(c), best = null;
+    (res.faceLandmarks || []).forEach(function (lm) {
+      var w = Math.abs(lm[454].x - lm[234].x);
+      if (!best || w > best.w) best = { lm: lm, w: w };
+    });
+    if (!best) return null;
+    var lm = best.lm, a = lm[468], b = lm[473];
+    return { ex: (a.x + b.x) / 2, ey: (a.y + b.y) / 2, faceW: best.w, ipdPx: Math.hypot((a.x - b.x) * c.width, (a.y - b.y) * c.height), detW: c.width,
+             l: lm[234], r: lm[454], mouth: lm[13] };
+  }
+  function skinLevels(L, f) {                                             // p10 / p50 / p90 of the face skin, from the grey copy
+    var g = L.gray, W = g.width, H = g.height, d = g.data, vals = [];
+    var x0 = f.l.x + (f.r.x - f.l.x) * .25, x1 = f.l.x + (f.r.x - f.l.x) * .75, y0 = f.ey + (f.mouth.y - f.ey) * .25, y1 = f.mouth.y - (f.mouth.y - f.ey) * .1;
+    for (var y = Math.round(y0 * H); y < y1 * H; y++) for (var x = Math.round(Math.min(x0, x1) * W); x < Math.max(x0, x1) * W; x++) {
+      var i = (y * W + x) * 4; if (d[i + 3] >= 250) vals.push(d[i]);
+    }
+    if (vals.length < 50) return null;
+    vals.sort(function (p, q) { return p - q; });
+    var pc = function (q) { return vals[Math.floor(q * (vals.length - 1))]; };
+    return { p10: pc(.1), p50: pc(.5), p90: pc(.9) };
+  }
+  function bestTone(lv) {                                                 // the slider values whose curve lands the skin on target
+    var best = null;
+    for (var ev = -1; ev <= 1.0001; ev += 0.05) for (var sh = -50; sh <= 50; sh += 5) for (var hi = -50; hi <= 50; hi += 5) {
+      var e1 = toneValue(lv.p50, ev, sh / 100, hi / 100) - AUTO.p50, e2 = toneValue(lv.p90, ev, sh / 100, hi / 100) - AUTO.p90,
+          e3 = toneValue(lv.p10, ev, sh / 100, hi / 100) - AUTO.p10;
+      var cost = e1 * e1 + e2 * e2 + 0.25 * e3 * e3 + 30 * ev * ev + 0.01 * (sh * sh + hi * hi);   // small pull towards no change
+      if (!best || cost < best.cost) best = { cost: cost, exp: Math.round(ev * 100) / 100, sha: sh, hil: hi };
+    }
+    return best;
+  }
+  function autoLayer(L, f, i, n) {
+    // several people: smaller faces, side by side in layer order (back = left), eyes still on the guide
+    var shrink = n === 1 ? 1 : n === 2 ? 0.78 : 0.62, faceT = AUTO.faceW * C.r * shrink, ipdT = AUTO.ipd * C.r * shrink;
+    var w = (faceT / f.faceW + ipdT * f.detW / f.ipdPx) / 2;              // photo width that gives the target face size
+    L.zoom = Math.max(0.5, Math.min(3, w / (2 * C.r))); w = 2 * C.r * L.zoom;
+    var h = L.tone.height * (w / L.tone.width), top = C.y - C.r * 1.2;
+    var tx = C.x + AUTO.eyeDX * C.r + (n > 1 ? (i - (n - 1) / 2) * faceT * 1.15 : 0), ty = C.y - AUTO.eyeY * C.r;
+    L.pan = { x: (tx - C.x + w / 2 - f.ex * w) / PAN_RANGE, y: (ty - top + L.headTop * h - f.ey * h) / PAN_RANGE };
+    var lv = skinLevels(L, f), t = lv && bestTone(lv);
+    if (t) { L.exp = t.exp; L.sha = t.sha; L.hil = t.hil; }
+    L.tone.getContext('2d').putImageData(applyTone(L.gray, lut(L)), 0, 0); thumb(L);
+  }
+  $('auto').addEventListener('click', function () {
+    if (!layers.length) return;
+    var btn = $('auto'), msg = $('auto-msg'); btn.disabled = true;
+    msg.textContent = landmarker ? 'Finding faces...' : 'Loading the face finder (first time only)...';
+    getLandmarker().then(function (fl) {
+      var missed = [];
+      layers.forEach(function (L, i) { var f = findFace(fl, L); if (f) autoLayer(L, f, i, layers.length); else missed.push(L.name); });
+      select(active);
+      msg.textContent = missed.length ? 'No face found in ' + missed.join(', ') + '; adjust that one by hand.' : (layers.length > 1 ? 'All layers framed and toned. Fine-tune any layer if needed.' : 'Framed and toned. Fine-tune if needed.');
+    }).catch(function (e) {
+      msg.textContent = 'The face finder could not load (' + (e && e.message ? e.message : e) + '). Check the connection and try again.';
+    }).then(function () { btn.disabled = !layers.length; });
+  });
+
   // ── the layer list: front on top; select, move forward / back, remove ──
   function thumb(L) {
     if (!L.thumbCanvas) return;
@@ -290,7 +375,8 @@
     });
     $('count').textContent = layers.length + ' / ' + MAX_LAYERS;
     $('empty').hidden = layers.length > 0; $('dl').disabled = !layers.length;
-    sliders.forEach(function (r) { r.disabled = !layers.length; }); $('reset').disabled = !layers.length;
+    sliders.forEach(function (r) { r.disabled = !layers.length; }); $('reset').disabled = !layers.length; $('auto').disabled = !layers.length;
+    $('auto').innerHTML = layers.length > 1 ? '&#10024; Auto (all layers)' : '&#10024; Auto';
     $('drop').style.display = layers.length >= MAX_LAYERS ? 'none' : '';
   }
   var li_animate = typeof Element !== 'undefined' && !!Element.prototype.animate &&
@@ -342,7 +428,7 @@
 
   // joystick (as on the community hero page): the knob's place is the selected layer's offset, -1..1 = ±370 px
   var joy = $('joy'), knob = $('knob');
-  function knobAt(p) { knob.style.transform = 'translate(' + (p.x * JOY_R) + 'px,' + (p.y * JOY_R) + 'px)'; }
+  function knobAt(p) { var d = Math.max(1, Math.sqrt(p.x * p.x + p.y * p.y)); knob.style.transform = 'translate(' + (p.x / d * JOY_R) + 'px,' + (p.y / d * JOY_R) + 'px)'; }
   function setPan(x, y) {
     var L = cur(); if (!L) return;
     var d = Math.sqrt(x * x + y * y); if (d > 1) { x /= d; y /= d; }
@@ -371,7 +457,7 @@
     el.addEventListener('drop', function (e) { if (e.dataTransfer.files) addFiles(e.dataTransfer.files); });
   });
   select(-1);
-  window.__headshot = { load: load, addFiles: addFiles, select: select, move: move, remove: remove, setPan: setPan, render: render, layers: layers };   // for automated checks
+  window.__headshot = { getLandmarker: getLandmarker, load: load, addFiles: addFiles, select: select, move: move, remove: remove, setPan: setPan, render: render, layers: layers };   // for automated checks
 })();
 </script>
 </body>
