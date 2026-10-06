@@ -99,7 +99,7 @@
       <div class="ctl"><label for="exp">Exposure <output id="exp-v">0.00 EV</output></label><input type="range" id="exp" min="-1" max="1" step="0.01" value="0" data-default="0"></div>
       <div class="ctl"><label for="sha">Shadows <output id="sha-v">0</output></label><input type="range" id="sha" min="-50" max="50" step="1" value="0" data-default="0"></div>
       <div class="ctl"><label for="hil">Highlights <output id="hil-v">0</output></label><input type="range" id="hil" min="-50" max="50" step="1" value="0" data-default="0"></div>
-      <div class="hint">Double-click a slider to reset it. The faint line is the eye-level guide (preview only, not in the download).</div>
+      <div class="hint">Double-click a slider to reset it. The blue line is the eye-level guide (preview only, not in the download).</div>
       <div class="row"><button type="button" class="btn btn-ghost" id="reset">Reset layer</button><button type="button" class="btn btn-main" id="dl" disabled>Download PNG</button></div>
     </div>
   </div>
@@ -225,12 +225,17 @@
     pg.globalCompositeOperation = 'destination-in'; pg.drawImage(M, 0, 0);
     g.drawImage(Cc, 0, 0); g.drawImage(P, 0, 0);
   }
-  // eye-level guide, preview only (never in the download): a thin white chord across the circle 0.668 r above its centre,
-  // as in the After Effects guide (y 350-352 on the PLATFORMday circle), drawn over the speaker at low opacity
+  // eye-level guide, preview only (never in the download): a blue line across the whole image 0.668 r above the circle's
+  // centre (the After Effects guide's y 350-352 on the PLATFORMday circle), labelled EYE LEVEL on the right (Marek 2026-10-06)
   var EYE = 0.668;
   function guide(g) {
-    var y = C.y - EYE * C.r, half = Math.sqrt(Math.max(0, C.r * C.r - (C.y - y) * (C.y - y)));
-    g.save(); g.globalAlpha = 0.35; g.fillStyle = '#fff'; g.fillRect(C.x - half, y - 1.5, 2 * half, 3); g.restore();
+    var y = Math.round(C.y - EYE * C.r);
+    g.save();
+    g.globalAlpha = 0.75; g.fillStyle = '#1e7bff'; g.fillRect(0, y - 1, SIZE, 2);
+    g.globalAlpha = 0.9; g.font = '700 22px Montserrat, Arial, sans-serif'; g.textAlign = 'right'; g.textBaseline = 'bottom';
+    g.lineWidth = 4; g.strokeStyle = 'rgba(255,255,255,.85)'; g.strokeText('EYE LEVEL', SIZE - 16, y - 6);
+    g.fillText('EYE LEVEL', SIZE - 16, y - 6);
+    g.restore();
   }
   function draw() { compose(ctx, SIZE, layers.map(function (L) { return L.tone; })); guide(ctx); }
 
@@ -258,8 +263,10 @@
     var t = L.thumbCanvas.getContext('2d'), s = Math.min(80 / L.tone.width, 80 / L.tone.height);
     t.clearRect(0, 0, 80, 80); t.drawImage(L.tone, (80 - L.tone.width * s) / 2, (80 - L.tone.height * s) / 2, L.tone.width * s, L.tone.height * s);
   }
-  function renderList() {
-    var ul = $('layers'); ul.innerHTML = '';
+  function renderList(animate) {
+    var ul = $('layers'), before = new Map();                           // FLIP: where each layer's row was before
+    if (animate) layers.forEach(function (L) { if (L.li) before.set(L, L.li.getBoundingClientRect().top); });
+    ul.innerHTML = '';
     for (var i = layers.length - 1; i >= 0; i--) (function (i) {
       var L = layers[i], li = document.createElement('li');
       li.className = 'layer' + (i === active ? ' on' : '');
@@ -274,24 +281,40 @@
         bt.addEventListener('click', function (e) { e.stopPropagation(); b[3](); }); li.appendChild(bt);
       });
       li.addEventListener('click', function () { select(i); });
-      ul.appendChild(li);
+      L.li = li; ul.appendChild(li);
     })(i);
+    if (animate && li_animate) layers.forEach(function (L) {           // rows slide from their old place to the new one
+      if (!before.has(L)) return;
+      var dy = before.get(L) - L.li.getBoundingClientRect().top;
+      if (dy) L.li.animate([{ transform: 'translateY(' + dy + 'px)' }, { transform: 'none' }], { duration: 280, easing: 'cubic-bezier(.2,.8,.2,1)' });
+    });
     $('count').textContent = layers.length + ' / ' + MAX_LAYERS;
     $('empty').hidden = layers.length > 0; $('dl').disabled = !layers.length;
     sliders.forEach(function (r) { r.disabled = !layers.length; }); $('reset').disabled = !layers.length;
     $('drop').style.display = layers.length >= MAX_LAYERS ? 'none' : '';
   }
-  function select(i) {                                                    // the controls now read and move this layer only
+  var li_animate = typeof Element !== 'undefined' && !!Element.prototype.animate &&
+                   !(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+  function select(i, animate) {                                           // the controls now read and move this layer only
     active = i; var L = cur();
     if (L) { zoom.value = L.zoom; exp.value = L.exp; sha.value = L.sha; hil.value = L.hil; knobAt(L.pan); }
     $('editing').innerHTML = L ? 'Editing <b></b>' : 'Add a photo to start.'; if (L) $('editing').querySelector('b').textContent = L.name;
-    readouts(); renderList(); draw();
+    readouts(); renderList(animate); draw();
   }
   function move(i, dir) {
     var j = i + dir; if (j < 0 || j >= layers.length) return;
     var t = layers[i]; layers[i] = layers[j]; layers[j] = t;
     if (active === i) active = j; else if (active === j) active = i;
-    select(active);
+    var old = layer(SIZE); old.getContext('2d').drawImage(cv, 0, 0);       // the preview before the swap, to cross-fade from
+    select(active, true);
+    if (li_animate) fadeFrom(old);
+  }
+  function fadeFrom(old) {                                                // 250 ms cross-fade from the old stacking to the new one
+    var t0 = performance.now();
+    (function step(now) {
+      var k = Math.min(1, (now - t0) / 250);
+      draw(); if (k < 1) { ctx.save(); ctx.globalAlpha = 1 - k; ctx.drawImage(old, 0, 0); ctx.restore(); requestAnimationFrame(step); }
+    })(t0);
   }
   function remove(i) {
     layers.splice(i, 1);
