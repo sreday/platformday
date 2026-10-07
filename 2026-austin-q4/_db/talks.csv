@@ -58,3 +58,37 @@ This session demystifies deploying air-gapped, open-weights models behind your f
 
 Attendees will learn how to seamlessly integrate secure local models into daily workflows using local inference engines, custom developer tools, and the Model Context Protocol (MCP) to safely query internal data.",,"Thomas Cameron has been in IT since 1993. He started out with Novell NetWare, then worked with Microsoft technologies, then discovered Linux in 1995. He's been an Open Source geek ever since. He's managed large scale Linux environments for organizations from banking to real estate to chip manufacturing. He worked at Red Hat from 2005 through 2019, as a chief architect and global technical evangelist. He then went to AWS, where he was a senior technical trainer. Recently, Thomas came back to Red Hat as a senior principal solution architect specializing in Ansible. Thomas has achieved Red Hat Certified Architect, AWS Solutions Architect Professional, and had numerous other technical certifications. He's delivered technical presentations on Open Source in twenty countries on five continents."
 ,talk,Kishore Pulagam,1,1,PayPal,Kishore Pulagam.png,https://www.linkedin.com/in/kishore-pulagam/,,,,The Second Tenant Problem: When an AI Pipeline Becomes a Platform,"Platform engineering spent a decade learning to share infrastructure between teams. AI platforms break that model, because the tenants are now agents and model-driven workloads that generate their own load, consume every token they are given, act with delegated authority, and change behavior whenever the model beneath them changes. This talk lays out the control plane I have built for that world, running classical ML, open-weight models, and frontier APIs behind one contract in a regulated enterprise. I will walk through how workloads are placed across models and trust zones, modeled as a filter-score-bind scheduling cycle: data classification and jurisdiction are hard constraints, and capability, latency, and cost are scored. I will then cover how capacity is shared, with per-tenant GPU and task isolation, token budgets, admission control, and fallback paths when GPUs saturate. Advanced topics include scoping agent authority at the tool layer with MCP, prompt isolation and injection guardrails across text and image payloads, and per-workload regression gates for model upgrades. The result is a platform where model capability is allocated deliberately, every agent runs inside a boundary the platform enforces, and replacing a model becomes a routine deployment.",,"Kishore Pulagam is a Senior Member of Technical Staff at PayPal in Austin, where he has spent more than a decade building multi-tenant, high-throughput enterprise platforms. He currently architects the inference and retrieval stack behind them: policy-based routing of workloads across in-perimeter GPU serving and commercial model APIs, serving of open-weight LLMs and document-layout models, hybrid sparse and dense vector retrieval, and agent harnesses built on MCP with fine-grained access control and token-budget management. His research work involves large-scale vector retrieval, knowledge graphs for regulatory compliance, and agentic workflows with embedded governance, with peer-reviewed publications in IEEE Access. He is pursuing an executive MBA at Kellogg, Northwestern University."
+,talk,Abhijeet M,1,1,Experis,Abhijeet M.png,https://www.linkedin.com/in/abhijeet-mote/,,,,The Hidden Platform: Building Reliable Software Inventories at Scale,"Modern software systems depend on thousands of open-source components, yet answering simple questions remains surprisingly difficult:
+
+What software are we running?
+Which dependencies are actually in use?
+How do we identify the same package across different ecosystems?
+How do we track versions, vulnerabilities, and ownership at scale?
+How can organizations build trustworthy software inventories without creating excessive operational overhead?
+
+This session explores the hidden platform behind dependency visibility and software governance. We'll examine the challenges of dependency discovery, package identity, software inventory pipelines, SBOM generation, and lifecycle management across modern development environments. Attendees will learn practical patterns for building reliable software inventories and improving software supply chain visibility.
+
+Talking Points
+Why software inventories are harder than they look
+Discovering dependencies across large codebases
+
+The package identity problem
+Import names
+Package names
+Multiple package ecosystems
+Building inventory pipelines
+Version tracking and dependency intelligence
+Software supply chain visibility and SBOMs
+Common pitfalls and lessons learned
+How AI-generated code changes the inventory challenge
+Why PLATFORMday Attendees Will Care
+Platform Engineering
+Developer Experience
+Software Supply Chain
+Open Source Governance
+Enterprise Architecture
+AI-assisted Development",,"Abhijeet Mote is a software engineer, author, Python open-source advocate, and Python Software Foundation Fellow with more than 12 years of experience building software systems. His work spans Python application development, data engineering, and applied AI, where he has helped develop production systems and solve practical engineering problems.
+
+He is the author of Designing GenAI Agents and Autonomous Workflows with Python, a book about building AI agents and workflows with Python. He has taught programming to more than 300 professionals, founded the Python Penang community, and continues to mentor learners, including students from rural and underrepresented communities.
+
+For this collaborative book on C programming, Abhijeet brings an industry perspective shaped by years of software development and a commitment to making technical concepts clear and approachable."
