@@ -949,7 +949,7 @@
         <hr class="sp-stats-sep">
 
         <div class="sp-stats-s-title">Attendee profile</div>
-        <div class="sp-stats-s-sub">Based on past attendee information across sampled events</div>
+        <div class="sp-stats-s-sub">Based on anonymized past attendee stats</div>
 
         <div class="sp-stats-tldr">
           <strong>TLDR:</strong> A hands-on crowd of SREs, platform engineers, and DevOps practitioners from startups and enterprises — actively building and running production systems. Senior practitioners who care about reliability, observability, and incident management, figuring out how to make SRE work at scale.
@@ -1175,7 +1175,7 @@ window.addEventListener('hashchange', function() { spAutoExpand(window.location.
     <p class="text-center" style="color:#aaa;margin-top:-.6rem;margin-bottom:1.5rem;">Secure your sponsorship with <a href="https://www.linkedin.com/in/marek-pawlikowski/" target="_blank" rel="noopener noreferrer" style="color:#e2b269;">Mark Pawlikowski</a></p>
     <div class="row justify-content-center">
       <div class="col-12 col-lg-10 d-flex flex-wrap justify-content-center gap-3">
-        {% if calendly_sponsor_url %}<a href="{{ calendly_sponsor_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary sp-cta-btn">Hop on a call</a>{% endif %}
+        <a href="{{ calendly_sponsor_url or "https://calendly.com/sreday/30min" }}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary sp-cta-btn">Hop on a call</a>
         <a href="{{ mailto }}" class="btn btn-primary sp-cta-btn">✉ Email Mark</a>
         <a href="https://wa.me/447307415008" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp sp-cta-btn"><i class="fab fa-whatsapp me-2"></i>DM Mark</a>
       </div>
