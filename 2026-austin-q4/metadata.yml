@@ -1,7 +1,7 @@
 # TODO - change these
 
 # start time includes timezone at the end relative to UTC
-start_time: "2026-10-15T09:00:00-05:00"
+start_time: "2026-10-15T08:30:00-05:00"
 # before - no schedule
 # active - schedule
 # after  - hide ticket sales
@@ -32,7 +32,7 @@ breaks:
 - title: Lunch & networking
   duration: 60
   comment: Main lobby
-  talks_before: 4
+  talks_before: 5
 - title: Networking & sponsor crawl
   duration: 30
   comment: Main lobby
