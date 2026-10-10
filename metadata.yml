@@ -1,0 +1,100 @@
+brand_name: "PLATFORMday"
+base_path: "https://www.platformday.com/"
+base_folder: "static"
+twitter_url: https://twitter.com/platformday_com
+linkedin_url: https://www.linkedin.com/company/platformday/
+youtube_url: https://www.youtube.com/@platformday
+mailto: "mailto:hello@platformday.com"
+# Google Apps Script web-app URL (.../exec) behind the "Email us" / "Become A Sponsor" lead forms.
+# Empty = the form falls back to a prefilled mailto:. Shared with the sister sites; source: _build/lead-form.gs in llmday.
+lead_form_url: "https://script.google.com/macros/s/AKfycbxq_ZaBpS3C0vp9OIGZz3VboGh83sgfW9D-nTF3s_8HSmdWICh268bXqmTpsgOV8CslDw/exec"
+# speaker onboarding form (hidden /<event>/onboarding/ pages): Apps Script web app URL, source llmday/_build/onboarding-form.gs; empty = page refuses to send
+onboarding_form_url: "https://script.google.com/macros/s/AKfycbwnEN8BjYxtzXexBCHDk069Jjbag2aioOKzP7hMIkVcrqcCguEy5Cyos9Y3FLisg5qPtw/exec"
+# speaker fast-track form (hidden /<event>/fasttrack/ pages): Apps Script web app URL, source llmday/_build/fasttrack-form.gs; empty = page refuses to submit
+fasttrack_form_url: "https://script.google.com/macros/s/AKfycbwOUn-5SpofzUE96GTzRVV5WjM_OM4FOG6Vor16dEYubS837SZ8S1OXA6GCEYZMMVQ9/exec"
+# speaker waitlist form (hidden /<event>/waitlist/, backend: llmday/_build/waitlist-form.gs = "Speaker waitlist")
+waitlist_form_url: "https://script.google.com/macros/s/AKfycbyFajq33tAV1toNG6vgGSFsiHMTnUfIiFa21wVwPXI6vd3prUNYbSeaVRkmfcb89SLnrA/exec"
+# community hero page (hidden /<event>/communityhero/, backend: llmday/_build/communityhero-form.gs = "Community hero")
+communityhero_form_url: "https://script.google.com/macros/s/AKfycbyeW8C7ZfEjrELd0-GHy4p-fiBYTyBGsPkJ-M7uNkoD69Xk8UyhIUBfl7u67eQIfmPG/exec"
+# speaker invitation letter (hidden /<event>/invitation/ pages): Apps Script web app URL, source llmday/_build/invitation-form.gs; empty = page refuses to send
+invitation_form_url: "https://script.google.com/macros/s/AKfycbwf8_4TeXxjnsu5zfQ5DrX50ydRKWC4nA6FWsA_cuFZ9bsPNQanC0as3fMD-RMVPO0_fw/exec"
+# sponsor onboarding form (hidden /<event>/onboardsponsor/ pages): Apps Script web app URL, source llmday/_build/sponsor-onboarding-form.gs; empty = page refuses to send
+sponsor_onboarding_form_url: "https://script.google.com/macros/s/AKfycbwABdA7XdvOrs8zW2MiHQqYecUMd59O9zcq0NyBuTmzODl2B9WbVtl0sxHjZ5Jb_lqd/exec"
+
+hero_pictures:
+- ../photos/platformday-hero-2.jpg
+
+# NOTE: these are recomputed from the event folders at build time (see _build/generate.py)
+counts:
+ events: 0
+ countries: 0
+ speakers: 0
+ attendees: 0
+
+
+events:
+
+  - name: PLATFORMday Austin 2026 Q4
+    location: Austin, Texas, United States
+    photo_url: ./assets/images/events/platformday-2026-austin-q4.png
+    url: ./2026-austin-q4/
+    size: medium
+    youtube_playlist:
+
+  - name: PLATFORMday San Francisco 2026 Q4
+    location: Sentry, San Francisco, California, United States
+    photo_url: ./assets/images/events/platformday-2026-san-francisco-q4.png
+    url: ./2026-san-francisco-q4/
+    size: medium
+    youtube_playlist:
+
+events_past:
+
+meetups: []
+
+meetups_past: []
+
+description_template: |
+ ### Platform engineers, assemble in {{ location }} on {{ start_date }}!
+
+ **PLATFORMday** is an in-person conference bringing together the people who build and run internal platforms: platform engineering, developer experience, infrastructure, and the tooling that ties them together.
+
+ Please note: this is an **in-person-only event**, with no option to present remotely. You’ll need to be present in {{ location }} on {{ start_date }} in order to deliver your talk.
+
+ [Take a look at the lineup so far]({{ website }})
+
+ #### Who is this for?
+
+ - Do you build or operate an internal developer platform?
+ - Do you work on developer experience, infrastructure, or the golden paths your teams ship on?
+ - Do you enjoy sharing real experiences, challenges, and opinions about what actually works at scale?
+
+ If you answered yes to any of these, join us for a day of learning, discussion, and shared experience.
+
+ You will connect with experienced practitioners, peers facing similar challenges, and a community that values honest conversations about the messy reality of platform work.
+
+ ---
+
+ #### Topics
+
+ We want to hear about the real world of platform engineering, including:
+
+ - Building internal developer platforms, from first golden path to org-wide adoption.
+ - Developer experience: paved roads, self-service, and measuring whether any of it helped.
+ - Platform as a product: funding it, staffing it, and proving its value.
+ - Infrastructure, Kubernetes, and the abstractions teams actually want on top.
+ - CI/CD, deployment, and the developer inner and outer loop.
+ - Reliability, security, and cost as platform concerns rather than afterthoughts.
+ - Honest retrospectives, including the platforms that did not work out.
+
+ ---
+
+ #### Am I the right speaker for this?
+
+ If you work on platforms or anywhere around them, then the answer is yes.
+
+ We welcome speakers from diverse backgrounds and all walks of life, not just traditional platform roles, but anyone working on developer experience, infrastructure, or operations in a broader sense. We accept a wide range of session types, as long as they align with the core themes of the conference.
+
+ Questions? Want to bring PLATFORMday to your city? Please ping **hello@platformday.com**.
+
+ Thank you for presenting with us!
