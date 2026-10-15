@@ -33,10 +33,6 @@ breaks:
   duration: 60
   comment: Main lobby
   talks_before: 6
-- title: Networking & sponsor crawl
-  duration: 30
-  comment: Main lobby
-  talks_before: 5
 
 sponsors:
   - logo: reliaburger.png
