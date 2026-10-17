@@ -1,0 +1,74 @@
+# PLATFORMday London 2027 Q2 - Everyman Canary Wharf, Thursday 13 May 2027.
+
+# start time includes timezone at the end relative to UTC (BST)
+start_time: "2027-05-13T09:30:00+01:00"
+# before - no schedule
+# active - schedule
+# after  - hide ticket sales
+event_state: before
+date_string: "May 13, 2027"
+location_string: "Everyman Canary Wharf, London, UK"
+city_name: "London"
+# get this from the event url (empty until the Luma event exists = "Tickets will be available soon")
+luma_evt:
+# paid event (unlike the other PLATFORMdays): no FREE badge, the teasers show the PLAT20 / PLAT40 ball
+registration_free: false
+cfp_url: https://cfp.ninja/e/platformday-2027-london-q2
+
+# the number of tracks needs to be the same per day
+# the tracks will be taken in the order they appear in the CSV file
+days: 1
+attendees: 100
+speakers: 10+
+tracks: 2
+
+rooms:
+- screen 1
+- screen 2
+
+breaks:
+- title: Coffee break
+  duration: 30
+  comment: Main lobby
+  # this decides how many talks in-between this and previous section
+  talks_before: 0
+- title: Lunch & networking
+  duration: 60
+  comment: Main lobby
+  talks_before: 4
+- title: Networking & sponsor crawl
+  duration: 30
+  comment: Main lobby
+  talks_before: 4
+
+sponsors:
+  - logo: reliaburger.png
+    url: https://reliaburger.com/
+  - logo: hockeystick.png
+    url: https://www.hockeystick.show
+
+# these get displayed at the top
+hero_pictures:
+- ../photos/platformday-hero-2.jpg
+
+# brand identity
+brand_name: "PLATFORMday"
+brand_domain: "platformday.com"
+brand_description: "Conference on Platform Engineering, Developer Experience and Infrastructure"
+brand_tagline: "Platform Engineering, DevEx and Infrastructure"
+brand_og_pitch: "Probably the most awesome platform engineering conference in"
+brand_color: "#E2971D"
+brand_twitter: "@platformday_com"
+brand_ga_id: "G-CQ2KV6LK8G"
+brand_gads_id: "AW-17496979257"
+brand_twt_pixel: "ofo1h"
+logo_image: ""
+
+# probably don't need changing
+base_path: "https://www.platformday.com/"
+base_folder: "static"
+twitter_url: https://twitter.com/platformday_com
+linkedin_url: https://www.linkedin.com/company/platformday/
+youtube_url: https://www.youtube.com/@platformday
+mailto: "mailto:hello@platformday.com"
+youtube_playlist:
