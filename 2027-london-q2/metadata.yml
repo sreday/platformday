@@ -10,7 +10,7 @@ date_string: "May 13, 2027"
 location_string: "Everyman Canary Wharf, London, UK"
 city_name: "London"
 # get this from the event url (empty until the Luma event exists = "Tickets will be available soon")
-luma_evt:
+luma_evt: evt-KM2FqJdRokcFSfa
 # paid event (unlike the other PLATFORMdays): no FREE badge, the teasers show the PLAT20 / PLAT40 ball
 registration_free: false
 cfp_url: https://cfp.ninja/e/platformday-2027-london-q2
