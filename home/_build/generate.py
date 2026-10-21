@@ -71,6 +71,21 @@ if _now_past:
     context["events_past"] = list(reversed(_now_past)) + (context.get("events_past") or [])   # latest first
     print("Over, moved to past events: %s" % ", ".join(str(e.get("name")) for e in _now_past))
 
+# HERO REGIONS (Marek 2026-10-20): the line under "In-person conferences" lists every country we run (or ran) an event in,
+# from the last part of each home metadata.yml event's location, in the order they first appear: a new country shows up
+# as soon as its event is listed. "United States & United Kingdom"; three = "A, B & C"; more = "Worldwide".
+_REGION_NAMES = {"us": "United States", "usa": "United States", "united states of america": "United States",
+                 "uk": "United Kingdom", "england": "United Kingdom", "scotland": "United Kingdom", "nl": "Netherlands"}
+_regions = []
+for _e in (context.get("events") or []) + list(reversed(context.get("events_past") or [])):
+    _c = str((_e or {}).get("location") or "").split(",")[-1].strip()
+    _c = _REGION_NAMES.get(_c.lower(), _c)
+    if _c and _c not in _regions:
+        _regions.append(_c)
+context["hero_regions"] = (" & ".join(_regions) if len(_regions) < 3 else
+                           ", ".join(_regions[:-1]) + " & " + _regions[-1] if len(_regions) == 3 else "Worldwide")
+print("Hero regions: %s" % (context["hero_regions"] or "-"))
+
 # read the csv
 context["testimonials"] = read_csv("./_db/testimonials.csv")
 context["ambassadors"] = read_csv("./_db/ambassadors.csv")

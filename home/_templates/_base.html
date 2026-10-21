@@ -190,7 +190,7 @@ section[id] {
 				<h1 class="logo retro mb-4"><img src="/assets/images/platformday_sticker.png" alt="PLATFORMday" style="height: 200px;" /></h1>
 				<h2 class="text-white mb-3">Platform Engineering, DevEx and Infrastructure</h2>
 				<h3 class="text-white">In-person conferences</h3>
-				<h4 class="text-white mt-4">United States</h4>
+				{% if hero_regions %}<h4 class="text-white mt-4">{{ hero_regions }}</h4>{% endif %}
 				<div class="hero-cta hero-cta-row mt-4" style="padding-bottom:28px;">
 				<a class="btn btn-primary btn-lg cta-left" href="https://cfp.ninja/?q=platformday&type=in-person&status=open&page=1" target="_blank" rel="noopener noreferrer">CFP</a>
 				<ul class="social-list list-inline" style="margin:0;">
