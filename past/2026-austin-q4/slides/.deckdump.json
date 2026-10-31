@@ -1,0 +1,29 @@
+{
+ "reported": [],
+ "shipped": {
+  "Bradley_Friemel_LoanLight_From_Prototype_to_Production_Engineering_AI_Products_That_Last": {
+   "bytes": 579246,
+   "file": "PLATFORMday Austin 2026 Q4 - Bradley Friemel - Bradley_Friemel_LoanLight_From_Prototype_to_Production_Engineering_AI_Products_That_Last.pptx",
+   "id": "1IhMURGl2HiiWXxmvaVz3acLujETOG55t",
+   "modified": "2026-10-31T00:52:35.045Z",
+   "shipped": "2026-10-31T00:57:27Z",
+   "step": "lossless"
+  },
+  "German_Martinez_Portio_The_Adoption_Gap": {
+   "bytes": 460330,
+   "file": "PLATFORMday Austin 2026 Q4 - German Martinez - German_Martinez_Portio_The_Adoption_Gap.pdf",
+   "id": "14tqVyf7AxRaRBnvmtHxpp0AdQTN5GV2V",
+   "modified": "2026-10-31T00:53:00.567Z",
+   "shipped": "2026-10-31T00:57:28Z",
+   "step": "lossless"
+  },
+  "Raul_Leite_Red_Hat_vLLM_Explained_What_an_Open_Source_Inference_Server_Actually_Does": {
+   "bytes": 944036,
+   "file": "PLATFORMday Austin 2026 Q4 - Raul Leite - Raul_Leite_Red_Hat_vLLM_Explained_What_an_Open_Source_Inference_Server_Actually_Does.pdf",
+   "id": "1tsjEglQMsglrjbaIDqGfS6IC0CrWYYdG",
+   "modified": "2026-10-31T00:53:08.967Z",
+   "shipped": "2026-10-31T00:57:31Z",
+   "step": "lossless"
+  }
+ }
+}
