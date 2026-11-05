@@ -26,6 +26,10 @@ rooms:
 - mini room
 
 breaks:
+- title: Doors open
+  duration: 60
+  comment: Main lobby
+  opening: true  # opening breaks run in this order and end at start_time: 8:00 - 9:00
 - title: Coffee break
   duration: 30
   comment: Main lobby
