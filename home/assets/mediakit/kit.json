@@ -1,0 +1,38 @@
+[
+ {
+  "file": "platformday-sticker.png",
+  "label": "Sticker",
+  "note": "4096×4096 PNG",
+  "bg": "light"
+ },
+ {
+  "file": "platformday-logo.png",
+  "label": "Logo",
+  "note": "4096×4096 PNG",
+  "bg": "light"
+ },
+ {
+  "file": "platformday-logo-white.png",
+  "label": "Logo, white",
+  "note": "4096×4096 PNG",
+  "bg": "dark"
+ },
+ {
+  "file": "platformday-logo-on-black.png",
+  "label": "Logo on black",
+  "note": "4456×4456 PNG",
+  "bg": "light"
+ },
+ {
+  "file": "platformday-mascot-baby-platypus.png",
+  "label": "Mascot, baby platypus",
+  "note": "2048×2048 PNG",
+  "bg": "light"
+ },
+ {
+  "file": "platformday-mascot-platypus.png",
+  "label": "Mascot, platypus",
+  "note": "1080×1080 PNG",
+  "bg": "light"
+ }
+]
