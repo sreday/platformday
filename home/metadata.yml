@@ -41,7 +41,7 @@ events:
     photo_url: ./assets/images/events/platformday-2026-austin-q4.png
     url: ./2026-austin-q4/
     size: medium
-    youtube_playlist:
+    youtube_playlist: https://www.youtube.com/playlist?list=PLH5qXlhFXjDA
 
   - name: PLATFORMday San Francisco 2026 Q4
     location: Sentry, San Francisco, California, United States
