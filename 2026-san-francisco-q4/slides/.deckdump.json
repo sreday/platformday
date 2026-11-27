@@ -1,6 +1,30 @@
 {
  "reported": [],
  "shipped": {
+  "An_Phan_Hippo_Harvest_Your_Platform_Users_Arent_Always_Software_Engineers": {
+   "bytes": 418990,
+   "file": "PLATFORMday San Francisco 2026 Q4 - An Phan - An_Phan_Hippo_Harvest_Your_Platform_Users_Arent_Always_Software_Engineers.pdf",
+   "id": "1B8WJYvG-d9vujD0FCeuG1Xx4xyMP3gF6",
+   "modified": "2026-11-27T15:38:04.996Z",
+   "shipped": "2026-11-27T23:36:31Z",
+   "step": "lossless"
+  },
+  "Gabe_Gramajo_Ideas_Factory_Beyond_the_AI_Demo_Building_Automation_That_Works_in_the_Real_World": {
+   "bytes": 447022,
+   "file": "PLATFORMday San Francisco 2026 Q4 - Gabe Gramajo - Gabe_Gramajo_Ideas_Factory_Beyond_the_AI_Demo_Building_Automation_That_Works_in_the_Real_World.pdf",
+   "id": "1dqO73f4FQKtasFKGIV9PCfUtgXsdadSp",
+   "modified": "2026-11-27T15:03:16.197Z",
+   "shipped": "2026-11-27T23:36:32Z",
+   "step": "lossless"
+  },
+  "Gaurav_Vashisht_Kraken_Digital_Asset_Exchange_Measuring_the_Exact_ROI_of_AI__A_Framework_for_Quantif": {
+   "bytes": 1325531,
+   "file": "PLATFORMday San Francisco 2026 Q4 - Gaurav Vashisht - Gaurav_Vashisht_Kraken_Digital_Asset_Exchange_Measuring_the_Exact_ROI_of_AI__A_Framework_for_Quantif.pdf",
+   "id": "1hHuyBigUFugqEhPSACZaC-ZMHA1QI5Fi",
+   "modified": "2026-11-27T20:58:51.479Z",
+   "shipped": "2026-11-27T23:36:34Z",
+   "step": "lossless"
+  },
   "Richard_Goetz_GLZR_DEVSECOPS_at_the_Speed_of_AI": {
    "bytes": 109603,
    "file": "PLATFORMday San Francisco 2026 Q4 - Richard Goetz - Richard_Goetz_GLZR_DEVSECOPS_at_the_Speed_of_AI.pdf",

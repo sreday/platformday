@@ -17,12 +17,28 @@
    "shipped": "2026-10-31T00:57:28Z",
    "step": "lossless"
   },
+  "Nelma_Perera_Egen_Trusting_Hundreds_of_Agents_in_Production": {
+   "bytes": 4286395,
+   "file": "PLATFORMday Austin 2026 Q4 - Nelma Perera - Nelma_Perera_Egen_Trusting_Hundreds_of_Agents_in_Production.pdf",
+   "id": "1knQnDFMEBqi00oU2FqzRN_wvDBFfU9ac",
+   "modified": "2026-11-27T23:28:53.390Z",
+   "shipped": "2026-11-27T23:36:37Z",
+   "step": "lossless"
+  },
   "Raul_Leite_Red_Hat_vLLM_Explained_What_an_Open_Source_Inference_Server_Actually_Does": {
    "bytes": 944036,
    "file": "PLATFORMday Austin 2026 Q4 - Raul Leite - Raul_Leite_Red_Hat_vLLM_Explained_What_an_Open_Source_Inference_Server_Actually_Does.pdf",
    "id": "1tsjEglQMsglrjbaIDqGfS6IC0CrWYYdG",
    "modified": "2026-10-31T00:53:08.967Z",
    "shipped": "2026-10-31T00:57:31Z",
+   "step": "lossless"
+  },
+  "Timothy_Porter_Mod_Tech_Labs_ZeroWaste_Compute_Turning_Idle_Workstations_into_a_Private_AI_Cluster": {
+   "bytes": 3088180,
+   "file": "PLATFORMday Austin 2026 Q4 - Timothy Porter - Timothy_Porter_Mod_Tech_Labs_ZeroWaste_Compute_Turning_Idle_Workstations_into_a_Private_AI_Cluster.pdf",
+   "id": "14VO-sxlA6AgENEY5iYhu875PNqF4qWrQ",
+   "modified": "2026-11-27T14:33:07.358Z",
+   "shipped": "2026-11-27T23:36:45Z",
    "step": "lossless"
   }
  }
